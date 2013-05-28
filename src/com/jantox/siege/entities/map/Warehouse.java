@@ -6,9 +6,9 @@ import com.jantox.siege.entities.Entity;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Platform extends Entity {
+public class Warehouse extends Entity {
 
-    public Platform(Vector3D pos) {
+    public Warehouse(Vector3D pos) {
         super(pos);
     }
 

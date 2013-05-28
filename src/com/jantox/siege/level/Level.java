@@ -13,12 +13,7 @@ import com.jantox.siege.entities.*;
 import com.jantox.siege.particle.Particle;
 import com.jantox.siege.particle.ParticleBehavior;
 import com.jantox.siege.particle.ParticleSystem;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.TrueTypeFont;
 
-import java.awt.*;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -27,19 +22,16 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 public class Level {
 
     private ArrayList<Entity> entities;
-    private ArrayList<ParticleSystem> particlesys;
 
     private ArrayList<Quad> floors;
-    public ArrayList<Quad> ramps;
-    public ArrayList<Quad> rramps;
-
-    private SpawnerFactory spawnerFactory;
+    private ArrayList<Quad> ramps;
+    private ArrayList<Quad> walls;
 
     private Player player;
     private Camera camera;
 
+    private SpawnerFactory spawnerFactory;
     private ControlPoint points[];
-
     public Gate gates[];
 
     public static ParticleSystem psys;
@@ -58,8 +50,8 @@ public class Level {
         ramps = new ArrayList<Quad>();
         //ramps.add(new Quad(new Vector3D(15, -2, 15),new Vector3D(18, -2, 15),new Vector3D(18, 1, 15),new Vector3D(15, 1, 15)));
 
-        rramps = new ArrayList<Quad>();
-        rramps.add(new Quad(new Vector3D(1, -2, 15), new Vector3D(1, -2, 13), new Vector3D(20,1,13), new Vector3D(20, 1, 15)));
+        walls = new ArrayList<Quad>();
+        walls.add(new Quad(new Vector3D(1, -2, 15), new Vector3D(1, -2, 13), new Vector3D(20,1,13), new Vector3D(20, 1, 15)));
 
         psys = new ParticleSystem(new Vector3D(5, 0, 5));
 
@@ -148,44 +140,17 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
-        this.spawn(new Platform(new Vector3D(-40, 0, -40)));
-        this.spawn(new Platform(new Vector3D(40, 0, -40)));
-        this.spawn(new Platform(new Vector3D(40, 0, 40)));
-        this.spawn(new Platform(new Vector3D(-40, 0, 40)));
-        this.spawn(new Platform(new Vector3D(0, 0, 0)));
+        this.spawn(new Warehouse(new Vector3D(-40, 0, -40)));
+        this.spawn(new Warehouse(new Vector3D(40, 0, -40)));
+        this.spawn(new Warehouse(new Vector3D(40, 0, 40)));
+        this.spawn(new Warehouse(new Vector3D(-40, 0, 40)));
+        this.spawn(new Warehouse(new Vector3D(0, 0, 0)));
 
         /*this.spawnForest(10, new Vector3D(22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, -22.5), 10);
         this.spawnForest(10, new Vector3D(22.5, 0, -22.5), 10);*/
-
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        font = new TrueTypeFont(awtFont, false);
-
-        //GL11.glEnable(GL11.GL_FOG);
-
-        {
-            FloatBuffer fogColours = BufferUtils.createFloatBuffer(4);
-            fogColours.put(new float[]{fogColor.getRed(), fogColor.getGreen(), fogColor.getBlue(), fogColor.getAlpha()});
-            GL11.glClearColor(fogColor.getRed(), fogColor.getGreen(), fogColor.getBlue(), fogColor.getAlpha());
-            fogColours.flip();
-            GL11.glFog(GL11.GL_FOG_COLOR, fogColours);
-            GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
-            GL11.glHint(GL11.GL_FOG_HINT, GL11.GL_NICEST);
-            GL11.glFogf(GL11.GL_FOG_START, fogNear);
-            GL11.glFogf(GL11.GL_FOG_END, fogFar);
-            GL11.glFogf(GL11.GL_FOG_DENSITY, 0.005f);
-        }
     }
-
-    /** The distance where fog starts appearing. */
-    private static final float fogNear = 100f;
-    /** The distance where the fog stops appearing (nothing is shown here) */
-    private static final float fogFar = 500f;
-    /** The color of the fog in rgba. */
-    private static final Color fogColor = new Color(0.7f, 0.8f, 1f, 1f);
-
-    TrueTypeFont font = null;
 
     public void update(float delta) {
         spawnerFactory.update();
@@ -306,9 +271,8 @@ public class Level {
         glVertex3f(20, 1, 15);
         glEnd();
 
-
+        // always render player last
         this.player.render();
-
 
         glPopMatrix();
     }
@@ -355,6 +319,10 @@ public class Level {
         return floors;
     }
 
+    public ArrayList<Quad> getWalls() {
+        return walls;
+    }
+
     public ArrayList<Quad> getRamps() {
         return ramps;
     }
@@ -363,7 +331,4 @@ public class Level {
         return points[Entity.rand.nextInt(5)];
     }
 
-    public void addWall(Quad quad) {
-        ramps.add(quad);
-    }
 }
