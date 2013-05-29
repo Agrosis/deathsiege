@@ -86,6 +86,17 @@ public class GameInstance {
         glClear(GL_DEPTH_BUFFER_BIT);
 
         glDisable(GL_TEXTURE_2D);
+        drawCrossheir();
+        drawHealthbar();
+
+        glColor3f(1f, 1f, 1f);
+
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+    }
+
+    public void drawCrossheir() {
         glColor3f(0.15f, 0.15f, 0.15f);
         glBegin(GL_LINES);
         glVertex2f(399, 294);
@@ -101,12 +112,35 @@ public class GameInstance {
         glEnd();
         glBegin(GL_LINES);
         glEnd();
+    }
 
-        glColor3f(1f, 1f, 1f);
+    float i = 100;
 
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
+    public void drawHealthbar() {
+        i -= 0.05f;
+        glColor3f(0, 1, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(20, 20);
+        glVertex2f(20 + i * 3, 20);
+        glVertex2f(20 + i * 3, 40);
+        glVertex2f(20, 40);
+        glEnd();
+
+        glColor3f(1, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(20, 20);
+        glVertex2f(320, 20);
+        glVertex2f(320, 40);
+        glVertex2f(20, 40);
+        glEnd();
+
+        glColor3f(0, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(18, 18);
+        glVertex2f(322, 18);
+        glVertex2f(322, 42);
+        glVertex2f(18, 42);
+        glEnd();
     }
 
 }

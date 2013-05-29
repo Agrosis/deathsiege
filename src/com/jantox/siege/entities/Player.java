@@ -18,19 +18,21 @@ public class Player extends Living {
 
     private Camera camera;
 
-    // inventory information
     private ArrayList<Tool> inventory;
     private int selected = 0;
 
-    private Tool curwep;
+    public Tool curwep;
     private int cursel = 0;
+
     private int change = 0;
     public static float changestat = 0;
-    private int weaponRest = 0;
+
+    int weaponRest = 0;
 
     private boolean running = false;
     private boolean using = false;
-    private double move = 0;
+
+    public static double move = 0;
 
     public Player(Camera camera) {
         super(camera.getCamera(), 100);
@@ -50,6 +52,7 @@ public class Player extends Living {
 
         gravity = -0.05f;
     }
+
 
     @Override
     public void update(float delta) {
@@ -109,8 +112,11 @@ public class Player extends Living {
             }
         }
 
+
+
         if(weaponRest > 0)
             weaponRest --;
+
 
         if(change == 1) {
             changestat -= 0.1f;
@@ -131,8 +137,8 @@ public class Player extends Living {
 
     public void updatePosition() {
         boolean rampcheck = false;
-        for(Quad ra : level.getRamps()) {
-            if((CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+        for(Quad ra : level.ramps) {
+            if((CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
                 rampcheck = true;
             }
         }
@@ -141,12 +147,16 @@ public class Player extends Living {
 
         if(rampcheck == false) {
             ArrayList<Quad> floors = level.getFloors();
+            boolean b = false;
             for(Quad f : floors) {
                 if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 0.4f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
+                    b= true;
                     floor = f;
                     break;
                 }
             }
+
+
         }
 
         ArrayList<Entity> entities = level.getEntities();
@@ -161,31 +171,31 @@ public class Player extends Living {
         }
 
         if(r == null) {
-                if(floor != null) {
+            if(floor != null) {
+                if(gravity != 0) {
+                    gravity = 0;
+                }
+                camera.camera.y = floor.a.y;
+
+                if(Input.space && gravity == 0) {
+                    gravity = 0.41f;
+                    camera.camera.y += gravity;
+                }
+            } else {
+                if(!rampcheck) {
+                    camera.camera.y += gravity;
+
                     if(gravity != 0) {
-                        gravity = 0;
-                    }
-                    camera.camera.y = floor.a.y;
-
-                    if(Input.space && gravity == 0) {
-                        gravity = 0.41f;
-                        camera.camera.y += gravity;
-                    }
-                } else {
-                    if(!rampcheck) {
-                        camera.camera.y += gravity;
-
-                        if(gravity != 0) {
-                            gravity -= 0.025f;
-                            if(gravity < -0.5f) {
-                                gravity = -0.5f;
-                            }
-                        } else {
-                            gravity = -0.05f;
-                            camera.camera.y += gravity;
+                        gravity -= 0.025f;
+                        if(gravity < -0.5f) {
+                            gravity = -0.5f;
                         }
+                    } else {
+                        gravity = -0.05f;
+                        camera.camera.y += gravity;
                     }
                 }
+            }
         } else {
             if(Input.space) {
                 camera.camera.y += 0.2;
@@ -196,9 +206,9 @@ public class Player extends Living {
 
         this.updateMask();
 
-        for(Quad ra : level.getRamps()) {
+        for(Quad ra : level.ramps) {
             Vector3D a = null;
-            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
                 camera.camera = a.copy();
             }
         }
@@ -215,13 +225,180 @@ public class Player extends Living {
 
         this.updateMask();
 */
+        /*if(rcheck == false) {
+            ArrayList<Quad> floors = level.getFloors();
+            Quad floor = null;
+            for(Quad f : floors) {
+                if(CollisionSystem.sphereQuad((Sphere)this.getCollisionMask(), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
+                    floor = f;
+                    break;
+                }
+            }
+
+            if(floor != null) {
+                if(gravity != 0) {
+                    gravity = 0;
+                }
+                camera.camera.y = floor.a.y;
+
+                if(Input.space && gravity == 0) {
+                    gravity = 0.35f;
+                    camera.camera.y += gravity;
+                }
+            } else {
+                camera.camera.y += gravity;
+
+                if(gravity != 0) {
+                    gravity -= 0.02f;
+                    if(gravity < -0.5f) {
+                        gravity = -0.5f;
+                    }
+                } else {
+                    gravity = -0.05f;
+                    camera.camera.y += gravity;
+                }
+            }
+        }
+        this.updateMask();*/
+
+            /*if(rcheck == false) {
+                ArrayList<Quad> floors = level.getFloors();
+                Quad floor = null;
+                for(Quad f : floors) {
+                    if(CollisionSystem.sphereQuad((Sphere)this.getCollisionMask(), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
+                        floor = f;
+                        break;
+                    }
+                }
+
+
+
+                if(floor != null) {
+                    if(gravity != 0) {
+                        gravity = 0;
+                    }
+                    camera.camera.y = floor.a.y;
+
+                    if(Input.space && gravity == 0) {
+                        gravity = 0.35f;
+                        camera.camera.y += gravity;
+                    }
+                } else {
+                    camera.camera.y += gravity;
+
+                    if(gravity != 0) {
+                        gravity -= 0.02f;
+                        if(gravity < -0.5f) {
+                            gravity = -0.5f;
+                        }
+                    } else {
+                        gravity = -0.05f;
+                        camera.camera.y += gravity;
+                    }
+                }
+            }*/
+        //this.updateMask();
+
+        /*System.out.println("START");
+
+        boolean rampcheck = false;
+        Vector3D a = null;
+        for(Quad ra : level.rramps) {
+            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                rampcheck = true;
+                System.out.println("ramp check is true");
+            }
+        }
+
+        this.updateMask();
+
+        if(!rampcheck) {
+            camera.camera.y -= 0.02;
+            if(camera.camera.y < 0.5) {
+                camera.camera.y = 0.5;
+            }
+        }
+
+        this.updateMask();
+
+        rampcheck = false;
+        for(Quad ra : level.rramps) {
+            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                rampcheck = true;
+            }
+        }
+        if(rampcheck == false) {
+            a = null;
+        }
+
+        if(a != null) {
+            camera.camera = a.copy();
+            is = true;
+        } else {
+            if(is)
+                System.out.println("NOPE!");
+            is = false;
+        }
+
+        this.updateMask();
+
+        System.out.println("END");*/
+
+        // ramp collisions
+        // first, check if you are intersecting with any ramps;
+
+        /*System.out.println("STARTING");
+
+        Vector3D inter = null;
+        boolean rampcheck = false;
+        Quad ramp = null;
+        for(Quad ra : level.rramps) {
+            if((inter = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                rampcheck = true;
+                ramp = ra;
+                System.out.println("ramp check is true");
+            }
+        }
+
+        this.updateMask();
+
+        // if you aren't and your y is not 0.5, you are in air
+        if(rampcheck == false) {
+            System.out.println("Ramp check is false!");
+            /*camera.camera.y -= 0.05f;
+            if(camera.camera.y < 2) {
+                camera.camera.y = 2;
+            //}
+            camera.camera.y -= 0.05f;
+            if(camera.camera.y < 2) {
+                camera.camera.y = 2;
+            }
+
+            for(Quad ra : level.rramps) {
+                if((inter = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                    camera.camera = inter.copy();
+                    System.out.println("Resolved ramp!");
+                }
+            }
+        } else {
+            camera.camera = inter.copy();
+            System.out.println("Adjusting position...");
+        }
+
+        this.updateMask();
+
+        System.out.println("ENDING");*/
     }
+
+    boolean is = false;
 
     @Override
     public void render() {
         GL11.glPushMatrix();
         if(!using && !(curwep instanceof SentryGunItem))
             GL11.glTranslatef(0, changestat + (float)Math.sin(Math.toRadians(move))/25, 0);
+        //else
+        //GL11.glTranslatef(0, changestat + (float)Math.sin(Math.toRadians(move))/25, 0);
         curwep.render();
         GL11.glPopMatrix();
     }

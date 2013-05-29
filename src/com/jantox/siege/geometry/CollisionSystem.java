@@ -107,9 +107,9 @@ public class CollisionSystem {
             return null;
 
         if(col != null) {
-           col.x = t;
+            col.x = t;
 
-       }
+        }
 
         return r.getPointOnRay(t);
     }

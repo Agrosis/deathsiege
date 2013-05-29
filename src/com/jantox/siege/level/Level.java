@@ -22,16 +22,19 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 public class Level {
 
     private ArrayList<Entity> entities;
+    private ArrayList<ParticleSystem> particlesys;
 
     private ArrayList<Quad> floors;
-    private ArrayList<Quad> ramps;
-    private ArrayList<Quad> walls;
+    public ArrayList<Quad> walls;
+    public ArrayList<Quad> ramps;
+
+    private SpawnerFactory spawnerFactory;
 
     private Player player;
     private Camera camera;
 
-    private SpawnerFactory spawnerFactory;
     private ControlPoint points[];
+
     public Gate gates[];
 
     public static ParticleSystem psys;
@@ -45,19 +48,23 @@ public class Level {
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
         floors.add(new Quad(new Vector3D(-115, 0, -115), new Vector3D(115, 0, -115), new Vector3D(115, 0, 115), new Vector3D(-115, 0, 115)));
-        floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
-
-        ramps = new ArrayList<Quad>();
-        //ramps.add(new Quad(new Vector3D(15, -2, 15),new Vector3D(18, -2, 15),new Vector3D(18, 1, 15),new Vector3D(15, 1, 15)));
+        //floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
+        //floors.add(new Quad(new Vector3D(20, 3, 13), new Vector3D(20, 3, 15), new Vector3D(25, 3, 15), new Vector3D(25, 3, 13)));
+        //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
 
         walls = new ArrayList<Quad>();
-        walls.add(new Quad(new Vector3D(1, -2, 15), new Vector3D(1, -2, 13), new Vector3D(20,1,13), new Vector3D(20, 1, 15)));
+        //ramps.add(new Quad(new Vector3D(15, -2, 15),new Vector3D(18, -2, 15),new Vector3D(18, 1, 15),new Vector3D(15, 1, 15)));
+
+        ramps = new ArrayList<Quad>();
+        //ramps.add(new Quad(new Vector3D(1, -2, 15), new Vector3D(1, -2, 13), new Vector3D(20,1,13), new Vector3D(20, 1, 15)));
 
         psys = new ParticleSystem(new Vector3D(5, 0, 5));
 
         spawnerFactory = new SpawnerFactory(this);
 
         skybox = new Skybox("", 200);
+
+
     }
 
     public void init() {
@@ -150,6 +157,8 @@ public class Level {
         this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, -22.5), 10);
         this.spawnForest(10, new Vector3D(22.5, 0, -22.5), 10);*/
+
+        this.spawn(new Endwek(new Vector3D(20, -1, 20), 5));
     }
 
     public void update(float delta) {
@@ -210,6 +219,8 @@ public class Level {
 
         this.player.update(3);
         psys.update(delta);
+
+        skybox.update();
     }
 
     public void render(float delta) {
@@ -225,6 +236,7 @@ public class Level {
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
+
         //glEnable(GL_BLEND);
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -260,19 +272,40 @@ public class Level {
             cdir.normalize();
             to.normalize();
             if(cdir.dotProduct(to) >= 0) */
-                entities.get(i).render();
+            entities.get(i).render();
         }
 
-        glColor3f(1, 0, 0);
-        glBegin(GL_QUADS);
-        glVertex3f(1, -2, 15);
-        glVertex3f(1, -2, 13);
-        glVertex3f(20, 1, 13);
-        glVertex3f(20, 1, 15);
-        glEnd();
+        glEnable(GL_TEXTURE_2D);
 
-        // always render player last
+        // enables multitexturing for lighting
+        /*ARBMultitexture.glActiveTextureARB(ARBMultitexture.GL_TEXTURE0_ARB);
+        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(6).getTextureID());
+        ARBMultitexture.glActiveTextureARB(ARBMultitexture.GL_TEXTURE1_ARB);
+        glBindTexture(GL_TEXTURE_2D, Lighting.generateLightmap(new Vector3D(0, 0, -1)));
+
+        glBegin(GL_QUADS);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 0, 0);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 0, 0);
+        glVertex3f(0, 0, 0);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 1, 0);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 1, 0);
+        glVertex3f(1, 0, 0);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 1, 1);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 1, 1);
+        glVertex3f(1, 1, 0);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 0, 1);
+        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 0, 1);
+        glVertex3f(0, 1, 0);
+        glEnd();*/
+
+        glColor3f(0,0,0);
+
+        //ramps.get(0).render();
+        //floors.get(2).render();
+        //floors.get(3).render();
+
         this.player.render();
+
 
         glPopMatrix();
     }
@@ -321,10 +354,6 @@ public class Level {
 
     public ArrayList<Quad> getWalls() {
         return walls;
-    }
-
-    public ArrayList<Quad> getRamps() {
-        return ramps;
     }
 
     public ControlPoint getRandomControlPoint() {

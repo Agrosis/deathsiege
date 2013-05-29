@@ -17,6 +17,9 @@ public class Skybox {
     public static final int WEST = 4;
     public static final int SOUTH = 5;
 
+    float skycolor = 1;
+    int way = 0;
+
     private Texture skytextures[];
     private float radius;
 
@@ -37,12 +40,24 @@ public class Skybox {
     }
 
     public void update() {
-
+        if(way == 0) {
+            skycolor -= 0.00005f;
+            if(skycolor <= 0.2) {
+                skycolor = 0.2f;
+                way = 1;
+            }
+        } else if(way == 1) {
+            skycolor += 0.00005f;
+            if(skycolor >= 1) {
+                skycolor = 1;
+                way = 0;
+            }
+        }
     }
 
     public void render() {
         glEnable(GL_TEXTURE_2D);
-        //glColor3f(1, 0, 0);
+        glColor3f(skycolor, skycolor, skycolor);
         // up
         glBindTexture(GL_TEXTURE_2D, skytextures[UP].getTextureID());
         glBegin(GL_QUADS);
