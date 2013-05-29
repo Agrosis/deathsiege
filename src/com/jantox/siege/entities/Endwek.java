@@ -44,7 +44,7 @@ public class Endwek extends Living {
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
+        GL11.glTranslatef((float)pos.x, (float)pos.y - 0.2f, (float)pos.z);
 
         GL11.glScalef(0.9f, 0.9f, 0.9f);
 

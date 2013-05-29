@@ -14,6 +14,8 @@ public class Camera {
 
     private float delta;
 
+    private boolean running;
+
     public Camera(Vector3D cam, int width, int height) {
         this.camera = cam.copy();
         this.width = width;
@@ -59,8 +61,8 @@ public class Camera {
 
     public void moveFloor(int direction) {
         double ang = Math.toRadians(yaw + direction);
-        camera.x -= Math.sin(ang) * MOVE_SPEED * (Input.r ? 1.8 : 1.25);
-        camera.z -= Math.cos(ang) * MOVE_SPEED * (Input.r ? 1.8 : 1.25);
+        camera.x -= Math.sin(ang) * MOVE_SPEED * (running ? 1.8 : 1.25);
+        camera.z -= Math.cos(ang) * MOVE_SPEED * (running ? 1.8 : 1.25);
     }
 
     public void lockCamera() {
@@ -73,6 +75,10 @@ public class Camera {
             yaw -= 360.0;
         if(yaw < 0.0)
             yaw += 360.0;
+    }
+
+    public void setRunning(boolean b) {
+        running = b;
     }
 
     public Vector3D getCamera() {

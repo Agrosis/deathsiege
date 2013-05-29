@@ -48,7 +48,7 @@ public class Level {
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
         floors.add(new Quad(new Vector3D(-115, 0, -115), new Vector3D(115, 0, -115), new Vector3D(115, 0, 115), new Vector3D(-115, 0, 115)));
-        //floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
+        floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
         //floors.add(new Quad(new Vector3D(20, 3, 13), new Vector3D(20, 3, 15), new Vector3D(25, 3, 15), new Vector3D(25, 3, 13)));
         //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
 

@@ -141,6 +141,31 @@ public class GameInstance {
         glVertex2f(322, 42);
         glVertex2f(18, 42);
         glEnd();
+
+        // stamina
+        glColor3f(1, 1, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(780, 20);
+        glVertex2f(780 - level.getPlayer().stamina, 20);
+        glVertex2f(780 - level.getPlayer().stamina, 40);
+        glVertex2f(780, 40);
+        glEnd();
+
+        glColor3f(1, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(480, 20);
+        glVertex2f(800-20, 20);
+        glVertex2f(800-20, 40);
+        glVertex2f(480, 40);
+        glEnd();
+
+        glColor3f(0, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(478, 18);
+        glVertex2f(800-20+2, 18);
+        glVertex2f(800-20+2, 42);
+        glVertex2f(478, 42);
+        glEnd();
     }
 
 }

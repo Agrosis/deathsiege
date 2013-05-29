@@ -29,6 +29,8 @@ public class Player extends Living {
 
     int weaponRest = 0;
 
+    public float stamina = 300;
+
     private boolean running = false;
     private boolean using = false;
 
@@ -59,8 +61,28 @@ public class Player extends Living {
         this.pos = camera.getCamera();
         this.mask.update(this.pos);
 
+        boolean m = false;
+
         if(Input.w || Input.a || Input.s || Input.d) {
             move += 10f;
+            m = true;
+        }
+
+        if(Input.r && m) {
+            camera.setRunning(true);
+            stamina -= 0.5f;
+        }
+        if(!Input.r) {
+            camera.setRunning(false);
+            stamina += 0.2;
+            if(stamina > 300)
+                stamina = 300;
+        }
+
+        if(stamina <= 0) {
+            camera.setRunning(false);
+            Input.r = false;
+            stamina = 0;
         }
 
         if(cursel != Input.curnum-1) {
