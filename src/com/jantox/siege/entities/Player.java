@@ -52,6 +52,8 @@ public class Player extends Living {
 
         this.mask = new Sphere(pos, 1f);
 
+
+
         gravity = -0.05f;
     }
 
@@ -169,16 +171,12 @@ public class Player extends Living {
 
         if(rampcheck == false) {
             ArrayList<Quad> floors = level.getFloors();
-            boolean b = false;
             for(Quad f : floors) {
-                if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 0.4f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
-                    b= true;
+                if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 0.75f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
                     floor = f;
                     break;
                 }
             }
-
-
         }
 
         ArrayList<Entity> entities = level.getEntities();
@@ -197,7 +195,7 @@ public class Player extends Living {
                 if(gravity != 0) {
                     gravity = 0;
                 }
-                camera.camera.y = floor.a.y;
+                camera.camera.y = floor.a.y + 0.75;
 
                 if(Input.space && gravity == 0) {
                     gravity = 0.41f;
@@ -237,179 +235,14 @@ public class Player extends Living {
 
         this.updateMask();
 
+        // walls code
         /*ArrayList<Quad> ramps = level.getRamps();
         for(Quad ra : ramps) {
             Vector3D a;
             if((a = CollisionSystem.sphereQuad(new Sphere(this.pos, 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
                 camera.camera = a.copy();
             }
-        }
-
-        this.updateMask();
-*/
-        /*if(rcheck == false) {
-            ArrayList<Quad> floors = level.getFloors();
-            Quad floor = null;
-            for(Quad f : floors) {
-                if(CollisionSystem.sphereQuad((Sphere)this.getCollisionMask(), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
-                    floor = f;
-                    break;
-                }
-            }
-
-            if(floor != null) {
-                if(gravity != 0) {
-                    gravity = 0;
-                }
-                camera.camera.y = floor.a.y;
-
-                if(Input.space && gravity == 0) {
-                    gravity = 0.35f;
-                    camera.camera.y += gravity;
-                }
-            } else {
-                camera.camera.y += gravity;
-
-                if(gravity != 0) {
-                    gravity -= 0.02f;
-                    if(gravity < -0.5f) {
-                        gravity = -0.5f;
-                    }
-                } else {
-                    gravity = -0.05f;
-                    camera.camera.y += gravity;
-                }
-            }
-        }
-        this.updateMask();*/
-
-            /*if(rcheck == false) {
-                ArrayList<Quad> floors = level.getFloors();
-                Quad floor = null;
-                for(Quad f : floors) {
-                    if(CollisionSystem.sphereQuad((Sphere)this.getCollisionMask(), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
-                        floor = f;
-                        break;
-                    }
-                }
-
-
-
-                if(floor != null) {
-                    if(gravity != 0) {
-                        gravity = 0;
-                    }
-                    camera.camera.y = floor.a.y;
-
-                    if(Input.space && gravity == 0) {
-                        gravity = 0.35f;
-                        camera.camera.y += gravity;
-                    }
-                } else {
-                    camera.camera.y += gravity;
-
-                    if(gravity != 0) {
-                        gravity -= 0.02f;
-                        if(gravity < -0.5f) {
-                            gravity = -0.5f;
-                        }
-                    } else {
-                        gravity = -0.05f;
-                        camera.camera.y += gravity;
-                    }
-                }
-            }*/
-        //this.updateMask();
-
-        /*System.out.println("START");
-
-        boolean rampcheck = false;
-        Vector3D a = null;
-        for(Quad ra : level.rramps) {
-            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                rampcheck = true;
-                System.out.println("ramp check is true");
-            }
-        }
-
-        this.updateMask();
-
-        if(!rampcheck) {
-            camera.camera.y -= 0.02;
-            if(camera.camera.y < 0.5) {
-                camera.camera.y = 0.5;
-            }
-        }
-
-        this.updateMask();
-
-        rampcheck = false;
-        for(Quad ra : level.rramps) {
-            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                rampcheck = true;
-            }
-        }
-        if(rampcheck == false) {
-            a = null;
-        }
-
-        if(a != null) {
-            camera.camera = a.copy();
-            is = true;
-        } else {
-            if(is)
-                System.out.println("NOPE!");
-            is = false;
-        }
-
-        this.updateMask();
-
-        System.out.println("END");*/
-
-        // ramp collisions
-        // first, check if you are intersecting with any ramps;
-
-        /*System.out.println("STARTING");
-
-        Vector3D inter = null;
-        boolean rampcheck = false;
-        Quad ramp = null;
-        for(Quad ra : level.rramps) {
-            if((inter = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                rampcheck = true;
-                ramp = ra;
-                System.out.println("ramp check is true");
-            }
-        }
-
-        this.updateMask();
-
-        // if you aren't and your y is not 0.5, you are in air
-        if(rampcheck == false) {
-            System.out.println("Ramp check is false!");
-            /*camera.camera.y -= 0.05f;
-            if(camera.camera.y < 2) {
-                camera.camera.y = 2;
-            //}
-            camera.camera.y -= 0.05f;
-            if(camera.camera.y < 2) {
-                camera.camera.y = 2;
-            }
-
-            for(Quad ra : level.rramps) {
-                if((inter = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2.05f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                    camera.camera = inter.copy();
-                    System.out.println("Resolved ramp!");
-                }
-            }
-        } else {
-            camera.camera = inter.copy();
-            System.out.println("Adjusting position...");
-        }
-
-        this.updateMask();
-
-        System.out.println("ENDING");*/
+        }*/
     }
 
     boolean is = false;

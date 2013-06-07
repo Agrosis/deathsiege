@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Camera {
 
     public static float MOUSE_SPEED = 0.15f;
-    public static float MOVE_SPEED = 0.15f;
+    public static float MOVE_SPEED = 0.2f;
 
     private int width, height;
 

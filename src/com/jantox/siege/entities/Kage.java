@@ -20,6 +20,8 @@ public class Kage extends Living {
 
     float gravity = 0;
 
+    private Endwek rider;
+
     private ControlPoint target;
 
     public Kage(Vector3D pos, float version, float angle) {
@@ -34,6 +36,10 @@ public class Kage extends Living {
 
         target = level.getRandomControlPoint();
 
+        if(rand.nextInt() % 1 == 0) {
+            this.rider = new Endwek(this.pos.copy(), 2);
+        }
+
         this.mask = new Sphere(pos, version * 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());
     }
@@ -42,6 +48,12 @@ public class Kage extends Living {
     public void update(float delta) {
         counter += 0.1f;
         mask.update(pos);
+
+        if(rider != null) {
+            rider.viewangle = this.viewangle;
+            rider.pos = this.pos.copy();
+            rider.pos.y += 2;
+        }
 
         if(this.pos.distanceSquared(target.getPosition()) <= 5 * 5) {
             this.expired = true;
@@ -108,5 +120,9 @@ public class Kage extends Living {
 
         GL11.glCallList(Resources.getModel(3));
         GL11.glPopMatrix();
+
+        if(rider != null) {
+            rider.render();
+        }
     }
 }

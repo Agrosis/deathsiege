@@ -1,6 +1,7 @@
 package com.jantox.siege;
 
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.entities.Endwek;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Kage;
 import com.jantox.siege.entities.Spawner;
@@ -42,14 +43,25 @@ public class SpawnerFactory {
 
             if(cg != null) {
                 if(cg.isOpen()) {
-                    if(place == 0)
-                        level.spawn(new Kage(new Vector3D(0, 0f, -100), 1, 0));
-                    if(place == 1)
-                        level.spawn(new Kage(new Vector3D(0, 0f, 100), 1, 0));
-                    if(place == 2)
-                        level.spawn(new Kage(new Vector3D(100, 0f, 0), 1, 0));
-                    if(place == 3)
-                        level.spawn(new Kage(new Vector3D(-100, 0f, 0), 1, 0));
+                    if(1 == 0) {
+                        if(place == 0)
+                            level.spawn(new Kage(new Vector3D(0, 0f, -100), 1, 0));
+                        if(place == 1)
+                            level.spawn(new Kage(new Vector3D(0, 0f, 100), 1, 0));
+                        if(place == 2)
+                            level.spawn(new Kage(new Vector3D(100, 0f, 0), 1, 0));
+                        if(place == 3)
+                            level.spawn(new Kage(new Vector3D(-100, 0f, 0), 1, 0));
+                    } else {
+                        if(place == 0)
+                            level.spawn(new Endwek(new Vector3D(0, 0f, -100), 1));
+                        if(place == 1)
+                            level.spawn(new Endwek(new Vector3D(0, 0f, 100), 1));
+                        if(place == 2)
+                            level.spawn(new Endwek(new Vector3D(100, 0f, 0), 1));
+                        if(place == 3)
+                            level.spawn(new Endwek(new Vector3D(-100, 0f, 0), 1));
+                    }
                 }
             }
         }

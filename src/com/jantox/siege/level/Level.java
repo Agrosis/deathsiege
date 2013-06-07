@@ -157,8 +157,6 @@ public class Level {
         this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, -22.5), 10);
         this.spawnForest(10, new Vector3D(22.5, 0, -22.5), 10);*/
-
-        this.spawn(new Endwek(new Vector3D(20, -1, 20), 5));
     }
 
     public void update(float delta) {
@@ -174,10 +172,10 @@ public class Level {
             if(e instanceof Bullet) {
                 Ray bullet = new Ray(e.getPosition(), ((Bullet)e).getDirection());
                 for(Entity x : entities) {
-                    if(x instanceof Kage) {
+                    if(x instanceof Kage || x instanceof Endwek) {
                         Sphere z = (Sphere) x.getCollisionMask();
                         if(CollisionSystem.raySphere(bullet, z)) {
-                            ((Kage) x).damage(10);
+                            ((Living) x).damage(10);
                             Vector3D bp = x.getPosition().copy();
                             bp.y += 1;
                             psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
@@ -245,13 +243,13 @@ public class Level {
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(0).getTextureID());
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
-        glVertex3f(-275, -2, -275);
-        glTexCoord2f(100, 0);
-        glVertex3f(275, -2, -275);
-        glTexCoord2f(100, 100);
-        glVertex3f(275, -2, 275);
-        glTexCoord2f(0, 100);
-        glVertex3f(-275, -2, 275);
+        glVertex3f(-300, -2, -300);
+        glTexCoord2f(50, 0);
+        glVertex3f(300, -2, -300);
+        glTexCoord2f(50, 50);
+        glVertex3f(300, -2, 300);
+        glTexCoord2f(0, 50);
+        glVertex3f(-300, -2, 300);
         glEnd();
 
         glPopMatrix();

@@ -60,7 +60,8 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/bolt.obj"));
         models.add(objloader.loadOBJModel("models/zombie_head.obj"));
         models.add(objloader.loadOBJModel("models/zombie_arms.obj"));
-        models.add(objloader.loadOBJModel("models/zombie_feet.obj"));
+        models.add(objloader.loadOBJModel("models/zfeet_r.obj"));
+        models.add(objloader.loadOBJModel("models/zfeet_l.obj"));
     }
 
     public Texture get(int id) {

@@ -1,10 +1,17 @@
 package com.jantox.siege;
 
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.OnlinePlayer;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.level.Level;
+import com.jantox.siege.net.Client;
+import com.jantox.siege.net.Packet;
+import com.jantox.siege.net.Protocol;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NICEST;
@@ -17,9 +24,22 @@ public class GameInstance {
     private Level level;
     private Timer timer;
 
+    private Client client;
+
+    private ArrayList<OnlinePlayer> players;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
+
+        this.client = new Client("localhost", 1338);
+        try {
+            client.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        players = new ArrayList<OnlinePlayer>();
     }
 
     public void init() {
@@ -68,9 +88,57 @@ public class GameInstance {
 
     }
 
+    public OnlinePlayer getPlayerWithID(int id) {
+        for(OnlinePlayer op : players) {
+            if(op.getUserID() == id) {
+                return op;
+            }
+        }
+        return null;
+    }
+
+    int ticks = 0;
+
     public void update(int delta) {
         Input.update();
         level.update(delta);
+
+        /*ticks++;
+        if(ticks % 5 == 0) {
+            Packet pos = new Packet(Protocol.POSITION);
+            pos.writeFloat((float)level.getPlayer().getPosition().x);
+            pos.writeFloat((float)level.getPlayer().getPosition().y);
+            pos.writeFloat((float)level.getPlayer().getPosition().z);
+
+            try {
+                client.write(pos);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+
+        /*try {
+            Packet p = client.read();
+            if(p != null) {
+                if(p.getHeader() == Protocol.NEW_CONNECTION) {
+                    int uid = p.readInteger();
+                    OnlinePlayer player = new OnlinePlayer(uid);
+                    this.level.spawn(player);
+                    this.players.add(player);
+                } else if(p.getHeader() == Protocol.POSITION) {
+                    int id = p.readInteger();
+                    float x = p.readFloat();
+                    float y = p.readFloat();
+                    float z = p.readFloat();
+
+                    System.out.println(x + " " + y + " " + z);
+
+                    this.getPlayerWithID(id).setPosition(new Vector3D(x,y,z));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void render(int delta) {
