@@ -1,4 +1,4 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.map;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;

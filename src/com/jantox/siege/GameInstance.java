@@ -47,7 +47,7 @@ public class GameInstance {
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(60, (float) width / (float) height, 1.0f, 200.0f);
+        gluPerspective(60, (float) width / (float) height, 1.0f, 500.0f);
         glMatrixMode(GL_MODELVIEW);
 
         glClearDepth(1);

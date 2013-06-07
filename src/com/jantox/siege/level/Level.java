@@ -5,6 +5,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.entities.map.*;
+import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Tree;
 import com.jantox.siege.entities.tools.Bullet;
 import com.jantox.siege.entities.tools.Weapons;
@@ -47,7 +48,7 @@ public class Level {
 
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
-        floors.add(new Quad(new Vector3D(-115, 0, -115), new Vector3D(115, 0, -115), new Vector3D(115, 0, 115), new Vector3D(-115, 0, 115)));
+        floors.add(new Quad(new Vector3D(-150, 0, -150), new Vector3D(150, 0, -150), new Vector3D(150, 0, 150), new Vector3D(-150, 0, 150)));
         floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
         //floors.add(new Quad(new Vector3D(20, 3, 13), new Vector3D(20, 3, 15), new Vector3D(25, 3, 15), new Vector3D(25, 3, 13)));
         //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
@@ -62,7 +63,7 @@ public class Level {
 
         spawnerFactory = new SpawnerFactory(this);
 
-        skybox = new Skybox("", 200);
+        skybox = new Skybox("", 400);
 
 
     }
@@ -147,11 +148,14 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
-        this.spawn(new Warehouse(new Vector3D(-40, 0, -40)));
-        this.spawn(new Warehouse(new Vector3D(40, 0, -40)));
-        this.spawn(new Warehouse(new Vector3D(40, 0, 40)));
-        this.spawn(new Warehouse(new Vector3D(-40, 0, 40)));
-        this.spawn(new Warehouse(new Vector3D(0, 0, 0)));
+        this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+        this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+        this.spawn(new Decoration(new Vector3D(40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+        this.spawn(new Decoration(new Vector3D(40, 0, 40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+        this.spawn(new Decoration(new Vector3D(-40, 0, 40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+
+        this.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
+        this.spawn(new Decoration(new Vector3D(80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         /*this.spawnForest(10, new Vector3D(22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);

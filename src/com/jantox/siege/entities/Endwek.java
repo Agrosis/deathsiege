@@ -2,21 +2,15 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
-import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
-import com.jantox.siege.level.Level;
-import com.jantox.siege.particle.Particle;
-import com.jantox.siege.particle.ParticleBehavior;
 import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.glRotatef;
 
 public class Endwek extends Living {
 
     float gravity = 0;
     float viewangle = 0f;
 
-    private ControlPoint target;
+    private com.jantox.siege.entities.map.ControlPoint target;
 
     public Endwek(Vector3D pos, float version) {
         super(pos, (int)(100));

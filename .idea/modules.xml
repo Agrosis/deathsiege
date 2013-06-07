@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Deathsiege/Deathsiege.iml" filepath="$PROJECT_DIR$/Deathsiege/Deathsiege.iml" />
       <module fileurl="file://$PROJECT_DIR$/revelon.iml" filepath="$PROJECT_DIR$/revelon.iml" />
     </modules>
   </component>

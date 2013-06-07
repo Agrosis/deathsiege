@@ -4,9 +4,6 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
-import com.jantox.siege.level.Level;
-import com.jantox.siege.particle.Particle;
-import com.jantox.siege.particle.ParticleBehavior;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.glRotatef;
@@ -22,7 +19,7 @@ public class Kage extends Living {
 
     private Endwek rider;
 
-    private ControlPoint target;
+    private com.jantox.siege.entities.map.ControlPoint target;
 
     public Kage(Vector3D pos, float version, float angle) {
         super(pos, (int)(25 * version));
