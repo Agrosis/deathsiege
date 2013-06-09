@@ -103,7 +103,7 @@ public class GameInstance {
         Input.update();
         level.update(delta);
 
-        /*ticks++;
+        ticks++;
         if(ticks % 5 == 0) {
             Packet pos = new Packet(Protocol.POSITION);
             pos.writeFloat((float)level.getPlayer().getPosition().x);
@@ -115,9 +115,9 @@ public class GameInstance {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
 
-        /*try {
+        try {
             Packet p = client.read();
             if(p != null) {
                 if(p.getHeader() == Protocol.NEW_CONNECTION) {
@@ -131,14 +131,12 @@ public class GameInstance {
                     float y = p.readFloat();
                     float z = p.readFloat();
 
-                    System.out.println(x + " " + y + " " + z);
-
-                    this.getPlayerWithID(id).setPosition(new Vector3D(x,y,z));
+                    this.getPlayerWithID(id).setNextPosition(new Vector3D(x, y, z));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public void render(int delta) {
