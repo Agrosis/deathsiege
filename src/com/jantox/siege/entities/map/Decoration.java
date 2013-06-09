@@ -27,6 +27,8 @@ public class Decoration extends Entity {
         glPushMatrix();
         glTranslatef((float)pos.x, (float)pos.y-2, (float)pos.z);
         glRotatef((float)rotation.x, 1, 0, 0);
+        glRotatef((float)rotation.y, 0, 0, 1);
+        //glRotatef((float)rotation.z, 0, 0, 1);
 
         glScalef((float)scale.x, (float)scale.y, (float)scale.z);
         glCallList(Resources.getModel(modelid));

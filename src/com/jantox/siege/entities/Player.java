@@ -43,7 +43,7 @@ public class Player extends Living {
         inventory = new ArrayList<Tool>();
 
         inventory.add(new Woodaxe(this));
-        inventory.add(new Blaster(this));
+        inventory.add(new Shotgun(this));
         inventory.add(new TwinBlaster(this));
         inventory.add(new Crossbow(this));
         inventory.add(new SentryGunItem(this));

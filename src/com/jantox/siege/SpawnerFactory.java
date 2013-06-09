@@ -26,9 +26,15 @@ public class SpawnerFactory {
     int place = 0;
     Gate cg;
 
+    int wave = 0;
+    int tospawn = 0;
+    public static int monstersleft;
+    int breaktime = 0;
+
     public SpawnerFactory(Level l) {
         this.level = l;
         lastms = System.currentTimeMillis();
+        tospawn = monstersleft = wave * 5 + 3;
     }
 
     public void update() {
@@ -53,14 +59,17 @@ public class SpawnerFactory {
                         if(place == 3)
                             level.spawn(new Kage(new Vector3D(-100, 0f, 0), 1, 0));
                     } else {
-                        if(place == 0)
-                            level.spawn(new Endwek(new Vector3D(0, 0f, -100), 1));
-                        if(place == 1)
-                            level.spawn(new Endwek(new Vector3D(0, 0f, 100), 1));
-                        if(place == 2)
-                            level.spawn(new Endwek(new Vector3D(100, 0f, 0), 1));
-                        if(place == 3)
-                            level.spawn(new Endwek(new Vector3D(-100, 0f, 0), 1));
+                        if(tospawn > 0) {
+                            tospawn --;
+                            if(place == 0)
+                                level.spawn(new Endwek(new Vector3D(0, 0f, -100), 1));
+                            if(place == 1)
+                                level.spawn(new Endwek(new Vector3D(0, 0f, 100), 1));
+                            if(place == 2)
+                                level.spawn(new Endwek(new Vector3D(100, 0f, 0), 1));
+                            if(place == 3)
+                                level.spawn(new Endwek(new Vector3D(-100, 0f, 0), 1));
+                        }
                     }
                 }
             }
@@ -69,9 +78,22 @@ public class SpawnerFactory {
             if(cg != null) {
                 cg.close();
             }
-            place = rand.nextInt(4);
+            place = rand.nextInt(3);
             cg = Entity.level.gates[place];
             cg.open();
+        }
+
+        if(monstersleft == 0) {
+            if(cg.isClose()) {
+                System.out.println("Wave " + (wave++ + 1) + " is complete!");
+                tospawn = monstersleft = wave * 5 + 3;
+
+                place = rand.nextInt(3);
+                cg = Entity.level.gates[place];
+                cg.open();
+            } else {
+                cg.close();
+            }
         }
     }
 

@@ -155,7 +155,7 @@ public class GameInstance {
 
         glDisable(GL_TEXTURE_2D);
         drawCrossheir();
-        drawHealthbar();
+        //drawHealthbar();
 
         glColor3f(1f, 1f, 1f);
 

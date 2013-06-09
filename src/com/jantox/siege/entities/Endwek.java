@@ -1,6 +1,7 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
+import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.geometry.Sphere;
 import org.lwjgl.opengl.GL11;
@@ -29,9 +30,12 @@ public class Endwek extends Living {
 
         if(this.pos.distanceSquared(target.getPosition()) <= 5 * 5) {
             this.expired = true;
+            SpawnerFactory.monstersleft --;
         }
-        if(health <= 0)
+        if(health <= 0) {
             expired = true;
+            SpawnerFactory.monstersleft --;
+        }
 
         Vector3D cam = target.getPosition();
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);
@@ -56,6 +60,8 @@ public class Endwek extends Living {
     int arm = 0;
     int dir = 0;
 
+    int swing = 0;
+
     @Override
     public void render() {
         if(dir == 0) {
@@ -72,6 +78,8 @@ public class Endwek extends Living {
             }
         }
 
+        swing++;
+
         GL11.glPushMatrix();
         GL11.glColor3f(1.0f, 0f, 0f);
 
@@ -79,10 +87,9 @@ public class Endwek extends Living {
 
         GL11.glScalef(1f, 1f, 1f);
         GL11.glRotatef(-viewangle-90, 0, 1, 0);
-
         GL11.glCallList(Resources.getModel(18));
+
         GL11.glPushMatrix();
-        //GL11.glRotatef((float)Math.toDegrees(Math.cos(arm)) * 10, 1, 0, 0);
         GL11.glCallList(Resources.getModel(19));
         GL11.glPopMatrix();
         GL11.glPushMatrix();

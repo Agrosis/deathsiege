@@ -45,13 +45,15 @@ public class Gate extends Entity {
     @Override
     public void render() {
         glPushMatrix();
+
         glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
 
         if(face == 0) {
             glTranslatef(-3, 0, 0);
             for(int i = 0; i < 8; i++) {
                 glTranslatef(2, 0, 0);
-                glCallList(Resources.getModel(8));
+
+                //glCallList(Resources.getModel(8));
             }
         } else if(face == 1) {
             glTranslatef(0, 0, -3);

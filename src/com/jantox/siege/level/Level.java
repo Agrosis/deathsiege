@@ -82,14 +82,12 @@ public class Level {
         this.spawn(points[4]);
 
         gates = new Gate[4];
-        gates[0] = new Gate(new Vector3D(-6, -2, -100), 0);
-        gates[1] = new Gate(new Vector3D(-6, -2, 100), 0);
-        gates[2] = new Gate(new Vector3D(100, -2, -6), 1);
-        gates[3] = new Gate(new Vector3D(-100, -2, -6), 1);
+        gates[0] = new Gate(new Vector3D(-76, -2, -120), 0);
+        gates[1] = new Gate(new Vector3D(-6, -2, -120), 0);
+        gates[2] = new Gate(new Vector3D(76, -2, -120), 0);
         this.spawn(gates[0]);
         this.spawn(gates[1]);
         this.spawn(gates[2]);
-        this.spawn(gates[3]);
 
         this.spawn(new Ladder(new Vector3D(-7.1, 0, -5)));
         this.spawn(new Ladder(new Vector3D(-7.1, -5, -5)));
@@ -148,14 +146,19 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
+        this.spawn(new Fence(new Vector3D(-160, -2, 0), 0, new Vector3D(12, 0, 0)));
+        this.spawn(new Fence(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
+        this.spawn(new Fence(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
+        this.spawn(new Fence(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
+
         this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(40, 0, 40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, 40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
 
-        this.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
         this.spawn(new Decoration(new Vector3D(80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
+        this.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 23));
 
         /*this.spawnForest(10, new Vector3D(22.5, 0, 22.5), 10);
         this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);
@@ -179,7 +182,7 @@ public class Level {
                     if(x instanceof Kage || x instanceof Endwek) {
                         Sphere z = (Sphere) x.getCollisionMask();
                         if(CollisionSystem.raySphere(bullet, z)) {
-                            ((Living) x).damage(10);
+                            ((Living) x).damage(50);
                             Vector3D bp = x.getPosition().copy();
                             bp.y += 1;
                             psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
@@ -196,7 +199,7 @@ public class Level {
                         nz.z += 0.5;
                         Sphere z = new Sphere(nz, 2);
                         if(CollisionSystem.raySphere(bullet, z)) {
-                            ((Spawner) x).damage(10);
+                            ((Spawner) x).damage(50);
                             Vector3D bp = x.getPosition().copy();
                             bp.y -= 1;
                             bp.z += 0.5;

@@ -44,7 +44,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/gem.obj"));
         models.add(objloader.loadOBJModel("models/building2HDD.obj"));
         models.add(objloader.loadOBJModel("models/cube.obj"));
-        models.add(objloader.loadOBJModel("models/blaster.obj"));
+        models.add(objloader.loadOBJModel("models/shotgun.obj"));
         models.add(objloader.loadOBJModel("models/tree2.obj"));
         models.add(objloader.loadOBJModel("models/woodaxe.obj"));
         models.add(objloader.loadOBJModel("models/ramp.obj"));
@@ -64,6 +64,8 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/zfeet_l.obj"));
         models.add(objloader.loadOBJModel("models/building3.obj"));
         models.add(objloader.loadOBJModel("models/building4.obj"));
+        models.add(objloader.loadOBJModel("models/gate.obj"));
+        models.add(objloader.loadOBJModel("models/gatepost.obj"));
     }
 
     public Texture get(int id) {
