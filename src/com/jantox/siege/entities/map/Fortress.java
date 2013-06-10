@@ -7,12 +7,12 @@ import com.jantox.siege.entities.Entity;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
-public class Fence extends Entity {
+public class Fortress extends Entity {
 
     int rot = 0;
     Vector3D gdis;
 
-    public Fence(Vector3D pos, int rot, Vector3D gdis) {
+    public Fortress(Vector3D pos, int rot, Vector3D gdis) {
         super(pos);
         this.rot = rot;
         this.gdis = gdis;

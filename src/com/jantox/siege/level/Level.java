@@ -36,8 +36,6 @@ public class Level {
 
     private ControlPoint points[];
 
-    public Gate gates[];
-
     public static ParticleSystem psys;
 
     private Skybox skybox;
@@ -80,14 +78,6 @@ public class Level {
         this.spawn(points[2]);
         this.spawn(points[3]);
         this.spawn(points[4]);
-
-        gates = new Gate[4];
-        gates[0] = new Gate(new Vector3D(-76, -2, -120), 0);
-        gates[1] = new Gate(new Vector3D(-6, -2, -120), 0);
-        gates[2] = new Gate(new Vector3D(76, -2, -120), 0);
-        this.spawn(gates[0]);
-        this.spawn(gates[1]);
-        this.spawn(gates[2]);
 
         this.spawn(new Ladder(new Vector3D(-7.1, 0, -5)));
         this.spawn(new Ladder(new Vector3D(-7.1, -5, -5)));
@@ -146,10 +136,10 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
-        this.spawn(new Fence(new Vector3D(-160, -2, 0), 0, new Vector3D(12, 0, 0)));
-        this.spawn(new Fence(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
-        this.spawn(new Fence(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
-        this.spawn(new Fence(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
+        this.spawn(new Fortress(new Vector3D(-160, -2, 0), 0, new Vector3D(12, 0, 0)));
+        this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
+        this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
+        this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
 
         this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));

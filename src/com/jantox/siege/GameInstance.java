@@ -109,6 +109,8 @@ public class GameInstance {
             pos.writeFloat((float)level.getPlayer().getPosition().x);
             pos.writeFloat((float)level.getPlayer().getPosition().y);
             pos.writeFloat((float)level.getPlayer().getPosition().z);
+            pos.writeFloat(level.getPlayer().getCamera().getPitch());
+            pos.writeFloat(level.getPlayer().getCamera().getYaw());
 
             try {
                 client.write(pos);
@@ -130,8 +132,12 @@ public class GameInstance {
                     float x = p.readFloat();
                     float y = p.readFloat();
                     float z = p.readFloat();
+                    float pitch = p.readFloat();
+                    float yaw = p.readFloat();
 
-                    this.getPlayerWithID(id).setNextPosition(new Vector3D(x, y, z));
+                    OnlinePlayer op = this.getPlayerWithID(id);
+                    op.setNextPosition(new Vector3D(x, y, z));
+                    op.setOrientation(pitch, yaw);
                 }
             }
         } catch (IOException e) {
