@@ -40,6 +40,8 @@ public class Level {
 
     private Skybox skybox;
 
+    public Fortress fortress;
+
     public Level(Player player) {
         this.player = player;
         this.camera = player.getCamera();
@@ -134,7 +136,7 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
-        this.spawn(new Fortress(new Vector3D(0, -4, 0), 0, new Vector3D(12, 0, 0)));
+        this.spawn((fortress = new Fortress()));
         //this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
         //this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
         //this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));

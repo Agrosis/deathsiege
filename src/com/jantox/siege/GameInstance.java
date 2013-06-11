@@ -28,15 +28,19 @@ public class GameInstance {
 
     private ArrayList<OnlinePlayer> players;
 
+    private boolean multiplayer = true;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
 
-        this.client = new Client("10.0.0.3", 25565);
-        try {
-            client.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(multiplayer) {
+            this.client = new Client("localhost", 1338);
+            try {
+                client.connect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         players = new ArrayList<OnlinePlayer>();
@@ -103,52 +107,58 @@ public class GameInstance {
         Input.update();
         level.update(delta);
 
-        ticks++;
-        if(ticks % 5 == 0) {
-            Packet pos = new Packet(Protocol.POSITION);
-            pos.writeFloat((float)level.getPlayer().getPosition().x);
-            pos.writeFloat((float)level.getPlayer().getPosition().y);
-            pos.writeFloat((float)level.getPlayer().getPosition().z);
-            pos.writeFloat(level.getPlayer().getCamera().getPitch());
-            pos.writeFloat(level.getPlayer().getCamera().getYaw());
+        if(multiplayer) {
+            ticks++;
+            if(ticks % 5 == 0) {
+                Packet pos = new Packet(Protocol.POSITION);
+                pos.writeFloat((float)level.getPlayer().getPosition().x);
+                pos.writeFloat((float)level.getPlayer().getPosition().y);
+                pos.writeFloat((float)level.getPlayer().getPosition().z);
+                pos.writeFloat(level.getPlayer().getCamera().getPitch());
+                pos.writeFloat(level.getPlayer().getCamera().getYaw());
+
+                try {
+                    client.write(pos);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             try {
-                client.write(pos);
+                Packet p = client.read();
+                if(p != null) {
+                    if(p.getHeader() == Protocol.PING) {
+                        Packet pong = new Packet(Protocol.PONG);
+                        client.write(pong);
+                    } else if(p.getHeader() == Protocol.NEW_CONNECTION) {
+                        int uid = p.readInteger();
+                        OnlinePlayer player = new OnlinePlayer(uid);
+                        this.level.spawn(player);
+                        this.players.add(player);
+                    } else if(p.getHeader() == Protocol.CONNECTION_LEFT) {
+                        OnlinePlayer op = this.getPlayerWithID(p.readInteger());
+                        this.players.remove(op);
+                        this.level.despawn(op);
+                    } else if(p.getHeader() == Protocol.POSITION) {
+                        int id = p.readInteger();
+                        float x = p.readFloat();
+                        float y = p.readFloat();
+                        float z = p.readFloat();
+                        float pitch = p.readFloat();
+                        float yaw = p.readFloat();
+
+                        OnlinePlayer op = this.getPlayerWithID(id);
+                        op.setNextPosition(new Vector3D(x, y, z));
+                        op.setOrientation(pitch, yaw);
+                    } else if(p.getHeader() == Protocol.GATE_OPEN) {
+                        if(level != null) {
+                            level.fortress.open(p.read());
+                        }
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            Packet p = client.read();
-            if(p != null) {
-                if(p.getHeader() == Protocol.PING) {
-                    Packet pong = new Packet(Protocol.PONG);
-                    client.write(pong);
-                } else if(p.getHeader() == Protocol.NEW_CONNECTION) {
-                    int uid = p.readInteger();
-                    OnlinePlayer player = new OnlinePlayer(uid);
-                    this.level.spawn(player);
-                    this.players.add(player);
-                } else if(p.getHeader() == Protocol.CONNECTION_LEFT) {
-                    OnlinePlayer op = this.getPlayerWithID(p.readInteger());
-                    this.players.remove(op);
-                    this.level.despawn(op);
-                } else if(p.getHeader() == Protocol.POSITION) {
-                    int id = p.readInteger();
-                    float x = p.readFloat();
-                    float y = p.readFloat();
-                    float z = p.readFloat();
-                    float pitch = p.readFloat();
-                    float yaw = p.readFloat();
-
-                    OnlinePlayer op = this.getPlayerWithID(id);
-                    op.setNextPosition(new Vector3D(x, y, z));
-                    op.setOrientation(pitch, yaw);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

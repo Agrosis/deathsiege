@@ -2,6 +2,7 @@ package com.jantox.siege.entities.map;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.entities.Endwek;
 import com.jantox.siege.entities.Entity;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -9,60 +10,94 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 public class Fortress extends Entity {
 
-    int rot = 0;
-    Vector3D gdis;
+    float gate[];
+    boolean status[];
 
-    public Fortress(Vector3D pos, int rot, Vector3D gdis) {
-        super(pos);
-        this.rot = rot;
-        this.gdis = gdis;
+    public Fortress() {
+        super(new Vector3D());
+
+        gate = new float[4];
+        for(int i = 0; i < 4; i++) {
+            gate[i] = 0;
+        }
+        status = new boolean[4];
     }
+
+    int ticks = 0;
 
     @Override
     public void update(float delta) {
 
     }
 
-    float down = 0f;
+    public void open(int i) {
+        status[i] = true;
+    }
+
+    public boolean isOpen(int i) {
+        return status[i] && gate[i] <= -70;
+    }
+
+    public void close(int i) {
+        status[i] = false;
+    }
+
+    public boolean isClosing(int i) {
+        return !status[i] && gate[i] < 0;
+    }
+
+    public boolean isClosed(int i) {
+        return !status[i] && gate[i] >= 0;
+    }
 
     @Override
     public void render() {
-        down -= 0.05f;
+        for(int i = 0; i < 4; i++) {
+            if(status[i]) {
+                if(gate[i] > -70)
+                    gate[i] -= 0.07;
+                if(gate[i] < -70)
+                    gate[i] = -70;
+            }
+        }
 
         glPushMatrix();
-
         glDisable(GL_TEXTURE_2D);
-        glColor3f(0.2f, 0.2f, 0.2f);
+
+        // east
         glPushMatrix();
-        glTranslatef(263, -4, 0);
+        glTranslatef(198, -4 + gate[1], 0);
         glRotatef(90, 0, 1, 0);
-        glScalef(4.1f, 5f, 4.1f);
+        glScalef(3.1f, 4f, 3.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
 
+        // west
         glPushMatrix();
-        glTranslatef(-263, -4, 0);
+        glTranslatef(-198, -4 + gate[3], 0);
         glRotatef(90, 0, 1, 0);
-        glScalef(4.1f, 5f, 4.1f);
+        glScalef(3.1f, 4f, 3.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
 
+        // south
         glPushMatrix();
-        glTranslatef(0, -4, 263);
-        glScalef(4.1f, 5f, 4.1f);
+        glTranslatef(0, -4 + gate[2], 198);
+        glScalef(3.1f, 4f, 3.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
 
+        // north
         glPushMatrix();
-        glTranslatef(0, -4, -263);
-        glScalef(4.1f, 5f, 4.1f);
+        glTranslatef(0, -4 + gate[0], -198);
+        glScalef(3.1f, 4f, 3.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
         glEnable(GL_TEXTURE_2D);
 
         glTranslatef(0, -3, 0);
         glRotatef(-90, 1, 0, 0);
-        glScalef(0.4f, 0.4f, 0.35f);
+        glScalef(0.3f, 0.3f, 0.25f);
         glCallList(Resources.getModel(24));
         glPopMatrix();
     }
