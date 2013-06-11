@@ -1,7 +1,9 @@
 package com.jantox.siege.entities;
 
+import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.net.Interpolation;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -50,22 +52,44 @@ public class OnlinePlayer extends Entity {
         yawdisp /= 5;
         pitchdisp /= 5;
         yawdisp *= postick;
-        pitchdisp *= postick;
 
-        this.pitch = opitch + pitchdisp;
-        this.yaw = oyaw + yawdisp;
+        if(opitch != npitch)
+            this.pitch = opitch + pitchdisp;
+        if(oyaw != nyaw)
+            this.yaw = oyaw + yawdisp;
+
+        double ydisp = next_pos.y - prev_pos.y;
+        ydisp /= 5;
+        ydisp *= postick;
+
+        this.pos.y = this.prev_pos.y + ydisp;
 
         glPushMatrix();
-        glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
-        glRotatef(yaw, 0, 1, 0);
-        glRotatef(-pitch, 1, 0, 0);
+        glTranslatef((float)pos.x, (float)pos.y-1.5f, (float)pos.z);
+        glRotatef(yaw+180, 0, 1, 0);
         glColor3f(1, 1, 1);
-        glBegin(GL_QUADS);
-        glVertex3f(0, 0, 0);
-        glVertex3f(1, 0, 0);
-        glVertex3f(1, 1, 0);
-        glVertex3f(0, 1, 0);
-        glEnd();
+
+        GL11.glPushMatrix();
+        glTranslatef(0, 2, 0);
+        glRotatef(pitch, 1, 0, 0);
+        glTranslatef(0, -2, 0);
+        GL11.glCallList(Resources.getModel(18));
+        GL11.glPopMatrix();
+
+        GL11.glCallList(Resources.getModel(26));
+
+        GL11.glPushMatrix();
+        GL11.glCallList(Resources.getModel(19));
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        //GL11.glTranslatef(0, -0.5f, 0);
+        GL11.glCallList(Resources.getModel(20));
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        //GL11.glTranslatef(0, -0.5f, 0);
+        GL11.glCallList(Resources.getModel(21));
+        GL11.glPopMatrix();
+
         glPopMatrix();
     }
 

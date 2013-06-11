@@ -30,17 +30,39 @@ public class Fortress extends Entity {
         down -= 0.05f;
 
         glPushMatrix();
-        glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
+
+        glDisable(GL_TEXTURE_2D);
+        glColor3f(0.2f, 0.2f, 0.2f);
         glPushMatrix();
-        glTranslatef((float)gdis.x, (float)gdis.y + down, (float)gdis.z);
-        glRotatef((rot == 90 ? 0 : 90), 0, 1, 0);
-        glScalef(2f,2f,2f);
+        glTranslatef(263, -4, 0);
+        glRotatef(90, 0, 1, 0);
+        glScalef(4.1f, 5f, 4.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
-        glRotatef(90, 1, 0, 0);
-        glRotatef(180, 0, 1, 0);
-        glRotatef(rot, 0, 0, 1);
-        glScalef(0.1f, 0.125f, 0.1f);
+
+        glPushMatrix();
+        glTranslatef(-263, -4, 0);
+        glRotatef(90, 0, 1, 0);
+        glScalef(4.1f, 5f, 4.1f);
+        glCallList(Resources.getModel(25));
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(0, -4, 263);
+        glScalef(4.1f, 5f, 4.1f);
+        glCallList(Resources.getModel(25));
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(0, -4, -263);
+        glScalef(4.1f, 5f, 4.1f);
+        glCallList(Resources.getModel(25));
+        glPopMatrix();
+        glEnable(GL_TEXTURE_2D);
+
+        glTranslatef(0, -3, 0);
+        glRotatef(-90, 1, 0, 0);
+        glScalef(0.4f, 0.4f, 0.35f);
         glCallList(Resources.getModel(24));
         glPopMatrix();
     }

@@ -46,7 +46,7 @@ public class Level {
 
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
-        floors.add(new Quad(new Vector3D(-150, 0, -150), new Vector3D(150, 0, -150), new Vector3D(150, 0, 150), new Vector3D(-150, 0, 150)));
+        floors.add(new Quad(new Vector3D(-2000, 0, -2000), new Vector3D(2000, 0, -2000), new Vector3D(2000, 0, 2000), new Vector3D(-2000, 0, 2000)));
         floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
         //floors.add(new Quad(new Vector3D(20, 3, 13), new Vector3D(20, 3, 15), new Vector3D(25, 3, 15), new Vector3D(25, 3, 13)));
         //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
@@ -61,9 +61,7 @@ public class Level {
 
         spawnerFactory = new SpawnerFactory(this);
 
-        skybox = new Skybox("", 400);
-
-
+        skybox = new Skybox("", 1400);
     }
 
     public void init() {
@@ -136,10 +134,10 @@ public class Level {
             this.spawn(new Path(new Vector3D(i, 0, -40)));
         }
 
-        this.spawn(new Fortress(new Vector3D(-160, -2, 0), 0, new Vector3D(12, 0, 0)));
-        this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
-        this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
-        this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
+        this.spawn(new Fortress(new Vector3D(0, -4, 0), 0, new Vector3D(12, 0, 0)));
+        //this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
+        //this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
+        //this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
 
         this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
@@ -355,4 +353,7 @@ public class Level {
         return points[Entity.rand.nextInt(5)];
     }
 
+    public void despawn(Entity e) {
+        entities.remove(e);
+    }
 }

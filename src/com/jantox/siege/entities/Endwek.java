@@ -88,6 +88,7 @@ public class Endwek extends Living {
         GL11.glScalef(1f, 1f, 1f);
         GL11.glRotatef(-viewangle-90, 0, 1, 0);
         GL11.glCallList(Resources.getModel(18));
+        GL11.glCallList(Resources.getModel(26));
 
         GL11.glPushMatrix();
         GL11.glCallList(Resources.getModel(19));

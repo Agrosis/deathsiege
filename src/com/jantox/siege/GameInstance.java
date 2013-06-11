@@ -32,7 +32,7 @@ public class GameInstance {
         this.width = w;
         this.height = h;
 
-        this.client = new Client("localhost", 1338);
+        this.client = new Client("10.0.0.3", 25565);
         try {
             client.connect();
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public class GameInstance {
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(60, (float) width / (float) height, 1.0f, 500.0f);
+        gluPerspective(60, (float) width / (float) height, 1.0f, 2000.0f);
         glMatrixMode(GL_MODELVIEW);
 
         glClearDepth(1);
@@ -122,11 +122,18 @@ public class GameInstance {
         try {
             Packet p = client.read();
             if(p != null) {
-                if(p.getHeader() == Protocol.NEW_CONNECTION) {
+                if(p.getHeader() == Protocol.PING) {
+                    Packet pong = new Packet(Protocol.PONG);
+                    client.write(pong);
+                } else if(p.getHeader() == Protocol.NEW_CONNECTION) {
                     int uid = p.readInteger();
                     OnlinePlayer player = new OnlinePlayer(uid);
                     this.level.spawn(player);
                     this.players.add(player);
+                } else if(p.getHeader() == Protocol.CONNECTION_LEFT) {
+                    OnlinePlayer op = this.getPlayerWithID(p.readInteger());
+                    this.players.remove(op);
+                    this.level.despawn(op);
                 } else if(p.getHeader() == Protocol.POSITION) {
                     int id = p.readInteger();
                     float x = p.readFloat();
