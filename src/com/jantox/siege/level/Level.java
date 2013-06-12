@@ -138,6 +138,7 @@ public class Level {
         }
 
         this.spawn((fortress = new Fortress()));
+        spawnerFactory.fortress = fortress;
         //this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
         //this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
         //this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
@@ -161,8 +162,14 @@ public class Level {
         spawnerFactory.update();
         for(int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
-            if(!(e instanceof MultiplayerLiving)) {
+
+            if(!(e instanceof MultiplayerLiving) || !GameInstance.multiplayer) {
                 e.update(delta);
+
+                if(e.isExpired()) {
+                    entities.remove(i);
+                    continue;
+                }
 
                 if(e instanceof Bullet) {
                     Ray bullet = new Ray(e.getPosition(), ((Bullet)e).getDirection());
@@ -207,7 +214,7 @@ public class Level {
             } else {
                 if(e.isExpired()) {
                     entities.remove(i);
-                    //multiplayers.remove(i);
+                    //multiplayers.remove((MultiplayerLiving)e);
                     e = null;
                     continue;
                 }

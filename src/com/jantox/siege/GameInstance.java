@@ -26,14 +26,16 @@ public class GameInstance {
 
     private ArrayList<OnlinePlayer> players;
 
-    public static boolean multiplayer = true;
+    public static boolean multiplayer = false;
 
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
 
+        Configuration.init();
+
         if(multiplayer) {
-            this.client = new Client("localhost", 1338);
+            this.client = new Client(Configuration.getProperty("ip"), Integer.valueOf(Configuration.getProperty("port")));
             try {
                 client.connect();
             } catch (IOException e) {
@@ -103,9 +105,11 @@ public class GameInstance {
 
     public void update(int delta) {
         ArrayList<MultiplayerLiving> ets = level.getMultiplayerLivings();
-        for(MultiplayerLiving e : ets) {
+        for(int i = 0; i < ets.size(); i++) {
+            MultiplayerLiving e = ets.get(i);
             if(e.getEntityID() != -1) {
                 if(e.isExpired()) {
+                    level.despawnMultiplayer(e.getEntityID());
                     Packet kill = new Packet(Protocol.KILL);
                     kill.writeInteger(e.getEntityID());
 
@@ -142,7 +146,6 @@ public class GameInstance {
                 Packet p = client.read();
 
                 if(p != null) {
-                    System.out.println(p.getSize());
                     if(p.getHeader() == Protocol.PING) {
                         Packet pong = new Packet(Protocol.PONG);
                         client.write(pong);
@@ -171,10 +174,7 @@ public class GameInstance {
                             level.fortress.open(p.read());
                         }
                     } else if(p.getHeader() == Protocol.SPAWN) {
-                        System.out.println("SPAWN");
                         int eid = p.readInteger();
-
-                        System.out.println("New entity with id " + eid);
 
                         int monstertype = p.read();
 
@@ -192,8 +192,6 @@ public class GameInstance {
                         float x = p.readFloat();
                         float y = p.readFloat();
                         float z = p.readFloat();
-
-                        System.out.println("eid " + eid + " " + x + "," + y + "," + z);
 
                         MultiplayerLiving ml = level.getMultiplayerObjectWith(eid);
                         if(ml != null)

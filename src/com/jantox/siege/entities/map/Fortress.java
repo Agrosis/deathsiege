@@ -58,6 +58,11 @@ public class Fortress extends Entity {
                     gate[i] -= 0.07;
                 if(gate[i] < -70)
                     gate[i] = -70;
+            } else {
+                if(gate[i] < 0)
+                    gate[i] += 0.07;
+                if(gate[i] > 0)
+                    gate[i] = 0;
             }
         }
 
@@ -102,4 +107,7 @@ public class Fortress extends Entity {
         glPopMatrix();
     }
 
+    public boolean isOpening(int i) {
+        return status[i] && gate[i] < 0;
+    }
 }
