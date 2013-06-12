@@ -1,9 +1,6 @@
 package com.jantox.siege.level;
 
-import com.jantox.siege.Camera;
-import com.jantox.siege.Resources;
-import com.jantox.siege.Vector3D;
-import com.jantox.siege.SpawnerFactory;
+import com.jantox.siege.*;
 import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Tree;
@@ -23,6 +20,8 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 public class Level {
 
     private ArrayList<Entity> entities;
+    private ArrayList<MultiplayerLiving> multiplayers;
+
     private ArrayList<ParticleSystem> particlesys;
 
     private ArrayList<Quad> floors;
@@ -45,6 +44,8 @@ public class Level {
     public Level(Player player) {
         this.player = player;
         this.camera = player.getCamera();
+
+        multiplayers = new ArrayList<MultiplayerLiving>();
 
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
@@ -160,51 +161,57 @@ public class Level {
         spawnerFactory.update();
         for(int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
-            e.update(delta);
-            if(e.isExpired()) {
-                entities.remove(i);
-                e = null;
-            }
+            if(!(e instanceof MultiplayerLiving)) {
+                e.update(delta);
 
-            if(e instanceof Bullet) {
-                Ray bullet = new Ray(e.getPosition(), ((Bullet)e).getDirection());
-                for(Entity x : entities) {
-                    if(x instanceof Kage || x instanceof Endwek) {
-                        Sphere z = (Sphere) x.getCollisionMask();
-                        if(CollisionSystem.raySphere(bullet, z)) {
-                            ((Living) x).damage(50);
-                            Vector3D bp = x.getPosition().copy();
-                            bp.y += 1;
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            e.setExpired(true);
-                            break;
-                        }
-                    } else if(x instanceof Spawner) {
-                        Vector3D nz = x.getPosition().copy();
-                        nz.x += 1;
-                        nz.z += 0.5;
-                        Sphere z = new Sphere(nz, 2);
-                        if(CollisionSystem.raySphere(bullet, z)) {
-                            ((Spawner) x).damage(50);
-                            Vector3D bp = x.getPosition().copy();
-                            bp.y -= 1;
-                            bp.z += 0.5;
-                            bp.x += 1;
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                            e.setExpired(true);
+                if(e instanceof Bullet) {
+                    Ray bullet = new Ray(e.getPosition(), ((Bullet)e).getDirection());
+                    for(Entity x : entities) {
+                        if(x instanceof Kage || x instanceof Endwek) {
+                            Sphere z = (Sphere) x.getCollisionMask();
+                            if(CollisionSystem.raySphere(bullet, z)) {
+                                ((Living) x).damage(50);
+                                Vector3D bp = x.getPosition().copy();
+                                bp.y += 1;
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                e.setExpired(true);
+                                break;
+                            }
+                        } else if(x instanceof Spawner) {
+                            Vector3D nz = x.getPosition().copy();
+                            nz.x += 1;
+                            nz.z += 0.5;
+                            Sphere z = new Sphere(nz, 2);
+                            if(CollisionSystem.raySphere(bullet, z)) {
+                                ((Spawner) x).damage(50);
+                                Vector3D bp = x.getPosition().copy();
+                                bp.y -= 1;
+                                bp.z += 0.5;
+                                bp.x += 1;
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
+                                e.setExpired(true);
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
+            } else {
+                if(e.isExpired()) {
+                    entities.remove(i);
+                    //multiplayers.remove(i);
+                    e = null;
+                    continue;
+                }
+                ((MultiplayerLiving)e).updateMultiplayer();
             }
         }
 
@@ -306,6 +313,9 @@ public class Level {
     }
 
     public void spawn(Entity e) {
+        if(GameInstance.multiplayer && e instanceof MultiplayerLiving) {
+            multiplayers.add((MultiplayerLiving)e);
+        }
         entities.add(e);
     }
 
@@ -357,5 +367,30 @@ public class Level {
 
     public void despawn(Entity e) {
         entities.remove(e);
+    }
+
+    public Entity getControlPoint(int cid) {
+        return this.points[cid];
+    }
+
+    public void despawnMultiplayer(int eid) {
+        for(int i = 0; i < this.multiplayers.size(); i++) {
+            if(this.multiplayers.get(i).getEntityID() == eid) {
+                this.multiplayers.remove(i);
+            }
+        }
+    }
+
+    public ArrayList<MultiplayerLiving> getMultiplayerLivings() {
+        return multiplayers;
+    }
+
+    public MultiplayerLiving getMultiplayerObjectWith(int eid) {
+        for(MultiplayerLiving ml : multiplayers) {
+            if(ml.getEntityID() == eid) {
+                return ml;
+            }
+        }
+        return null;
     }
 }

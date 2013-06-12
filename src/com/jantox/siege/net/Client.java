@@ -33,10 +33,32 @@ public class Client {
     }
 
     public Packet read() throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(Packet.MAX_PACKET_SIZE);
-        int bytes = socket.read(buffer);
+        ByteBuffer size = ByteBuffer.allocate(1);
+        int bytes = 0;
+        try {
+            bytes = socket.read(size);
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
 
-        if(bytes <= 0)
+        if(bytes < 0)
+            return null;
+        else if(bytes == 0) {
+            return new Packet(Protocol.LOGIN);
+        }
+
+        size.flip();
+        int psize = size.get();
+
+        ByteBuffer buffer = ByteBuffer.allocate(psize);
+        bytes = 0;
+        try {
+            bytes = socket.read(buffer);
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
+
+        if(bytes < 0)
             return null;
 
         buffer.flip();
@@ -47,6 +69,7 @@ public class Client {
         ByteBuffer buffer = p.getData();
 
         socket.write(buffer);
+        socket.socket().getOutputStream().flush();
     }
 
 }

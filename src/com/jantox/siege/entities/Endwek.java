@@ -6,19 +6,19 @@ import com.jantox.siege.Vector3D;
 import com.jantox.siege.geometry.Sphere;
 import org.lwjgl.opengl.GL11;
 
-public class Endwek extends Living {
+public class Endwek extends MultiplayerLiving {
 
     float gravity = 0;
     float viewangle = 0f;
 
-    private com.jantox.siege.entities.map.ControlPoint target;
+    private Entity target;
 
-    public Endwek(Vector3D pos, float version) {
-        super(pos, (int)(100));
+    public Endwek(Vector3D pos, int cid, int eid) {
+        super(pos, 100, eid);
 
         gravity = 0.2f;
 
-        target = level.getRandomControlPoint();
+        target = level.getControlPoint(cid);
 
         this.mask = new Sphere(pos, 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());
@@ -83,6 +83,7 @@ public class Endwek extends Living {
         GL11.glPushMatrix();
         GL11.glColor3f(1.0f, 0f, 0f);
 
+        pos.y = 0;
         GL11.glTranslatef((float)pos.x, (float)pos.y - 1f, (float)pos.z);
 
         GL11.glScalef(1f, 1f, 1f);
@@ -106,4 +107,5 @@ public class Endwek extends Living {
 
         GL11.glPopMatrix();
     }
+
 }

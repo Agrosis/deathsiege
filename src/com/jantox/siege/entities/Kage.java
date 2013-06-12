@@ -33,9 +33,9 @@ public class Kage extends Living {
 
         target = level.getRandomControlPoint();
 
-        if(rand.nextInt() % 1 == 0) {
+        /*if(rand.nextInt() % 1 == 0) {
             this.rider = new Endwek(this.pos.copy(), 2);
-        }
+        }*/
 
         this.mask = new Sphere(pos, version * 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());

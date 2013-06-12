@@ -21,6 +21,8 @@ public abstract class Entity {
 
     public static Random rand = new Random(System.currentTimeMillis());
 
+    public long entityid;
+
     public Entity(Vector3D pos) {
         this.pos = pos;
         this.velocity = new Vector3D();

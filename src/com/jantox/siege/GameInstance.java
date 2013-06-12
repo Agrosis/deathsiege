@@ -1,8 +1,6 @@
 package com.jantox.siege;
 
-import com.jantox.siege.entities.Entity;
-import com.jantox.siege.entities.OnlinePlayer;
-import com.jantox.siege.entities.Player;
+import com.jantox.siege.entities.*;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.net.Client;
 import com.jantox.siege.net.Packet;
@@ -28,7 +26,7 @@ public class GameInstance {
 
     private ArrayList<OnlinePlayer> players;
 
-    private boolean multiplayer = true;
+    public static boolean multiplayer = true;
 
     public GameInstance(int w, int h) {
         this.width = w;
@@ -104,6 +102,22 @@ public class GameInstance {
     int ticks = 0;
 
     public void update(int delta) {
+        ArrayList<MultiplayerLiving> ets = level.getMultiplayerLivings();
+        for(MultiplayerLiving e : ets) {
+            if(e.getEntityID() != -1) {
+                if(e.isExpired()) {
+                    Packet kill = new Packet(Protocol.KILL);
+                    kill.writeInteger(e.getEntityID());
+
+                    try {
+                        client.write(kill);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        }
+
         Input.update();
         level.update(delta);
 
@@ -126,7 +140,9 @@ public class GameInstance {
 
             try {
                 Packet p = client.read();
+
                 if(p != null) {
+                    System.out.println(p.getSize());
                     if(p.getHeader() == Protocol.PING) {
                         Packet pong = new Packet(Protocol.PONG);
                         client.write(pong);
@@ -154,6 +170,38 @@ public class GameInstance {
                         if(level != null) {
                             level.fortress.open(p.read());
                         }
+                    } else if(p.getHeader() == Protocol.SPAWN) {
+                        System.out.println("SPAWN");
+                        int eid = p.readInteger();
+
+                        System.out.println("New entity with id " + eid);
+
+                        int monstertype = p.read();
+
+                        float x = p.readFloat();
+                        float y = p.readFloat();
+                        float z = p.readFloat();
+
+                        if(monstertype == 0) {
+                            Endwek e = new Endwek(new Vector3D(x, y, z), p.read(), eid);
+                            level.spawn(e);
+                        }
+                    } else if(p.getHeader() == Protocol.ENTITY_POSITION) {
+                        int eid = p.readInteger();
+
+                        float x = p.readFloat();
+                        float y = p.readFloat();
+                        float z = p.readFloat();
+
+                        System.out.println("eid " + eid + " " + x + "," + y + "," + z);
+
+                        MultiplayerLiving ml = level.getMultiplayerObjectWith(eid);
+                        if(ml != null)
+                            ml.updatePosition(new Vector3D(x,y,z));
+                    } else if(p.getHeader() == Protocol.KILL) {
+                        int eid = p.readInteger();
+
+                        level.despawnMultiplayer(eid);
                     }
                 }
             } catch (IOException e) {

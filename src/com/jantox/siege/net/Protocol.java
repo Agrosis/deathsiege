@@ -18,4 +18,8 @@ public class Protocol {
     // values are different for each kind of enemy
     public static int SPAWN = 0x09;
 
+    public static int KILL = 0x0A;
+
+    public static int ENTITY_POSITION = 0x0B;
+
 }

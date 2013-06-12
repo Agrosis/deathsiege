@@ -12,6 +12,7 @@ public class Packet {
     public Packet(int header) {
         buffer = ByteBuffer.allocate(Packet.MAX_PACKET_SIZE);
         buffer.clear();
+        buffer.put((byte)0x00);
         buffer.put((byte)header);
         size++;
     }
@@ -27,6 +28,7 @@ public class Packet {
     }
 
     public ByteBuffer getData() {
+        buffer.put(0, (byte)this.getSize());
         buffer.flip();
         return buffer;
     }
