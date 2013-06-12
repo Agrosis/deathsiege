@@ -5,7 +5,6 @@ import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Tree;
 import com.jantox.siege.entities.tools.Bullet;
-import com.jantox.siege.entities.tools.Weapons;
 import com.jantox.siege.geometry.*;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.particle.Particle;
@@ -74,76 +73,44 @@ public class Level {
         points[2] = new ControlPoint(new Vector3D(40, -1.9999999, -40));
         points[3] = new ControlPoint(new Vector3D(40, -1.9999999, 40));
         points[4] = new ControlPoint(new Vector3D(-40, -1.9999999, 40));
-        this.spawn(points[0]);
-        this.spawn(points[1]);
-        this.spawn(points[2]);
-        this.spawn(points[3]);
-        this.spawn(points[4]);
 
-        this.spawn(new Ladder(new Vector3D(-7.1, 0, -5)));
-        this.spawn(new Ladder(new Vector3D(-7.1, -5, -5)));
-        this.spawn(new Ladder(new Vector3D(-7.1, 5, -5)));
-        this.spawn(new Ladder(new Vector3D(-7.1, 10, -5)));
-
-        this.spawn(new Ammo(new Vector3D(15, -1.5, 15), Weapons.BLASTER, 100));
-
-        this.spawn(new Spawner(new Vector3D(20, 2, 20)));
-        this.spawn(new Spawner(new Vector3D(20, 2, -20)));
-        this.spawn(new Spawner(new Vector3D(-20, 2, -20)));
-        this.spawn(new Spawner(new Vector3D(-20, 2, 20)));
-
-
-        for(int i = 9; i < 99; i+=3) {
-            this.spawn(new Path(new Vector3D(i + 1, 0, 0)));
-            if(i == 36) {
-                i += 3;
-            }
-        }
-
-        for(int i = -9; i > -99; i-=3) {
-            this.spawn(new Path(new Vector3D(i - 1, 0, 0)));
-            if(i == -36) {
-                i -= 3;
-            }
-        }
-
-        for(int i = 9; i < 99; i+=3) {
-            this.spawn(new Path(new Vector3D(0, 0, i + 1)));
-            if(i == 36) {
-                i += 3;
-            }
-        }
-
-        for(int i = -9; i > -99; i-=3) {
-            this.spawn(new Path(new Vector3D(0, 0, i - 1)));
-            if(i == -36) {
-                i -= 3;
-            }
-        }
-
-        for(int i = 32; i > -32; i-=3) {
-            this.spawn(new Path(new Vector3D(40, 0, i)));
-        }
-
-        for(int i = 32; i > -32; i-=3) {
-            this.spawn(new Path(new Vector3D(-40, 0, i)));
-        }
-
-        for(int i = 32; i > -32; i-=3) {
-            this.spawn(new Path(new Vector3D(i, 0, 40)));
-        }
-
-        for(int i = 32; i > -32; i-=3) {
-            this.spawn(new Path(new Vector3D(i, 0, -40)));
-        }
+        /*this.spawn(new Spawner(new Vector3D(85, 1.7f, 85)));
+        this.spawn(new Spawner(new Vector3D(85, 1.7f, -85)));
+        this.spawn(new Spawner(new Vector3D(-85, 1.7f, -85)));
+        this.spawn(new Spawner(new Vector3D(-85, 1.7f, 85)));*/
 
         this.spawn((fortress = new Fortress()));
         spawnerFactory.fortress = fortress;
-        //this.spawn(new Fortress(new Vector3D(160, -2, 0), 0, new Vector3D(12, 0, 0)));
-        //this.spawn(new Fortress(new Vector3D(0, -2, -160), 90, new Vector3D(0, 0, -12)));
-        //this.spawn(new Fortress(new Vector3D(0, -2, 160), 90, new Vector3D(0, 0, -12)));
 
-        this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
+        for(int i = 9; i < 190; i+=5) {
+            this.spawn(new Path(new Vector3D(i + 1, 0, 0)));
+        }
+
+        for(int i = -9; i > -190; i-=5) {
+            this.spawn(new Path(new Vector3D(i - 1, 0, 0)));
+        }
+
+        for(int i = 9; i < 190; i+=5) {
+            this.spawn(new Path(new Vector3D(0, 0, i + 1)));
+        }
+
+        for(int i = -9; i > -190; i-=5) {
+            this.spawn(new Path(new Vector3D(0, 0, i - 1)));
+        }
+
+        this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.14, 0.14, 0.14), new Vector3D(-90, 0, 0), 2));
+
+        this.spawn(new Decoration(new Vector3D(140, 0, 140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
+        this.spawn(new Decoration(new Vector3D(-140, 0, 140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 23));
+        this.spawn(new Decoration(new Vector3D(-140, 0, -140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 180, 0), 23));
+        this.spawn(new Decoration(new Vector3D(140, 0, -140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 90, 0), 23));
+
+        this.spawn(new Decoration(new Vector3D(50, 0, 50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
+        this.spawn(new Decoration(new Vector3D(-50, 0, 50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 22));
+        this.spawn(new Decoration(new Vector3D(-50, 0, -50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 180, 0), 22));
+        this.spawn(new Decoration(new Vector3D(50, 0, -50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 90, 0), 22));
+
+        /*this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(40, 0, 40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
@@ -152,10 +119,10 @@ public class Level {
         this.spawn(new Decoration(new Vector3D(80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
         this.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 23));
 
-        /*this.spawnForest(10, new Vector3D(22.5, 0, 22.5), 10);
-        this.spawnForest(10, new Vector3D(-22.5, 0, 22.5), 10);
-        this.spawnForest(10, new Vector3D(-22.5, 0, -22.5), 10);
-        this.spawnForest(10, new Vector3D(22.5, 0, -22.5), 10);*/
+        this.spawnForest(10, new Vector3D(98, 0, 98), 10);
+        this.spawnForest(10, new Vector3D(-98, 0, 98), 10);
+        this.spawnForest(10, new Vector3D(-98, 0, -98), 10);
+        this.spawnForest(10, new Vector3D(98, 0, -98), 10);*/
     }
 
     public void update(float delta) {
@@ -178,13 +145,6 @@ public class Level {
                             Sphere z = (Sphere) x.getCollisionMask();
                             if(CollisionSystem.raySphere(bullet, z)) {
                                 ((Living) x).damage(50);
-                                Vector3D bp = x.getPosition().copy();
-                                bp.y += 1;
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
                                 e.setExpired(true);
                                 break;
                             }
@@ -195,15 +155,6 @@ public class Level {
                             Sphere z = new Sphere(nz, 2);
                             if(CollisionSystem.raySphere(bullet, z)) {
                                 ((Spawner) x).damage(50);
-                                Vector3D bp = x.getPosition().copy();
-                                bp.y -= 1;
-                                bp.z += 0.5;
-                                bp.x += 1;
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
-                                psys.addParticle(new Particle(bp.copy(), new ParticleBehavior.DamageParticle()));
                                 e.setExpired(true);
 
                                 break;
@@ -214,7 +165,6 @@ public class Level {
             } else {
                 if(e.isExpired()) {
                     entities.remove(i);
-                    //multiplayers.remove((MultiplayerLiving)e);
                     e = null;
                     continue;
                 }
@@ -268,53 +218,10 @@ public class Level {
         psys.render();
 
         for(int i = 0; i < entities.size(); i++) {
-            // check if we should render it based on facing plane
-            /*Vector3D to = player.pos.copy();
-            to.subtract(entities.get(i).getPosition());
-            to.y = 0;
-            to.x = -to.x;
-            to.y = -to.y;
-            Vector3D cdir = camera.getDirectionVector();
-            cdir.x = -cdir.x;
-            cdir.z = -cdir.z;
-            cdir.y = 0;
-            cdir.normalize();
-            to.normalize();
-            if(cdir.dotProduct(to) >= 0) */
             entities.get(i).render();
         }
 
-        glEnable(GL_TEXTURE_2D);
-
-        // enables multitexturing for lighting
-        /*ARBMultitexture.glActiveTextureARB(ARBMultitexture.GL_TEXTURE0_ARB);
-        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(6).getTextureID());
-        ARBMultitexture.glActiveTextureARB(ARBMultitexture.GL_TEXTURE1_ARB);
-        glBindTexture(GL_TEXTURE_2D, Lighting.generateLightmap(new Vector3D(0, 0, -1)));
-
-        glBegin(GL_QUADS);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 0, 0);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 0, 0);
-        glVertex3f(0, 0, 0);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 1, 0);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 1, 0);
-        glVertex3f(1, 0, 0);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 1, 1);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 1, 1);
-        glVertex3f(1, 1, 0);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE0_ARB, 0, 1);
-        ARBMultitexture.glMultiTexCoord2fARB(ARBMultitexture.GL_TEXTURE1_ARB, 0, 1);
-        glVertex3f(0, 1, 0);
-        glEnd();*/
-
-        glColor3f(0,0,0);
-
-        //ramps.get(0).render();
-        //floors.get(2).render();
-        //floors.get(3).render();
-
         this.player.render();
-
 
         glPopMatrix();
     }
@@ -324,14 +231,6 @@ public class Level {
             multiplayers.add((MultiplayerLiving)e);
         }
         entities.add(e);
-    }
-
-    public void spawnForest(int amount, Vector3D pos, float radius) {
-        for(int i = 0; i < amount; i++) {
-            Vector3D npos = pos.copy();
-            npos.add(new Vector3D(Entity.rand.nextGaussian() * radius, -2, Entity.rand.nextGaussian() * radius));
-            this.spawn(new Tree(npos.copy()));
-        }
     }
 
     public Player getPlayer() {

@@ -17,7 +17,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd mud.jpg
+map_Kd metal.png
 
 
 newmtl Material.001
@@ -28,7 +28,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd mud.jpg
+map_Kd metal.png
 
 
 newmtl Material.002

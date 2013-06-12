@@ -3,6 +3,7 @@ package com.jantox.siege.entities;
 import com.jantox.siege.Resources;
 import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.ai.AISet;
 import com.jantox.siege.geometry.Sphere;
 import org.lwjgl.opengl.GL11;
 
@@ -10,6 +11,8 @@ public class Endwek extends MultiplayerLiving {
 
     float gravity = 0;
     float viewangle = 0f;
+
+    private AISet ai;
 
     private Entity target;
 
@@ -28,14 +31,8 @@ public class Endwek extends MultiplayerLiving {
     public void update(float delta) {
         mask.update(pos);
 
-        if(this.pos.distanceSquared(target.getPosition()) <= 5 * 5) {
+        if(health <= 0)
             this.expired = true;
-            SpawnerFactory.monstersleft --;
-        }
-        if(health <= 0) {
-            expired = true;
-            SpawnerFactory.monstersleft --;
-        }
 
         Vector3D cam = target.getPosition();
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);

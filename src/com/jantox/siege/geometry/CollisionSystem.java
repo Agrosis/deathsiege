@@ -75,8 +75,11 @@ public class CollisionSystem {
             return false;
 
         // intersection points on the ray
-        //double t1 = (-b + Math.sqrt(disc)) / 2;
-        //double t2 = (-b - Math.sqrt(disc)) / 2;
+        double t1 = (-b + Math.sqrt(disc)) / 2;
+        double t2 = (-b - Math.sqrt(disc)) / 2;
+
+        if(t1 < 0 && t2 < 0)
+            return false;
 
         return true;
     }

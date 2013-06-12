@@ -2,14 +2,9 @@ package com.jantox.siege;
 
 import com.jantox.siege.entities.*;
 import com.jantox.siege.level.Level;
-import com.jantox.siege.net.Client;
-import com.jantox.siege.net.Packet;
-import com.jantox.siege.net.Protocol;
+import com.jantox.siege.net.MultiplayerInstance;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NICEST;
@@ -20,11 +15,8 @@ public class GameInstance {
     private int width, height;
 
     private Level level;
+    private MultiplayerInstance mpinstance;
     private Timer timer;
-
-    private Client client;
-
-    private ArrayList<OnlinePlayer> players;
 
     public static boolean multiplayer = false;
 
@@ -33,20 +25,21 @@ public class GameInstance {
         this.height = h;
 
         Configuration.init();
-
-        if(multiplayer) {
-            this.client = new Client(Configuration.getProperty("ip"), Integer.valueOf(Configuration.getProperty("port")));
-            try {
-                client.connect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        players = new ArrayList<OnlinePlayer>();
     }
 
     public void init() {
+        this.initGL();
+
+        level = new Level(new Player(new Camera(new Vector3D(0, 10, 0), width, height)));
+        Entity.level = level;
+        level.init();
+
+        if(multiplayer) {
+            mpinstance = new MultiplayerInstance(level);
+        }
+    }
+
+    public void initGL() {
         // initialize OpenGL
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
@@ -68,10 +61,6 @@ public class GameInstance {
         // initialize input methods
         Input.setMouse(width / 2, height / 2);
         Mouse.setGrabbed(true);
-
-        level = new Level(new Player(new Camera(new Vector3D(0, 10, 0), width, height)));
-        Entity.level = level;
-        level.init();
     }
 
     public void start() {
@@ -88,129 +77,33 @@ public class GameInstance {
         }
     }
 
-    public void stop() {
-
-    }
-
-    public OnlinePlayer getPlayerWithID(int id) {
-        for(OnlinePlayer op : players) {
-            if(op.getUserID() == id) {
-                return op;
-            }
-        }
-        return null;
-    }
-
-    int ticks = 0;
-
     public void update(int delta) {
-        ArrayList<MultiplayerLiving> ets = level.getMultiplayerLivings();
-        for(int i = 0; i < ets.size(); i++) {
-            MultiplayerLiving e = ets.get(i);
-            if(e.getEntityID() != -1) {
-                if(e.isExpired()) {
-                    level.despawnMultiplayer(e.getEntityID());
-                    Packet kill = new Packet(Protocol.KILL);
-                    kill.writeInteger(e.getEntityID());
-
-                    try {
-                        client.write(kill);
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        }
-
         Input.update();
         level.update(delta);
 
         if(multiplayer) {
-            ticks++;
-            if(ticks % 5 == 0) {
-                Packet pos = new Packet(Protocol.POSITION);
-                pos.writeFloat((float)level.getPlayer().getPosition().x);
-                pos.writeFloat((float)level.getPlayer().getPosition().y);
-                pos.writeFloat((float)level.getPlayer().getPosition().z);
-                pos.writeFloat(level.getPlayer().getCamera().getPitch());
-                pos.writeFloat(level.getPlayer().getCamera().getYaw());
-
-                try {
-                    client.write(pos);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            try {
-                Packet p = client.read();
-
-                if(p != null) {
-                    if(p.getHeader() == Protocol.PING) {
-                        Packet pong = new Packet(Protocol.PONG);
-                        client.write(pong);
-                    } else if(p.getHeader() == Protocol.NEW_CONNECTION) {
-                        int uid = p.readInteger();
-                        OnlinePlayer player = new OnlinePlayer(uid);
-                        this.level.spawn(player);
-                        this.players.add(player);
-                    } else if(p.getHeader() == Protocol.CONNECTION_LEFT) {
-                        OnlinePlayer op = this.getPlayerWithID(p.readInteger());
-                        this.players.remove(op);
-                        this.level.despawn(op);
-                    } else if(p.getHeader() == Protocol.POSITION) {
-                        int id = p.readInteger();
-                        float x = p.readFloat();
-                        float y = p.readFloat();
-                        float z = p.readFloat();
-                        float pitch = p.readFloat();
-                        float yaw = p.readFloat();
-
-                        OnlinePlayer op = this.getPlayerWithID(id);
-                        op.setNextPosition(new Vector3D(x, y, z));
-                        op.setOrientation(pitch, yaw);
-                    } else if(p.getHeader() == Protocol.GATE_OPEN) {
-                        if(level != null) {
-                            level.fortress.open(p.read());
-                        }
-                    } else if(p.getHeader() == Protocol.SPAWN) {
-                        int eid = p.readInteger();
-
-                        int monstertype = p.read();
-
-                        float x = p.readFloat();
-                        float y = p.readFloat();
-                        float z = p.readFloat();
-
-                        if(monstertype == 0) {
-                            Endwek e = new Endwek(new Vector3D(x, y, z), p.read(), eid);
-                            level.spawn(e);
-                        }
-                    } else if(p.getHeader() == Protocol.ENTITY_POSITION) {
-                        int eid = p.readInteger();
-
-                        float x = p.readFloat();
-                        float y = p.readFloat();
-                        float z = p.readFloat();
-
-                        MultiplayerLiving ml = level.getMultiplayerObjectWith(eid);
-                        if(ml != null)
-                            ml.updatePosition(new Vector3D(x,y,z));
-                    } else if(p.getHeader() == Protocol.KILL) {
-                        int eid = p.readInteger();
-
-                        level.despawnMultiplayer(eid);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mpinstance.update();
         }
     }
 
     public void render(int delta) {
         level.render(delta);
 
+        switch2D();
+
+        glDisable(GL_TEXTURE_2D);
+        drawCrossheir();
+
+        switch3D();
+    }
+
+    public void switch3D() {
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+    }
+
+    public void switch2D() {
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
@@ -220,15 +113,6 @@ public class GameInstance {
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        glDisable(GL_TEXTURE_2D);
-        drawCrossheir();
-        //drawHealthbar();
-
-        glColor3f(1f, 1f, 1f);
-
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
     }
 
     public void drawCrossheir() {
@@ -246,60 +130,6 @@ public class GameInstance {
         glVertex2f(409, 300);
         glEnd();
         glBegin(GL_LINES);
-        glEnd();
-    }
-
-    float i = 100;
-
-    public void drawHealthbar() {
-        i -= 0.05f;
-        glColor3f(0, 1, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(20, 20);
-        glVertex2f(20 + i * 3, 20);
-        glVertex2f(20 + i * 3, 40);
-        glVertex2f(20, 40);
-        glEnd();
-
-        glColor3f(1, 0, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(20, 20);
-        glVertex2f(320, 20);
-        glVertex2f(320, 40);
-        glVertex2f(20, 40);
-        glEnd();
-
-        glColor3f(0, 0, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(18, 18);
-        glVertex2f(322, 18);
-        glVertex2f(322, 42);
-        glVertex2f(18, 42);
-        glEnd();
-
-        // stamina
-        glColor3f(1, 1, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(780, 20);
-        glVertex2f(780 - level.getPlayer().stamina, 20);
-        glVertex2f(780 - level.getPlayer().stamina, 40);
-        glVertex2f(780, 40);
-        glEnd();
-
-        glColor3f(1, 0, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(480, 20);
-        glVertex2f(800-20, 20);
-        glVertex2f(800-20, 40);
-        glVertex2f(480, 40);
-        glEnd();
-
-        glColor3f(0, 0, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(478, 18);
-        glVertex2f(800-20+2, 18);
-        glVertex2f(800-20+2, 42);
-        glVertex2f(478, 42);
         glEnd();
     }
 

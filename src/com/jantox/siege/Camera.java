@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Camera {
 
     public static float MOUSE_SPEED = 0.15f;
-    public static float MOVE_SPEED = 0.15f;
+    public static float MOVE_SPEED = 0.4f;
 
     private int width, height;
 
@@ -61,8 +61,8 @@ public class Camera {
 
     public void moveFloor(int direction) {
         double ang = Math.toRadians(yaw + direction);
-        camera.x -= Math.sin(ang) * MOVE_SPEED * (running ? 1.8 : 1.25);
-        camera.z -= Math.cos(ang) * MOVE_SPEED * (running ? 1.8 : 1.25);
+        camera.x -= Math.sin(ang) * MOVE_SPEED * 0.8;
+        camera.z -= Math.cos(ang) * MOVE_SPEED * 0.8;
     }
 
     public void lockCamera() {

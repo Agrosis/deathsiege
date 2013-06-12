@@ -12,6 +12,7 @@ public abstract class ParticleBehavior {
 
         @Override
         public void init(Particle p) {
+            p.setScale(new Vector3D(0.025,0.025,0.025));
             p.setColor(new Vector3D(0.5f, 0, 0));
             p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/10, 0.5/10f, Entity.rand.nextGaussian()/10));
         }

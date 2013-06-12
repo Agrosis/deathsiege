@@ -25,7 +25,7 @@ public class Path extends Entity {
         glPushMatrix();
         glTranslatef((float)pos.x + 1.5f, (float)pos.y-1.999f, (float)pos.z + 1.5f);
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(6).getTextureID());
-        glScalef(3, 3, 3);
+        glScalef(5, 5, 5);
         glColor3f(1f, 1f, 1f);
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);

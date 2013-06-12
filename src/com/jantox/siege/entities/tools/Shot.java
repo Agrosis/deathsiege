@@ -37,6 +37,11 @@ public class Shot extends Entity {
     }
 
     public void render(Vector3D posi, Vector3D roti) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_DEPTH_TEST);
+
         glEnable(GL_TEXTURE_2D);
         glPushMatrix();
         glColor3f(1, 1, 0);

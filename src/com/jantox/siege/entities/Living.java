@@ -1,6 +1,9 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.level.Level;
+import com.jantox.siege.particle.Particle;
+import com.jantox.siege.particle.ParticleBehavior;
 
 public abstract class Living extends Entity {
 
@@ -32,6 +35,12 @@ public abstract class Living extends Entity {
         this.health -= d;
         if(health < 0)
             maxhealth = 0;
+
+        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
     }
 
 }

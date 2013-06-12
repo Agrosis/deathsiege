@@ -1,8 +1,7 @@
 package com.jantox.siege;
 
 import com.jantox.siege.entities.Endwek;
-import com.jantox.siege.entities.Entity;
-import com.jantox.siege.entities.Kage;
+import com.jantox.siege.entities.Spawner;
 import com.jantox.siege.entities.map.Fortress;
 import com.jantox.siege.level.Level;
 
@@ -24,25 +23,33 @@ public class SpawnerFactory {
     public Fortress fortress;
     int gate;
 
-    int wave = 0;
-    int tospawn = 0;
-    public static int monstersleft;
-    int breaktime = 0;
-
     public SpawnerFactory(Level l) {
         this.level = l;
         lastms = System.currentTimeMillis();
-        tospawn = monstersleft = wave * 5 + 3;
     }
 
     int sptime = 0;
+    int spawnswitch = 0;
 
     public void update() {
         if(System.currentTimeMillis() - lastms >= 1000) {
             lastms = System.currentTimeMillis();
             seconds++;
-            sptime++;
+            spawnswitch = 0;
+            if(fortress.isOpen(gate))
+                sptime++;
             spawn = true;
+        }
+
+        if(seconds == 4) {
+            seconds++;
+            for(int i = 0; i < 30; i++) {
+                level.spawn(new Endwek(new Vector3D(rand.nextInt(300) - 150, 0, rand.nextInt(300) - 150),rand.nextInt(4),4));
+            }
+        }
+
+        /*if(spawnswitch >= 20) {
+            level.spawn(new Spawner(new Vector3D(rand.nextInt(300) - 150, 1.7f, rand.nextInt(300) - 150)));
         }
 
         if(!fortress.isOpening(gate)) {
@@ -52,15 +59,16 @@ public class SpawnerFactory {
         if(fortress.isOpen(gate)) {
             if(seconds >= 3) {
                 seconds = 0;
-                level.spawn(new Endwek(this.getPlace(gate), 3,4));
+                level.spawn(new Endwek(this.getPlace(gate),rand.nextInt(4),4));
             }
 
             if(sptime >= 30) {
+                sptime = 0;
                 fortress.close(gate);
                 gate = rand.nextInt(4);
                 fortress.open(gate);
             }
-        }
+        }*/
     }
 
     public Vector3D getPlace(int i) {

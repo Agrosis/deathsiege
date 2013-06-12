@@ -43,10 +43,10 @@ public class Spawner extends Living {
             //level.spawn(new Kage(this.pos.copy().getCloseTo(1), 1, 0));
         }
 
-        if(pos.y < 1.2f) {
+        if(pos.y < 0.0f) {
             pos.y += 0.005f;
-            if(pos.y > 1.2f)
-                pos.y = 1.2;
+            if(pos.y > 0.0f)
+                pos.y = 0.0;
         }
 
         if(expired) {
@@ -76,7 +76,7 @@ public class Spawner extends Living {
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(8).getTextureID());
         glColor3f(1.0f, 1.0f, 1.0f);
         glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
-        glScalef(1.5f, 1.5f, 1.5f);
+        //glScalef(1.5f, 1.5f, 1.5f);
         glBegin(GL_QUADS);
         glTexCoord2f(0.0f,0.0f);
         glVertex3f(0.0f,-1,0.0f);
