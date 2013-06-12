@@ -1,5 +1,6 @@
 package com.jantox.siege.entities.tools;
 
+import com.jantox.siege.GameInstance;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
@@ -41,6 +42,8 @@ public class Shotgun extends Tool {
             hp.x += rand.nextGaussian();
             hp.y += rand.nextGaussian();
             hp.z += rand.nextGaussian();
+
+            GameInstance.audio.playSound(0);
             this.blasts.add(new Shot(hp,  new Vector3D(1f, -1.5f, 1.5f)));
         }
     }
@@ -52,7 +55,7 @@ public class Shotgun extends Tool {
 
     @Override
     public int getRest() {
-        return 7;
+        return 10;
     }
 
     @Override

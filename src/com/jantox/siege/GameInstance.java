@@ -4,7 +4,14 @@ import com.jantox.siege.entities.*;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.net.MultiplayerInstance;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.openal.SoundStore;
+import org.newdawn.slick.util.ResourceLoader;
+
+import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NICEST;
@@ -20,9 +27,13 @@ public class GameInstance {
 
     public static boolean multiplayer = false;
 
+    public static AudioController audio;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
+
+        audio = new AudioController();
 
         Configuration.init();
     }
@@ -75,11 +86,14 @@ public class GameInstance {
             Display.update();
             Display.sync(60);
         }
+
+        AL.destroy();
     }
 
     public void update(int delta) {
         Input.update();
         level.update(delta);
+        audio.update();
 
         if(multiplayer) {
             mpinstance.update();

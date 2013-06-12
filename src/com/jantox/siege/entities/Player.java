@@ -1,6 +1,7 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Camera;
+import com.jantox.siege.GameInstance;
 import com.jantox.siege.Input;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.map.Ladder;
@@ -91,6 +92,7 @@ public class Player extends Living {
             if(Input.curnum-1 < inventory.size() && change == 0) {
                 change = 1;
                 changestat = 0;
+                GameInstance.audio.playSound(1);
             }
         }
 
