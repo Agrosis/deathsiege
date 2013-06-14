@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
-public class Blaster extends Tool implements Weapon {
+public class Blaster extends Tool {
 
     private Player powner;
 
@@ -110,13 +110,4 @@ public class Blaster extends Tool implements Weapon {
         glPopMatrix();
     }
 
-    @Override
-    public void giveAmmo(int ammo) {
-        this.ammo += ammo;
-    }
-
-    @Override
-    public int getWeaponType() {
-        return 0;
-    }
 }

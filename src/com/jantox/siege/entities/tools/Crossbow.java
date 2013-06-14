@@ -1,5 +1,6 @@
 package com.jantox.siege.entities.tools;
 
+import com.jantox.siege.GameInstance;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
@@ -33,9 +34,7 @@ public class Crossbow extends Tool {
         use = true;
         if(mouse == 0) {
             Vector3D dir = powner.getCamera().getDirectionVector();
-            //dir.x += rand.nextGaussian()/100;
-            //dir.y += rand.nextGaussian()/100;
-            //dir.z += rand.nextGaussian()/100;
+            GameInstance.audio.playSound(2);
             Entity.level.spawn(new Bolt(powner.getCamera().getHoldingPosition(), dir, new Vector3D(0.5f, -0.75f, -0.2f)));
         }
     }

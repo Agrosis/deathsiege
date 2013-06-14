@@ -40,7 +40,7 @@ public class Spawner extends Living {
 
         ticks++;
         if(ticks % 500 == 0) {
-            //level.spawn(new Kage(this.pos.copy().getCloseTo(1), 1, 0));
+            level.spawn(new Endwek(this.pos.copy().getCloseTo(1), 1, 1));
         }
 
         if(pos.y < 0.0f) {

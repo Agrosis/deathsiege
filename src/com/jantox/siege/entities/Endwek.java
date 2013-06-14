@@ -15,11 +15,16 @@ public class Endwek extends MultiplayerLiving {
     private AISet ai;
 
     private Entity target;
+    private boolean giant = false;
 
     public Endwek(Vector3D pos, int cid, int eid) {
         super(pos, 100, eid);
 
         gravity = 0.2f;
+
+        if(eid == 1) {
+            giant = true;
+        }
 
         target = level.getControlPoint(cid);
 
@@ -31,14 +36,20 @@ public class Endwek extends MultiplayerLiving {
     public void update(float delta) {
         mask.update(pos);
 
-        if(health <= 0)
+        if(health <= 0) {
             this.expired = true;
+            SpawnerFactory.monstersleft --;
+        }
 
         Vector3D cam = target.getPosition();
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);
         vel.normalize();
         vel.y = 0;
-        vel.divide(13);
+
+        if(!giant)
+            vel.divide(13);
+        else
+            vel.divide(3);
 
         pos.add(vel);
 
@@ -82,8 +93,12 @@ public class Endwek extends MultiplayerLiving {
 
         pos.y = 0;
         GL11.glTranslatef((float)pos.x, (float)pos.y - 1f, (float)pos.z);
+        if(giant) {
+            GL11.glTranslatef(0, 7.5f, 0);
+        }
 
-        GL11.glScalef(1f, 1f, 1f);
+        if(giant)
+            GL11.glScalef(9f, 9f, 9f);
         GL11.glRotatef(-viewangle-90, 0, 1, 0);
         GL11.glCallList(Resources.getModel(18));
         GL11.glCallList(Resources.getModel(26));

@@ -1,8 +1,10 @@
 package com.jantox.siege.entities.resources;
 
+import com.jantox.siege.GameInstance;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.sfx.AudioController;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -49,7 +51,7 @@ public class Gem extends Entity {
             if(this.pos.distanceSquared(ppos) <= 3) {
                 this.expired = true;
                 this.pos = level.getPlayer().getCamera().getCamera().copy();
-
+                GameInstance.audio.playSound(3);
             }
         }
 

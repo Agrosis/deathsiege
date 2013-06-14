@@ -43,18 +43,16 @@ public class Player extends Living {
 
         inventory = new ArrayList<Tool>();
 
-        inventory.add(new Woodaxe(this));
+
         inventory.add(new Shotgun(this));
-        inventory.add(new TwinBlaster(this));
+        //inventory.add(new TwinBlaster(this));
         inventory.add(new Crossbow(this));
-        inventory.add(new SentryGunItem(this));
+        inventory.add(new Woodaxe(this));
+        //inventory.add(new SentryGunItem(this));
 
         curwep = inventory.get(selected);
 
         this.mask = new Sphere(pos, 1f);
-
-
-
         gravity = -0.05f;
     }
 
@@ -81,6 +79,8 @@ public class Player extends Living {
             if(stamina > 300)
                 stamina = 300;
         }
+
+        pos.debug();
 
         if(stamina <= 0) {
             camera.setRunning(false);
@@ -125,30 +125,19 @@ public class Player extends Living {
                     r = (Ladder) e;
                     break;
                 }
-            } else if(e instanceof Ammo) {
-                Ammo a = (Ammo) e;
-                if(curwep instanceof Weapon) {
-                    if(a.getWeaponType() == ((Weapon)curwep).getWeaponType()) {
-                        if(CollisionSystem.sphereSphere(new Sphere(pos.copy(), 2), (Sphere)e.getCollisionMask())) {
-                            ((Weapon)curwep).giveAmmo(a.getAmount());
-                            e.setExpired(true);
-                        }
-                    }
-                }
             }
         }
 
-
-
         if(weaponRest > 0)
             weaponRest --;
-
 
         if(change == 1) {
             changestat -= 0.1f;
             if(changestat <= -1) {
                 change = 2;
                 changestat = -1;
+                if(Input.curnum > inventory.size())
+                    Input.curnum = inventory.size();
                 curwep = inventory.get(Input.curnum-1);
                 cursel = Input.curnum-1;
             }
@@ -238,13 +227,13 @@ public class Player extends Living {
         this.updateMask();
 
         // walls code
-        /*ArrayList<Quad> ramps = level.getRamps();
+        ArrayList<Quad> ramps = level.getWalls();
         for(Quad ra : ramps) {
             Vector3D a;
             if((a = CollisionSystem.sphereQuad(new Sphere(this.pos, 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
                 camera.camera = a.copy();
             }
-        }*/
+        }
     }
 
     boolean is = false;

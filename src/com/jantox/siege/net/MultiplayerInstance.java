@@ -80,6 +80,8 @@ public class MultiplayerInstance {
                         level.fortress.open(p.read());
                     }
                 } else if(p.getHeader() == Protocol.SPAWN) {
+                    System.out.println("spawned");
+
                     int eid = p.readInteger();
 
                     int monstertype = p.read();

@@ -1,16 +1,17 @@
 package com.jantox.siege;
 
 import com.jantox.siege.entities.*;
+import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.net.MultiplayerInstance;
+import com.jantox.siege.sfx.AudioController;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
-import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
-import org.newdawn.slick.openal.SoundStore;
-import org.newdawn.slick.util.ResourceLoader;
+import org.newdawn.slick.opengl.TextureLoader;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -29,6 +30,8 @@ public class GameInstance {
 
     public static AudioController audio;
 
+    private BitmapFont font;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
@@ -44,6 +47,12 @@ public class GameInstance {
         level = new Level(new Player(new Camera(new Vector3D(0, 10, 0), width, height)));
         Entity.level = level;
         level.init();
+
+        try {
+            font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/generic_font.png"))), 8, 16);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if(multiplayer) {
             mpinstance = new MultiplayerInstance(level);
@@ -105,8 +114,11 @@ public class GameInstance {
 
         switch2D();
 
+        //font.drawText(" !\"", 30, 30);
         glDisable(GL_TEXTURE_2D);
         drawCrossheir();
+
+
 
         switch3D();
     }

@@ -1,6 +1,7 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
+import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
@@ -17,9 +18,9 @@ public class Kage extends Living {
 
     float gravity = 0;
 
-    private Endwek rider;
+    //private Endwek rider;
 
-    private com.jantox.siege.entities.map.ControlPoint target;
+    private Entity target;
 
     public Kage(Vector3D pos, float version, float angle) {
         super(pos, (int)(25 * version));
@@ -31,7 +32,7 @@ public class Kage extends Living {
 
         counter = rand.nextInt(256);
 
-        target = level.getRandomControlPoint();
+        target = level.getControlPoint(rand.nextInt(5));
 
         /*if(rand.nextInt() % 1 == 0) {
             this.rider = new Endwek(this.pos.copy(), 2);
@@ -46,14 +47,15 @@ public class Kage extends Living {
         counter += 0.1f;
         mask.update(pos);
 
-        if(rider != null) {
+        /*if(rider != null) {
             rider.viewangle = this.viewangle;
             rider.pos = this.pos.copy();
             rider.pos.y += 2;
-        }
+        }*/
 
         if(this.pos.distanceSquared(target.getPosition()) <= 5 * 5) {
             this.expired = true;
+            SpawnerFactory.monstersleft --;
         }
 
         Vector3D cam = target.getPosition();
@@ -68,9 +70,9 @@ public class Kage extends Living {
         vel.y = 0;
 
         if(gravity == 0) {
-            gravity = (version * 0.2f);
+            gravity = 0.6f;
         } else {
-            gravity -= 0.01;
+            gravity -= 0.02;
         }
 
         pos.y += gravity;
@@ -118,8 +120,8 @@ public class Kage extends Living {
         GL11.glCallList(Resources.getModel(3));
         GL11.glPopMatrix();
 
-        if(rider != null) {
+        /*if(rider != null) {
             rider.render();
-        }
+        }*/
     }
 }

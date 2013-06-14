@@ -54,6 +54,8 @@ public class Level {
         //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
 
         walls = new ArrayList<Quad>();
+        walls.add(new Quad(new Vector3D(155, 0, 160), new Vector3D(-530, 0, 160), new Vector3D(-530, 20, 160), new Vector3D(155, 20, 160)));
+        walls.add(new Quad(new Vector3D(155, 0, -160), new Vector3D(-530, 0, -160), new Vector3D(-530, 20, -160), new Vector3D(155, 20, -160)));
         //ramps.add(new Quad(new Vector3D(15, -2, 15),new Vector3D(18, -2, 15),new Vector3D(18, 1, 15),new Vector3D(15, 1, 15)));
 
         ramps = new ArrayList<Quad>();
@@ -68,37 +70,27 @@ public class Level {
 
     public void init() {
         points = new ControlPoint[5];
-        points[0] = new ControlPoint(new Vector3D(0, -1.9999999, 0));
-        points[1] = new ControlPoint(new Vector3D(-40, -1.9999999, -40));
-        points[2] = new ControlPoint(new Vector3D(40, -1.9999999, -40));
-        points[3] = new ControlPoint(new Vector3D(40, -1.9999999, 40));
-        points[4] = new ControlPoint(new Vector3D(-40, -1.9999999, 40));
+        points[0] = new ControlPoint(new Vector3D(-500, -1.9999999, 100));
+        points[1] = new ControlPoint(new Vector3D(-500, -1.9999999, 50));
+        points[2] = new ControlPoint(new Vector3D(-500, -1.9999999, 0));
+        points[3] = new ControlPoint(new Vector3D(-500, -1.9999999, -50));
+        points[4] = new ControlPoint(new Vector3D(-500, -1.9999999, -100));
+
+        spawn(new Kage(new Vector3D(),3,1));
 
         /*this.spawn(new Spawner(new Vector3D(85, 1.7f, 85)));
         this.spawn(new Spawner(new Vector3D(85, 1.7f, -85)));
         this.spawn(new Spawner(new Vector3D(-85, 1.7f, -85)));
         this.spawn(new Spawner(new Vector3D(-85, 1.7f, 85)));*/
 
+        this.spawn(new Helicopter(new Vector3D(100, 4, -100)));
+
         this.spawn((fortress = new Fortress()));
         spawnerFactory.fortress = fortress;
 
-        for(int i = 9; i < 190; i+=5) {
-            this.spawn(new Path(new Vector3D(i + 1, 0, 0)));
-        }
+        this.spawn(new Decoration(new Vector3D(-400, 0, 0), new Vector3D(0.3, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
 
-        for(int i = -9; i > -190; i-=5) {
-            this.spawn(new Path(new Vector3D(i - 1, 0, 0)));
-        }
-
-        for(int i = 9; i < 190; i+=5) {
-            this.spawn(new Path(new Vector3D(0, 0, i + 1)));
-        }
-
-        for(int i = -9; i > -190; i-=5) {
-            this.spawn(new Path(new Vector3D(0, 0, i - 1)));
-        }
-
-        this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.14, 0.14, 0.14), new Vector3D(-90, 0, 0), 2));
+        /*this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.14, 0.14, 0.14), new Vector3D(-90, 0, 0), 2));
 
         this.spawn(new Decoration(new Vector3D(140, 0, 140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
         this.spawn(new Decoration(new Vector3D(-140, 0, 140), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 23));
@@ -108,7 +100,7 @@ public class Level {
         this.spawn(new Decoration(new Vector3D(50, 0, 50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
         this.spawn(new Decoration(new Vector3D(-50, 0, 50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 270, 0), 22));
         this.spawn(new Decoration(new Vector3D(-50, 0, -50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 180, 0), 22));
-        this.spawn(new Decoration(new Vector3D(50, 0, -50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 90, 0), 22));
+        this.spawn(new Decoration(new Vector3D(50, 0, -50), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 90, 0), 22));*/
 
         /*this.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
         this.spawn(new Decoration(new Vector3D(-40, 0, -40), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
@@ -204,13 +196,13 @@ public class Level {
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(0).getTextureID());
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
-        glVertex3f(-300, -2, -300);
+        glVertex3f(-700, -2, -700);
         glTexCoord2f(50, 0);
-        glVertex3f(300, -2, -300);
+        glVertex3f(700, -2, -700);
         glTexCoord2f(50, 50);
-        glVertex3f(300, -2, 300);
+        glVertex3f(700, -2, 700);
         glTexCoord2f(0, 50);
-        glVertex3f(-300, -2, 300);
+        glVertex3f(-700, -2, 700);
         glEnd();
 
         glPopMatrix();
