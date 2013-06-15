@@ -9,16 +9,13 @@ import com.jantox.siege.entities.map.*;
 
 public class Siege extends Gamemode {
 
+    private Fortress fortress;
     private ControlPoint points[];
 
     public Siege(Level level) {
         super(level);
 
         points = new ControlPoint[5];
-
-        lastsec = System.currentTimeMillis();
-
-        spawnpoint = this.getRandomSpawnPoint();
     }
 
     @Override
@@ -41,7 +38,8 @@ public class Siege extends Gamemode {
         level.spawn(new Ladder(new Vector3D(-7.1, 5, -5)));
         level.spawn(new Ladder(new Vector3D(-7.1, 10, -5)));
 
-        level.spawn((level.fortress = new Fortress()));
+        level.spawn((level.fortress = this.fortress = new Fortress()));
+        spawnpoint = this.getRandomSpawnPoint();
 
         for(int i = 9; i < 160; i+=5) {
             level.spawn(new Path(new Vector3D(i + 1, 0, 0)));
@@ -105,46 +103,59 @@ public class Siege extends Gamemode {
 
         level.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
         level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
+
+        lastsec = System.currentTimeMillis();
     }
 
     private long lastsec;
     private long seconds;
 
     private Vector3D spawnpoint;
-    boolean spawned = false;
+    private int gate;
+    private boolean spawned = false;
 
     @Override
     public void update() {
         if(System.currentTimeMillis() - lastsec >= 1000) {
             lastsec = System.currentTimeMillis();
-            seconds++;
             spawned = true;
+
+            if(fortress.isOpen(gate)) {
+                seconds++;
+            }
         }
 
         if(seconds == 30) {
             seconds = 0;
+            fortress.close(gate);
             this.spawnpoint = this.getRandomSpawnPoint();
         }
 
-        if(seconds % 2 == 0 && spawned) {
-            spawned = false;
-            if(Entity.rand.nextInt() % 2 == 0) {
-                level.spawn(new Kage(spawnpoint.copy(), Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
-            } else {
-                level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)]));
+        if(fortress.isOpen(gate)) {
+            if(seconds % 2 == 0 && spawned) {
+                spawned = false;
+                if(Entity.rand.nextInt() % 2 == 0) {
+                    level.spawn(new Kage(spawnpoint.copy(), Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
+                } else {
+                    level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)]));
+                }
             }
         }
     }
 
     public Vector3D getRandomSpawnPoint() {
         int r = Entity.rand.nextInt(4);
-        if(r == 0) {
+        gate = r;
+
+        fortress.open(gate);
+
+        if(r == 1) {
             return new Vector3D(210, 0, 0);
-        } else if(r == 1) {
+        } else if(r == 3) {
             return new Vector3D(-210, 0, 0);
         } else if(r == 2) {
             return new Vector3D(0, 0, 210);
-        } else if(r == 3) {
+        } else if(r == 0) {
             return new Vector3D(0, 0, -210);
         }
         return null;

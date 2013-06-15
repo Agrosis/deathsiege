@@ -67,32 +67,41 @@ public class Fortress extends Entity {
         }
 
         glPushMatrix();
-        /*glDisable(GL_TEXTURE_2D);
+        glDisable(GL_TEXTURE_2D);
 
+        // east
         glPushMatrix();
-        glTranslatef(165, -4 + gate[0], 0);
+        glTranslatef(225, -4 + gate[1], 0);
         glRotatef(90, 0, 1, 0);
-        glScalef(3.1f, 4f, 3.1f);
+        glScalef(3.6f, 5f, 3.6f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
-        glEnable(GL_TEXTURE_2D);
 
+        // west
         glPushMatrix();
-        glTranslatef(165, -4 + gate[1], 77);
+        glTranslatef(-225, -4 + gate[3], 0);
         glRotatef(90, 0, 1, 0);
-        glScalef(3.1f, 4f, 3.1f);
+        glScalef(3.6f, 5f, 3.6f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
-        glEnable(GL_TEXTURE_2D);
 
+        // north
         glPushMatrix();
-        glTranslatef(165, -4 + gate[2], -77);
-        glRotatef(90, 0, 1, 0);
-        glScalef(3.1f, 4f, 3.1f);
+        glTranslatef(0, -4 + gate[0], -225);
+        //glRotatef(90, 0, 1, 0);
+        glScalef(3.6f, 5f, 3.6f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
-        glEnable(GL_TEXTURE_2D);*/
 
+        // south
+        glPushMatrix();
+        glTranslatef(0, -4 + gate[2], 225);
+        //glRotatef(90, 0, 1, 0);
+        glScalef(3.6f, 5f, 3.6f);
+        glCallList(Resources.getModel(25));
+        glPopMatrix();
+
+        // stone wall
         glTranslatef(0, -7, 0);
         glRotatef(-90, 1, 0, 0);
         glScalef(0.35f, 0.35f, 0.35f);
