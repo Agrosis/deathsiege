@@ -1,8 +1,8 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
 import org.lwjgl.opengl.GL11;
@@ -12,31 +12,21 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 public class Kage extends Living {
 
     float viewangle = 0f;
-
-    float counter = 0;
     float version;
 
     float gravity = 0;
 
-    //private Endwek rider;
-
     private Entity target;
 
-    public Kage(Vector3D pos, float version, float angle) {
+    public Kage(Vector3D pos, float version, Entity target) {
         super(pos, (int)(25 * version));
         this.version = version;
+
+        this.target = target;
 
         pos.y -= version * 2;
 
         gravity = 0.2f;
-
-        counter = rand.nextInt(256);
-
-        target = level.getControlPoint(rand.nextInt(5));
-
-        /*if(rand.nextInt() % 1 == 0) {
-            this.rider = new Endwek(this.pos.copy(), 2);
-        }*/
 
         this.mask = new Sphere(pos, version * 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());
@@ -44,25 +34,18 @@ public class Kage extends Living {
 
     @Override
     public void update(float delta) {
-        counter += 0.1f;
         mask.update(pos);
 
-        /*if(rider != null) {
-            rider.viewangle = this.viewangle;
-            rider.pos = this.pos.copy();
-            rider.pos.y += 2;
-        }*/
-
-        if(this.pos.distanceSquared(target.getPosition()) <= 5 * 5) {
-            this.expired = true;
-            SpawnerFactory.monstersleft --;
+        if(pos.distanceSquared(target.getPosition()) <= 5 * 5) {
+            ((ControlPoint)target).attack();
+            this.setExpired(true);
         }
 
         Vector3D cam = target.getPosition();
 
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);
         vel.normalize();
-        vel.divide(7);
+        vel.divide(5);
 
         //Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.KageParticle()));
         //Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.KageParticle()));

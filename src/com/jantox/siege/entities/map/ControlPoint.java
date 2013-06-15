@@ -8,13 +8,23 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ControlPoint extends Entity {
 
+    int health;
+
     public ControlPoint(Vector3D pos) {
         super(pos);
+
+        this.health = 10;
     }
 
     @Override
     public void update(float delta) {
 
+    }
+
+    public void attack() {
+        health--;
+        if(health < 0)
+            health = 0;
     }
 
     @Override

@@ -53,7 +53,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/stump.obj"));
         models.add(objloader.loadOBJModel("models/log.obj"));
         models.add(objloader.loadOBJModel("models/ladder.obj"));
-        models.add(objloader.loadOBJModel("models/fence.obj"));
+        models.add(objloader.loadOBJModel("models/sniper.obj"));
         models.add(objloader.loadOBJModel("models/ammo.obj"));
         models.add(objloader.loadOBJModel("models/sentry_bottom.obj"));
         models.add(objloader.loadOBJModel("models/sentry_top.obj"));
@@ -65,7 +65,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/zfeet_l.obj"));
         models.add(objloader.loadOBJModel("models/building3.obj"));
         models.add(objloader.loadOBJModel("models/building4.obj"));
-        models.add(objloader.loadOBJModel("models/fortress2.obj"));
+        models.add(objloader.loadOBJModel("models/fortress.obj"));
         models.add(objloader.loadOBJModel("models/gatepost.obj"));
         models.add(objloader.loadOBJModel("models/zombie_body.obj"));
         models.add(objloader.loadOBJModel("models/helicopter_body.obj"));

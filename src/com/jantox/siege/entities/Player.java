@@ -10,7 +10,6 @@ import com.jantox.siege.geometry.AABB;
 import com.jantox.siege.geometry.CollisionSystem;
 import com.jantox.siege.geometry.Quad;
 import com.jantox.siege.geometry.Sphere;
-import com.jantox.siege.level.Level;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class Player extends Living {
         inventory = new ArrayList<Tool>();
 
 
-        inventory.add(new Shotgun(this));
+        inventory.add(new Sniper(this));
         //inventory.add(new TwinBlaster(this));
         inventory.add(new Crossbow(this));
         inventory.add(new Woodaxe(this));
@@ -79,8 +78,6 @@ public class Player extends Living {
             if(stamina > 300)
                 stamina = 300;
         }
-
-        pos.debug();
 
         if(stamina <= 0) {
             camera.setRunning(false);

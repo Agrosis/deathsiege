@@ -1,13 +1,13 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.ai.AISet;
+import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.geometry.Sphere;
 import org.lwjgl.opengl.GL11;
 
-public class Endwek extends MultiplayerLiving {
+public class Endwek extends Living {
 
     float gravity = 0;
     float viewangle = 0f;
@@ -15,18 +15,13 @@ public class Endwek extends MultiplayerLiving {
     private AISet ai;
 
     private Entity target;
-    private boolean giant = false;
 
-    public Endwek(Vector3D pos, int cid, int eid) {
-        super(pos, 100, eid);
+    public Endwek(Vector3D pos, Entity target) {
+        super(pos, 100);
 
         gravity = 0.2f;
 
-        if(eid == 1) {
-            giant = true;
-        }
-
-        target = level.getControlPoint(cid);
+        this.target = target;
 
         this.mask = new Sphere(pos, 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());
@@ -38,18 +33,14 @@ public class Endwek extends MultiplayerLiving {
 
         if(health <= 0) {
             this.expired = true;
-            SpawnerFactory.monstersleft --;
+            //SpawnerFactory.monstersleft --;
         }
 
         Vector3D cam = target.getPosition();
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);
         vel.normalize();
         vel.y = 0;
-
-        if(!giant)
-            vel.divide(13);
-        else
-            vel.divide(3);
+        vel.divide(7);
 
         pos.add(vel);
 
@@ -62,6 +53,11 @@ public class Endwek extends MultiplayerLiving {
             viewangle -= 1f;
             if(viewangle < ang)
                 viewangle = (float) ang;
+        }
+
+        if(pos.distanceSquared(target.getPosition()) <= 5 * 5) {
+            ((ControlPoint)target).attack();
+            this.setExpired(true);
         }
     }
 
@@ -93,12 +89,7 @@ public class Endwek extends MultiplayerLiving {
 
         pos.y = 0;
         GL11.glTranslatef((float)pos.x, (float)pos.y - 1f, (float)pos.z);
-        if(giant) {
-            GL11.glTranslatef(0, 7.5f, 0);
-        }
 
-        if(giant)
-            GL11.glScalef(9f, 9f, 9f);
         GL11.glRotatef(-viewangle-90, 0, 1, 0);
         GL11.glCallList(Resources.getModel(18));
         GL11.glCallList(Resources.getModel(26));

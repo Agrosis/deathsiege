@@ -5,7 +5,6 @@ import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.geometry.AABB;
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.particle.Particle;
 import com.jantox.siege.particle.ParticleBehavior;
 import org.newdawn.slick.opengl.Texture;
@@ -40,7 +39,7 @@ public class Spawner extends Living {
 
         ticks++;
         if(ticks % 500 == 0) {
-            level.spawn(new Endwek(this.pos.copy().getCloseTo(1), 1, 1));
+            //level.spawn(new Endwek(this.pos.copy().getCloseTo(1), 1, 1));
         }
 
         if(pos.y < 0.0f) {
@@ -50,7 +49,7 @@ public class Spawner extends Living {
         }
 
         if(expired) {
-            SpawnerFactory.ACTIVE_SPAWNERS --;
+            //SpawnerFactory.ACTIVE_SPAWNERS --;
         }
 
         if(expired) {

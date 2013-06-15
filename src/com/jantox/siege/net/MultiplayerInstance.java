@@ -91,8 +91,8 @@ public class MultiplayerInstance {
                     float z = p.readFloat();
 
                     if(monstertype == 0) {
-                        Endwek e = new Endwek(new Vector3D(x, y, z), p.read(), eid);
-                        level.spawn(e);
+                        //Endwek e = new Endwek(new Vector3D(x, y, z), p.read(), eid);
+                        //level.spawn(e);
                     }
                 } else if(p.getHeader() == Protocol.ENTITY_POSITION) {
                     int eid = p.readInteger();

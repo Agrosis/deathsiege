@@ -27,17 +27,10 @@ public class Helicopter extends Entity {
     public void render() {
         glPushMatrix();
 
-        float vangle = (float)this.pos.angleXZ(target);
-        vangle += 180 + 90;
-        System.out.println(vangle);
+        glTranslatef((float)pos.x, (float)pos.y + 150, (float)pos.z);
 
-        vangle = 0;
+        glScalef(8,8,8);
 
-        glTranslatef((float)pos.x, (float)pos.y + 80, (float)pos.z);
-
-        glScalef(5, 5, 5);
-
-        glRotatef(vangle, 0, 1, 0);
         glCallList(Resources.getModel(27));
 
         glRotatef(angle, 0, 1, 0);

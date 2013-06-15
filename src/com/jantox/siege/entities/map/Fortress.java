@@ -67,7 +67,7 @@ public class Fortress extends Entity {
         }
 
         glPushMatrix();
-        glDisable(GL_TEXTURE_2D);
+        /*glDisable(GL_TEXTURE_2D);
 
         glPushMatrix();
         glTranslatef(165, -4 + gate[0], 0);
@@ -91,11 +91,11 @@ public class Fortress extends Entity {
         glScalef(3.1f, 4f, 3.1f);
         glCallList(Resources.getModel(25));
         glPopMatrix();
-        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);*/
 
-        glTranslatef(0, -3, 0);
+        glTranslatef(0, -7, 0);
         glRotatef(-90, 1, 0, 0);
-        glScalef(0.25f, 0.25f, 0.2f);
+        glScalef(0.35f, 0.35f, 0.35f);
         glCallList(Resources.getModel(24));
         glPopMatrix();
     }
