@@ -15,13 +15,16 @@ public class Endwek extends Living {
     private AISet ai;
 
     private Entity target;
+    private boolean giant;
 
-    public Endwek(Vector3D pos, Entity target) {
+    public Endwek(Vector3D pos, Entity target, boolean giant) {
         super(pos, 100);
 
         gravity = 0.2f;
 
         this.target = target;
+
+        this.giant = giant;
 
         this.mask = new Sphere(pos, 2);
         this.viewangle = (float)this.pos.angleXZ(target.getPosition());
@@ -40,7 +43,10 @@ public class Endwek extends Living {
         Vector3D vel = new Vector3D(cam.x - pos.x, cam.y - pos.y, cam.z - pos.z);
         vel.normalize();
         vel.y = 0;
-        vel.divide(7);
+        if(giant)
+            vel.divide(7);
+        else
+            vel.divide(7);
 
         pos.add(vel);
 
@@ -89,6 +95,11 @@ public class Endwek extends Living {
 
         pos.y = 0;
         GL11.glTranslatef((float)pos.x, (float)pos.y - 1f, (float)pos.z);
+        if(giant)
+            GL11.glTranslatef(0, 11, 0);
+
+        if(giant)
+            GL11.glScalef(12,12,12);
 
         GL11.glRotatef(-viewangle-90, 0, 1, 0);
         GL11.glCallList(Resources.getModel(18));

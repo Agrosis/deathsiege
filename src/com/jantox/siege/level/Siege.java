@@ -12,6 +12,15 @@ public class Siege extends Gamemode {
     private Fortress fortress;
     private ControlPoint points[];
 
+    private int wave = 0;
+
+    private long lastsec;
+    private long seconds;
+
+    private Vector3D spawnpoint;
+    private int gate;
+    private boolean spawned = false;
+
     public Siege(Level level) {
         super(level);
 
@@ -31,7 +40,7 @@ public class Siege extends Gamemode {
         level.spawn(points[3]);
         level.spawn(points[4]);
 
-        level.spawn(new Helicopter(new Vector3D()));
+        level.spawn(new Helicopter(new Vector3D(50, 0, 50)));
 
         level.spawn(new Ladder(new Vector3D(-7.1, 0, -5)));
         level.spawn(new Ladder(new Vector3D(-7.1, -5, -5)));
@@ -107,13 +116,6 @@ public class Siege extends Gamemode {
         lastsec = System.currentTimeMillis();
     }
 
-    private long lastsec;
-    private long seconds;
-
-    private Vector3D spawnpoint;
-    private int gate;
-    private boolean spawned = false;
-
     @Override
     public void update() {
         if(System.currentTimeMillis() - lastsec >= 1000) {
@@ -132,13 +134,14 @@ public class Siege extends Gamemode {
         }
 
         if(fortress.isOpen(gate)) {
-            if(seconds % 2 == 0 && spawned) {
+            if(seconds % 20 == 0 && spawned) {
                 spawned = false;
-                if(Entity.rand.nextInt() % 2 == 0) {
+                level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)], true));
+                /*if(Entity.rand.nextInt() % 30 == 0) {
                     level.spawn(new Kage(spawnpoint.copy(), Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
                 } else {
-                    level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)]));
-                }
+                    level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)], true));
+                }*/
             }
         }
     }
@@ -150,13 +153,13 @@ public class Siege extends Gamemode {
         fortress.open(gate);
 
         if(r == 1) {
-            return new Vector3D(210, 0, 0);
+            return new Vector3D(220, 0, 0);
         } else if(r == 3) {
-            return new Vector3D(-210, 0, 0);
+            return new Vector3D(-220, 0, 0);
         } else if(r == 2) {
-            return new Vector3D(0, 0, 210);
+            return new Vector3D(0, 0, 220);
         } else if(r == 0) {
-            return new Vector3D(0, 0, -210);
+            return new Vector3D(0, 0, -220);
         }
         return null;
     }

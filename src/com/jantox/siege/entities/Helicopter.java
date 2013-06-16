@@ -20,14 +20,14 @@ public class Helicopter extends Entity {
     public void update(float delta) {
         angle += 15;
 
-        this.pos.x --;
+        //this.pos.x --;
     }
 
     @Override
     public void render() {
         glPushMatrix();
 
-        glTranslatef((float)pos.x, (float)pos.y + 150, (float)pos.z);
+        glTranslatef((float)pos.x, (float)pos.y + 40, (float)pos.z);
 
         glScalef(8,8,8);
 
