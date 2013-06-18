@@ -35,7 +35,7 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/stone.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_tree.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_spawner.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/wave_complete.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,8 +68,9 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/fortress.obj"));
         models.add(objloader.loadOBJModel("models/gatepost.obj"));
         models.add(objloader.loadOBJModel("models/zombie_body.obj"));
-        models.add(objloader.loadOBJModel("models/helicopter_body.obj"));
+        models.add(objloader.loadOBJModel("models/helicopter_body2.obj"));
         models.add(objloader.loadOBJModel("models/helicopter_wing.obj"));
+        models.add(objloader.loadOBJModel("models/blastbullet.obj")); // 29
     }
 
     public Texture get(int id) {

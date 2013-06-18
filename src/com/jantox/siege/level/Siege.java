@@ -14,8 +14,17 @@ public class Siege extends Gamemode {
 
     private int wave = 0;
 
+    public static float GATE_SPEED = 0.05f;
+    public static int MONSTERS_LEFT = 0;
+
+    private int GATES_OPEN = 1;
+    private int MONSTER_TYPE = 1;
+    private int SPAWN_DELAY = 3;
+    private int SPAWN_NUMBER = 1;
+
     private long lastsec;
     private long seconds;
+    private long breaktime = -1;
 
     private Vector3D spawnpoint;
     private int gate;
@@ -49,6 +58,7 @@ public class Siege extends Gamemode {
 
         level.spawn((level.fortress = this.fortress = new Fortress()));
         spawnpoint = this.getRandomSpawnPoint();
+        MONSTERS_LEFT = 5;
 
         for(int i = 9; i < 160; i+=5) {
             level.spawn(new Path(new Vector3D(i + 1, 0, 0)));
@@ -116,32 +126,70 @@ public class Siege extends Gamemode {
         lastsec = System.currentTimeMillis();
     }
 
+    public void nextWave() {
+        System.out.println("Wave " + (++wave) + " is complete!");
+
+        breaktime = 30;
+        fortress.close(gate);
+        gate = -1;
+
+        MONSTERS_LEFT = wave * 2 + 5;
+
+        if(wave % 7 == 0) {
+            SPAWN_NUMBER++;
+            SPAWN_DELAY ++;
+        }
+        if(wave % 10 == 0) {
+            //GATES_OPEN ++;
+            //SPAWN_DELAY ++;
+        }
+
+        level.removeAllMonsters();
+    }
+
     @Override
     public void update() {
         if(System.currentTimeMillis() - lastsec >= 1000) {
             lastsec = System.currentTimeMillis();
             spawned = true;
 
-            if(fortress.isOpen(gate)) {
-                seconds++;
+            if(gate != -1)
+                if(fortress.isOpen(gate)) {
+                    seconds++;
+                }
+
+            if(breaktime > -1) {
+                breaktime--;
+                System.out.println("Next wave in " + breaktime + "...");
             }
         }
 
-        if(seconds == 30) {
-            seconds = 0;
-            fortress.close(gate);
-            this.spawnpoint = this.getRandomSpawnPoint();
-        }
+        if(breaktime == -1) {
+            if(gate == -1) {
+                spawnpoint = this.getRandomSpawnPoint();
+            }
 
-        if(fortress.isOpen(gate)) {
-            if(seconds % 20 == 0 && spawned) {
-                spawned = false;
-                level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)], true));
-                /*if(Entity.rand.nextInt() % 30 == 0) {
-                    level.spawn(new Kage(spawnpoint.copy(), Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
-                } else {
-                    level.spawn(new Endwek(spawnpoint.copy(), points[Entity.rand.nextInt(5)], true));
-                }*/
+            if(seconds == 30) {
+                seconds = 0;
+                fortress.close(gate);
+                this.spawnpoint = this.getRandomSpawnPoint();
+            }
+
+            if(fortress.isOpen(gate) && MONSTERS_LEFT > 0) {
+                if(seconds % 3 == 0 && spawned) {
+                    spawned = false;
+                    for(int i = 0; i < SPAWN_NUMBER; i++) {
+                        if(Entity.rand.nextInt(2) % 2 != 0) {
+                            level.spawn(new Kage(spawnpoint.getCloseTo(8), Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
+                        } else {
+                            level.spawn(new Endwek(spawnpoint.getCloseTo(8), points[Entity.rand.nextInt(5)], false));
+                        }
+                    }
+                }
+            }
+
+            if(MONSTERS_LEFT <= 0) {
+                nextWave();
             }
         }
     }

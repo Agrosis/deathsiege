@@ -13,6 +13,8 @@ public class AudioController {
     Audio switch_tool;
     Audio crossbow;
     Audio getcoin;
+    Audio hit;
+    Audio headshot;
 
     public AudioController() {
         try {
@@ -20,6 +22,8 @@ public class AudioController {
             switch_tool = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/switch_tool.wav"));
             crossbow = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/crossbow_shot.wav"));
             getcoin = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/getcoin.wav"));
+            hit = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/hit.wav"));
+            headshot = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/headshot.wav"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,6 +38,10 @@ public class AudioController {
             crossbow.playAsSoundEffect(1f,1f,false);
         } else if(i == 3) {
             getcoin.playAsSoundEffect(1f,1f,false);
+        } else if(i == 4) {
+            hit.playAsSoundEffect(1f,1f,false);
+        } else if(i == 5) {
+            headshot.playAsSoundEffect(1f,1f,false);
         }
     }
 

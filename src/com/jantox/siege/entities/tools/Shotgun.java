@@ -29,14 +29,20 @@ public class Shotgun extends Tool {
     }
 
     public void update(float delta) {
-
+        if(reload > 0) {
+            reload --;
+            if(reload == 0) {
+                GameInstance.audio.playSound(1);
+                reload = -1;
+            }
+        }
     }
 
     @Override
     public void onUse(int mouse) {
         use = true;
         if(mouse == 0) {
-            Entity.level.spawn(new Bullet(powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector(), new Vector3D(1f, -1.5f, 1.5f)));
+            level.addProjectile(new Projectile(Projectile.SHOTGUN, powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector()));
             //Entity.level.spawn(new Bullet(powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector(), new Vector3D(1f, -1.5f, 1.5f)));
             Vector3D hp = powner.getCamera().getHoldingPosition().copy();
             hp.x += rand.nextGaussian();
@@ -45,8 +51,15 @@ public class Shotgun extends Tool {
 
             GameInstance.audio.playSound(0);
             this.blasts.add(new Shot(hp,  new Vector3D(1f, -1.5f, 1.5f)));
+
+            reload = 10;
+
+            //Vector3D dir = powner.getCamera().getDirectionVector();
+            //level.spawn(new Blast(powner.getCamera().getHoldingPosition(), dir, new Vector3D(0.5f, -0.75f, -0.2f)));
         }
     }
+
+    int reload = -1;
 
     @Override
     public void onRelease() {
@@ -55,7 +68,7 @@ public class Shotgun extends Tool {
 
     @Override
     public int getRest() {
-        return 10;
+        return 20;
     }
 
     @Override

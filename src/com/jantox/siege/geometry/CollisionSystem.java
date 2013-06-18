@@ -61,7 +61,7 @@ public class CollisionSystem {
         return false;
     }
 
-    public static boolean raySphere(Ray r, Sphere s) {
+    public static boolean raySphere(Ray r, Sphere s, Vector3D res) {
         Vector3D rs = r.getPosition().copy();
         Vector3D rd = r.getDirection().copy();
         Vector3D sp = s.getPosition().copy();
@@ -77,6 +77,11 @@ public class CollisionSystem {
         // intersection points on the ray
         double t1 = (-b + Math.sqrt(disc)) / 2;
         double t2 = (-b - Math.sqrt(disc)) / 2;
+
+        if(res != null) {
+            res.x = t1;
+            res.y = t2;
+        }
 
         if(t1 < 0 && t2 < 0)
             return false;

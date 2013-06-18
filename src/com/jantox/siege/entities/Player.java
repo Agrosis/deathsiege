@@ -44,6 +44,7 @@ public class Player extends Living {
 
 
         inventory.add(new Shotgun(this));
+        inventory.add(new Sniper(this));
         inventory.add(new Crossbow(this));
         inventory.add(new Woodaxe(this));
 
@@ -87,7 +88,7 @@ public class Player extends Living {
             if(Input.curnum-1 < inventory.size() && change == 0) {
                 change = 1;
                 changestat = 0;
-                GameInstance.audio.playSound(1);
+                //GameInstance.audio.playSound(1);
             }
         }
 
@@ -223,12 +224,18 @@ public class Player extends Living {
 
         // walls code
         ArrayList<Quad> ramps = level.getWalls();
+        Vector3D vel = new Vector3D();
         for(Quad ra : ramps) {
             Vector3D a;
             if((a = CollisionSystem.sphereQuad(new Sphere(this.pos, 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                camera.camera = a.copy();
+                //camera.camera = a.copy();
+                Vector3D xv = a.copy();
+                xv.subtract(camera.camera);
+
+                vel.add(xv);
             }
         }
+        camera.camera.add(vel);
     }
 
     boolean is = false;

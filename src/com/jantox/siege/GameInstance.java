@@ -20,6 +20,8 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class GameInstance {
 
+    public static boolean sniper;
+
     private int width, height;
 
     private Level level;
@@ -114,11 +116,40 @@ public class GameInstance {
 
         switch2D();
 
-        //font.drawText(" !\"", 30, 30);
         glDisable(GL_TEXTURE_2D);
         drawCrossheir();
 
+        if (sniper) {
+            glColor3f(0,0,0);
+            glBegin(GL_QUADS);
+            glVertex2f(0, 0);
+            glVertex2f(100, 0);
+            glVertex2f(100, 600);
+            glVertex2f(0, 600);
 
+            glVertex2f(700, 0);
+            glVertex2f(800, 0);
+            glVertex2f(800, 600);
+            glVertex2f(700, 600);
+            glEnd();
+
+            glColor3f(1,1,1);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(9).getTextureID());
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(0, 0);
+            glVertex2f(100, 0);
+            glTexCoord2f(1, 0);
+            glVertex2f(700, 0);
+            glTexCoord2f(1,1);
+            glVertex2f(700, 600);
+            glTexCoord2f(0, 1);
+            glVertex2f(100, 600);
+            glEnd();
+        }
+
+        //font.drawText(" !\"", 30, 30);
 
         switch3D();
     }

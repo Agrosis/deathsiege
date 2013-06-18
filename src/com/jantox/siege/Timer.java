@@ -19,7 +19,7 @@ public class Timer {
 
     public void update() {
         if(this.getTime() - this.lastfps > 1000) {
-            System.out.println("FPS: " + fps);
+            //System.out.println("FPS: " + fps);
             fps = 0;
             lastfps += 1000;
         }

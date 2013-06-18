@@ -5,6 +5,7 @@ import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
+import com.jantox.siege.level.Siege;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.glRotatef;
@@ -81,6 +82,7 @@ public class Kage extends Living {
 
         if(this.health < 0) {
             if(!expired) {
+                Siege.MONSTERS_LEFT--;
                 for(int i = 0; i < 10; i++) {
                     level.spawn(new Gem(this.pos.copy()));
                 }

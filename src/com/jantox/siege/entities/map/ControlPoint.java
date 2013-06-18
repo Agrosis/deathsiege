@@ -2,6 +2,7 @@ package com.jantox.siege.entities.map;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.entities.Endwek;
 import com.jantox.siege.entities.Entity;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,9 +17,17 @@ public class ControlPoint extends Entity {
         this.health = 10;
     }
 
+    int lastspawn = 0;
+
     @Override
     public void update(float delta) {
-
+        if(health <= 0) {
+            lastspawn++;
+            if(lastspawn == 60 * 4) {
+                lastspawn = 0;
+                level.spawn(new Endwek(this.pos.copy(), level.getPlayer(), false));
+            }
+        }
     }
 
     public void attack() {

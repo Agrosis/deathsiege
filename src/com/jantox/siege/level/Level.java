@@ -5,11 +5,13 @@ import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Tree;
 import com.jantox.siege.entities.tools.Bullet;
+import com.jantox.siege.entities.tools.Projectile;
 import com.jantox.siege.geometry.*;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.particle.Particle;
 import com.jantox.siege.particle.ParticleBehavior;
 import com.jantox.siege.particle.ParticleSystem;
+import org.lwjgl.util.glu.Project;
 
 import java.util.ArrayList;
 
@@ -32,24 +34,30 @@ public class Level {
 
     public static ParticleSystem psys;
 
+    private ArrayList<Projectile> projectiles;
+
     private Gamemode gamemode;
 
     public Level(Player player) {
         this.player = player;
         this.camera = player.getCamera();
 
+        projectiles = new ArrayList<Projectile>();
+
         multiplayers = new ArrayList<MultiplayerLiving>();
 
         this.entities = new ArrayList<Entity>();
         floors = new ArrayList<Quad>();
         floors.add(new Quad(new Vector3D(-2000, 0, -2000), new Vector3D(2000, 0, -2000), new Vector3D(2000, 0, 2000), new Vector3D(-2000, 0, 2000)));
-        floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
+        //floors.add(new Quad(new Vector3D(-10, 15, -10),new Vector3D(10, 15, -10),new Vector3D(10, 15, 10),new Vector3D(-10, 15, 10)));
         //floors.add(new Quad(new Vector3D(20, 3, 13), new Vector3D(20, 3, 15), new Vector3D(25, 3, 15), new Vector3D(25, 3, 13)));
         //floors.add(new Quad(new Vector3D(23, 3, 13), new Vector3D(25, 3, 13), new Vector3D(25, 3, 5), new Vector3D(23, 3, 5)));
 
         walls = new ArrayList<Quad>();
-        walls.add(new Quad(new Vector3D(155, 0, 160), new Vector3D(-530, 0, 160), new Vector3D(-530, 20, 160), new Vector3D(155, 20, 160)));
-        walls.add(new Quad(new Vector3D(155, 0, -160), new Vector3D(-530, 0, -160), new Vector3D(-530, 20, -160), new Vector3D(155, 20, -160)));
+        walls.add(new Quad(new Vector3D(-250, 0, -222), new Vector3D(250, 0, -222), new Vector3D(250, 20, -222), new Vector3D(-250, 20,-222)));
+        walls.add(new Quad(new Vector3D(-250, 0, 222), new Vector3D(250, 0, 222), new Vector3D(250, 20, 222), new Vector3D(-250, 20,222)));
+        walls.add(new Quad(new Vector3D(-222, 0, 250), new Vector3D(-222, 0, -250), new Vector3D(-222, 20, -250), new Vector3D(-222, 20,250)));
+        walls.add(new Quad(new Vector3D(222, 0, 250), new Vector3D(222, 0, -250), new Vector3D(222, 20, -250), new Vector3D(222, 20,250)));
         //ramps.add(new Quad(new Vector3D(15, -2, 15),new Vector3D(18, -2, 15),new Vector3D(18, 1, 15),new Vector3D(15, 1, 15)));
 
         ramps = new ArrayList<Quad>();
@@ -63,6 +71,8 @@ public class Level {
     public void init() {
         this.gamemode = new Siege(this);
         gamemode.init();
+
+        //this.spawn(new Endwek(new Vector3D(50, 0, 50), player, false));
     }
 
     public void update(float delta) {
@@ -76,31 +86,6 @@ public class Level {
                     entities.remove(i);
                     continue;
                 }
-
-                if(e instanceof Bullet) {
-                    Ray bullet = new Ray(e.getPosition(), ((Bullet)e).getDirection());
-                    for(Entity x : entities) {
-                        if(x instanceof Kage || x instanceof Endwek) {
-                            Sphere z = (Sphere) x.getCollisionMask();
-                            if(CollisionSystem.raySphere(bullet, z)) {
-                                ((Living) x).damage(50);
-                                e.setExpired(true);
-                                break;
-                            }
-                        } else if(x instanceof Spawner) {
-                            Vector3D nz = x.getPosition().copy();
-                            nz.x += 1;
-                            nz.z += 0.5;
-                            Sphere z = new Sphere(nz, 2);
-                            if(CollisionSystem.raySphere(bullet, z)) {
-                                ((Spawner) x).damage(50);
-                                e.setExpired(true);
-
-                                break;
-                            }
-                        }
-                    }
-                }
             } else {
                 if(e.isExpired()) {
                     entities.remove(i);
@@ -108,6 +93,13 @@ public class Level {
                     continue;
                 }
                 ((MultiplayerLiving)e).updateMultiplayer();
+            }
+        }
+
+        for(int i = 0;i < projectiles.size(); i++) {
+            if(projectiles.get(i).expired == false) {
+                projectiles.get(i).use(entities);
+                projectiles.remove(i);
             }
         }
 
@@ -173,6 +165,10 @@ public class Level {
         entities.add(e);
     }
 
+    public void addProjectile(Projectile p) {
+        projectiles.add(p);
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -230,5 +226,13 @@ public class Level {
             }
         }
         return null;
+    }
+
+    public void removeAllMonsters() {
+        for(int i = 0; i < entities.size(); i++) {
+            if(entities.get(i) instanceof Kage || entities.get(i) instanceof Endwek) {
+                entities.remove(i);
+            }
+        }
     }
 }

@@ -55,12 +55,12 @@ public class Fortress extends Entity {
         for(int i = 0; i < 4; i++) {
             if(status[i]) {
                 if(gate[i] > -70)
-                    gate[i] -= 0.07;
+                    gate[i] -= 0.14;
                 if(gate[i] < -70)
                     gate[i] = -70;
             } else {
                 if(gate[i] < 0)
-                    gate[i] += 0.07;
+                    gate[i] += 0.14;
                 if(gate[i] > 0)
                     gate[i] = 0;
             }
