@@ -167,7 +167,7 @@ public class Endwek extends Living {
 
     public boolean isHeadshot(Ray bullet) {
         Vector3D np = pos.copy();
-        np.y += 1.5f;
+        np.y += 1.3f;
         if(CollisionSystem.raySphere(bullet, new Sphere(np, 0.5f), null)) {
             this.expired = true;
             return true;

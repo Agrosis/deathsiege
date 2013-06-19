@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class Sniper extends Tool {
 
@@ -39,8 +40,16 @@ public class Sniper extends Tool {
         if(Input.rmouse && r == false) {
             r = true;
             if(GameInstance.sniper) {
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(60, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                glMatrixMode(GL_MODELVIEW);
                 GameInstance.sniper = false;
             } else {
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(15, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                glMatrixMode(GL_MODELVIEW);
                 GameInstance.sniper = true;
             }
         }

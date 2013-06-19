@@ -1,6 +1,7 @@
 package com.jantox.siege;
 
 import com.jantox.siege.entities.*;
+import com.jantox.siege.entities.map.Shop;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.net.MultiplayerInstance;
@@ -21,6 +22,7 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 public class GameInstance {
 
     public static boolean sniper;
+    public static Shop shop = null;
 
     private int width, height;
 
@@ -118,6 +120,25 @@ public class GameInstance {
 
         glDisable(GL_TEXTURE_2D);
         drawCrossheir();
+
+        if(GameInstance.shop != null) {
+            glColor3f(1,1,1);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(10).getTextureID());
+            glBegin(GL_QUADS);
+
+            glTexCoord2f(0, 0);
+            glVertex2f(200, 50);
+            glTexCoord2f(399f/512f, 0);
+            glVertex2f(600, 50);
+            glTexCoord2f(399f/512f, 499f/512f);
+            glVertex2f(600, 550);
+            glTexCoord2f(0, 499f/512f);
+            glVertex2f(200, 550);
+
+            glEnd();
+            glDisable(GL_TEXTURE_2D);
+        }
 
         if (sniper) {
             glColor3f(0,0,0);
