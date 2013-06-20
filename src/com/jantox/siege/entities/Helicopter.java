@@ -27,7 +27,7 @@ public class Helicopter extends Entity {
     public void render() {
         glPushMatrix();
 
-        glTranslatef((float)pos.x, (float)pos.y + 40, (float)pos.z);
+        glTranslatef((float)pos.x, (float)pos.y + 60 + (float)Math.cos(angle/100) * 2, (float)pos.z);
 
         glScalef(8,8,8);
 

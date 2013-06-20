@@ -37,15 +37,15 @@ public class AudioController {
         } else if(i == 1) {
             //switch_tool.playAsSoundEffect(1f, 1f, false);
         } else if(i == 2) {
-            crossbow.playAsSoundEffect(1f,1f,false);
+            //crossbow.playAsSoundEffect(1f,1f,false);
         } else if(i == 3) {
-            getcoin.playAsSoundEffect(1f,1f,false);
+            //getcoin.playAsSoundEffect(1f,1f,false);
         } else if(i == 4) {
             //hit.playAsSoundEffect(1f,1f,false);
         } else if(i == 5) {
             //headshot.playAsSoundEffect(1f,1f,false);
         } else if(i == 6) {
-            change.playAsSoundEffect(1f,1f,false);
+            //change.playAsSoundEffect(1f,1f,false);
         }
     }
 

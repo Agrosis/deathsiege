@@ -27,7 +27,6 @@ public class Siege extends Gamemode {
     private long breaktime = -1;
 
     private Vector3D spawnpoint;
-    private int gate;
     private boolean spawned = false;
 
     public Siege(Level level) {
@@ -125,14 +124,16 @@ public class Siege extends Gamemode {
         level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
+
+        fortress.open();
     }
 
     public void nextWave() {
         System.out.println("Wave " + (++wave) + " is complete!");
 
         breaktime = 30;
-        fortress.close(gate);
-        gate = -1;
+
+        fortress.close();
 
         MONSTERS_LEFT = wave * 2 + 5;
 
@@ -154,29 +155,24 @@ public class Siege extends Gamemode {
             lastsec = System.currentTimeMillis();
             spawned = true;
 
-            if(gate != -1)
-                if(fortress.isOpen(gate)) {
-                    seconds++;
-                }
+            seconds++;
 
             if(breaktime > -1) {
                 breaktime--;
                 System.out.println("Next wave in " + breaktime + "...");
+                if(breaktime == -1) {
+                    fortress.open();
+                }
             }
         }
 
         if(breaktime == -1) {
-            if(gate == -1) {
-                spawnpoint = this.getRandomSpawnPoint();
-            }
-
-            if(seconds == 30) {
+            if(seconds >= 30) {
                 seconds = 0;
-                fortress.close(gate);
                 this.spawnpoint = this.getRandomSpawnPoint();
             }
 
-            if(fortress.isOpen(gate) && MONSTERS_LEFT > 0) {
+            if(fortress.isOpen() && MONSTERS_LEFT > 0) {
                 if(seconds % 3 == 0 && spawned) {
                     spawned = false;
                     for(int i = 0; i < SPAWN_NUMBER; i++) {
@@ -197,9 +193,6 @@ public class Siege extends Gamemode {
 
     public Vector3D getRandomSpawnPoint() {
         int r = Entity.rand.nextInt(4);
-        gate = r;
-
-        fortress.open(gate);
 
         if(r == 1) {
             return new Vector3D(220, 0, 0);

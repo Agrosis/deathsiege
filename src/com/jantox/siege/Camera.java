@@ -16,6 +16,9 @@ public class Camera {
 
     private boolean running;
 
+    private float pitchRecoil = 0;
+    private int pdir = 2;
+
     public Camera(Vector3D cam, int width, int height) {
         this.camera = cam.copy();
         this.width = width;
@@ -35,6 +38,21 @@ public class Camera {
             this.move();
 
             Input.setMouse(width / 2, height / 2);
+        }
+
+        if(pdir == 0) {
+            pitch -= pitchRecoil;
+            pitchRecoil -= 0.1f;
+            if(pitchRecoil <= 0) {
+                pdir = 1;
+                pitchRecoil = 0;
+            }
+        } else if(pdir == 1) {
+            pitch += pitchRecoil;
+            pitchRecoil += 0.07f;
+            if(pitchRecoil > 0.5f) {
+                pdir = 2;
+            }
         }
     }
 
@@ -113,5 +131,10 @@ public class Camera {
 
     public void setCamera(Vector3D camera) {
         this.camera = camera;
+    }
+
+    public void setPitchRecoil(float pitchRecoil) {
+        pdir = 0;
+        this.pitchRecoil = pitchRecoil;
     }
 }

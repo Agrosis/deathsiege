@@ -41,10 +41,9 @@ public class Player extends Living {
         this.camera = camera;
 
         inventory = new ArrayList<Tool>();
-
-
         inventory.add(new Shotgun(this));
         inventory.add(new Sniper(this));
+        inventory.add(new Intervention(this));
         inventory.add(new Crossbow(this));
         inventory.add(new Woodaxe(this));
 

@@ -1,6 +1,9 @@
 package com.jantox.siege.gfx;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import com.jantox.siege.Resources;
+import com.jantox.siege.Vector3D;
 import org.newdawn.slick.opengl.Texture;
 
 public class BitmapFont {
@@ -14,37 +17,35 @@ public class BitmapFont {
         this.height = height;
     }
 
-    public void drawText(String s, int x, int y) {
+    public void drawText(String s, int x, int y, float scale, Vector3D color) {
         glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        float diff = (1f / 768f) * 8;
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
 
-        glScalef(2, 2, 0);
+        glScalef(scale, scale, scale);
 
+        glColor3f((float)color.x, (float)color.y, (float)color.z);
         for(int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+            int index = s.charAt(i) - '0';
+            index *= 16;
 
-            if(c >= 0x20 && c <= 0x7D) {
-                c -= 0x20;
-
-
-                float xtpos = diff * c;
-
-                glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
-                glBegin(GL_QUADS);
-                glTexCoord2f(xtpos, 0);
-                glVertex2f(x + i * width, y);
-                glTexCoord2f(xtpos + diff, 0);
-                glVertex2f(x + i * width + width, y);
-                glTexCoord2f(xtpos + diff, 1);
-                glVertex2f(x + i * width + width, y + height);
-                glTexCoord2f(xtpos, 1);
-                glVertex2f(x + i * width, y + height);
-                glEnd();
-            }
+            glBegin(GL_QUADS);
+            glTexCoord2f(index/256f, 0);
+            glVertex2f(x + i * 18, y);
+            glTexCoord2f(index/256f + 16f/256f, 0);
+            glVertex2f(x + 32 + i * 18, y);
+            glTexCoord2f(index/256f + 16f/256f, 1);
+            glVertex2f(x + 32 + i * 18, y + 32);
+            glTexCoord2f(index/256f, 1);
+            glVertex2f(x + i * 18, y + 32);
+            glEnd();
         }
 
         glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
     }
 
 }

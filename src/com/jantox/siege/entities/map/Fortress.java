@@ -30,24 +30,18 @@ public class Fortress extends Entity {
 
     }
 
-    public void open(int i) {
-        status[i] = true;
+    public void open() {
+        status[0] = true;
+        status[1] = true;
+        status[2] = true;
+        status[3] = true;
     }
 
-    public boolean isOpen(int i) {
-        return status[i] && gate[i] <= -70;
-    }
-
-    public void close(int i) {
-        status[i] = false;
-    }
-
-    public boolean isClosing(int i) {
-        return !status[i] && gate[i] < 0;
-    }
-
-    public boolean isClosed(int i) {
-        return !status[i] && gate[i] >= 0;
+    public void close() {
+        status[0] = false;
+        status[1] = false;
+        status[2] = false;
+        status[3] = false;
     }
 
     @Override
@@ -111,5 +105,9 @@ public class Fortress extends Entity {
 
     public boolean isOpening(int i) {
         return status[i] && gate[i] < 0;
+    }
+
+    public boolean isOpen() {
+        return status[0] == true && gate[0] == -70;
     }
 }

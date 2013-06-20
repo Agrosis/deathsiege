@@ -36,6 +36,9 @@ public class GameInstance {
 
     private BitmapFont font;
 
+    public static int cash = 0;
+    public static int ccash = 0;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
@@ -53,7 +56,7 @@ public class GameInstance {
         level.init();
 
         try {
-            font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/generic_font.png"))), 8, 16);
+            font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font_strip10.png")), GL_NEAREST), 16, 16);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,6 +111,16 @@ public class GameInstance {
         level.update(delta);
         audio.update();
 
+        if(cash < ccash) {
+            cash += 3;
+            if(cash >= ccash)
+                cash = ccash;
+        } else if(cash > ccash) {
+            cash -= 3;
+            if(cash <= ccash)
+                cash = ccash;
+        }
+
         if(multiplayer) {
             mpinstance.update();
         }
@@ -122,22 +135,7 @@ public class GameInstance {
         drawCrossheir();
 
         if(GameInstance.shop != null) {
-            glColor3f(1,1,1);
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(10).getTextureID());
-            glBegin(GL_QUADS);
-
-            glTexCoord2f(0, 0);
-            glVertex2f(200, 50);
-            glTexCoord2f(399f/512f, 0);
-            glVertex2f(600, 50);
-            glTexCoord2f(399f/512f, 499f/512f);
-            glVertex2f(600, 550);
-            glTexCoord2f(0, 499f/512f);
-            glVertex2f(200, 550);
-
-            glEnd();
-            glDisable(GL_TEXTURE_2D);
+            GameInstance.shop.renderShop();
         }
 
         if (sniper) {
@@ -170,7 +168,7 @@ public class GameInstance {
             glEnd();
         }
 
-        //font.drawText(" !\"", 30, 30);
+        font.drawText(":" + String.valueOf(cash), 20, 20, 1, new Vector3D(1,1,0));
 
         switch3D();
     }
@@ -190,6 +188,7 @@ public class GameInstance {
         glLoadIdentity();
 
         glClear(GL_DEPTH_BUFFER_BIT);
+        glDisable(GL_DEPTH_TEST);
 
     }
 

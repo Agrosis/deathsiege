@@ -51,6 +51,7 @@ public class Gem extends Entity {
             if(this.pos.distanceSquared(ppos) <= 3) {
                 this.expired = true;
                 this.pos = level.getPlayer().getCamera().getCamera().copy();
+                GameInstance.ccash += 10;
                 GameInstance.audio.playSound(3);
             }
         }

@@ -77,7 +77,7 @@ public class MultiplayerInstance {
                     op.setOrientation(pitch, yaw);
                 } else if(p.getHeader() == Protocol.GATE_OPEN) {
                     if(level != null) {
-                        level.fortress.open(p.read());
+                        //level.fortress.open(p.read());
                     }
                 } else if(p.getHeader() == Protocol.SPAWN) {
                     System.out.println("spawned");

@@ -26,7 +26,7 @@ public class Resources {
 
     public void load() {
         try {
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_grass2.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_grass.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_smoke_particle.png")), GL11.GL_LINEAR));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/control_point_green.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/Gradient_Round.png")), GL11.GL_NEAREST));
@@ -37,6 +37,7 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_spawner.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/shop_menu.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font.png")), GL11.GL_NEAREST));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,6 +74,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/helicopter_wing.obj"));
         models.add(objloader.loadOBJModel("models/blastbullet.obj")); // 29
         models.add(objloader.loadOBJModel("models/shop.obj"));
+        models.add(objloader.loadOBJModel("models/intervention.obj"));
     }
 
     public Texture get(int id) {

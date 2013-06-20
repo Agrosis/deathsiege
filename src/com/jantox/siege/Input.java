@@ -19,12 +19,20 @@ public class Input {
     public static boolean in = true;
     public static boolean rmouse, lmouse;
 
+    public static boolean down;
+
     public static void update() {
         mx = Mouse.getX();
         my = Mouse.getY();
 
         lmouse = Mouse.isButtonDown(0);
         rmouse = Mouse.isButtonDown(1);
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            down = true;
+        } else {
+            down = false;
+        }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
             w = true;

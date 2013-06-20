@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
-public class Sniper extends Tool {
+public class Intervention extends Tool {
 
     private Player powner;
 
@@ -25,11 +25,11 @@ public class Sniper extends Tool {
     private float slen,olen;
     private float scope;
 
-    public Sniper(Player owner) {
+    public Intervention(Player owner) {
         super(owner);
         this.powner = owner;
 
-        sp = new Vector3D(-2, -1,-0.8);
+        sp = new Vector3D(100, -100,-100);
         slen = olen = (float)sp.length();
         sp.normalize();
     }
@@ -93,22 +93,20 @@ public class Sniper extends Tool {
         glEnable(GL_TEXTURE_2D);
         glPushMatrix();
         Vector3D hold = powner.getCamera().getHoldingPosition();
+        //glTranslatef(20, 4, 20);
         glTranslatef((float) hold.x, (float) hold.y, (float) hold.z);
-        glRotatef(powner.getCamera().getYaw() - 90, 0, 1, 0);
-        glRotatef(powner.getCamera().getPitch(), 0, 0, 1);
+        glRotatef(powner.getCamera().getYaw(), 0, 1, 0);
+        glRotatef(-powner.getCamera().getPitch() - 90, 1, 0, 0);
 
 
-        glScalef(1.5f, 1.5f, 1.5f);
 
-        //sp.multiply(slen);
-        glTranslatef((float)sp.x, (float)sp.y, (float)sp.z);
-        //sp.normalize();
-        /*glScalef(1.5f, 1.5f, 1.5f);
 
-        glColor3f(0.25f,0.25f,0.25f);*/
+        glTranslatef((float)0.3, (float)1.5, (float)-0.75f);
+
+        glScalef(0.25f, 0.25f, 0.25f);
 
         if(!GameInstance.sniper)
-            glCallList(Resources.getModel(12));
+            glCallList(Resources.getModel(31));
         glPopMatrix();
         glEnable(GL_DEPTH_TEST);
     }

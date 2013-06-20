@@ -132,16 +132,16 @@ public class Level {
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glPushMatrix();
-        glColor3f(1f, 1f, 1f);
+        glColor3f(0.5f,0.5f,0.5f);
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(0).getTextureID());
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex3f(-700, -2, -700);
-        glTexCoord2f(50, 0);
+        glTexCoord2f(400, 0);
         glVertex3f(700, -2, -700);
-        glTexCoord2f(50, 50);
+        glTexCoord2f(400, 400);
         glVertex3f(700, -2, 700);
-        glTexCoord2f(0, 50);
+        glTexCoord2f(0, 400);
         glVertex3f(-700, -2, 700);
         glEnd();
 
