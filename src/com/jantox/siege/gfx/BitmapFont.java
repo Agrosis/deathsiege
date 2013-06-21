@@ -25,6 +25,7 @@ public class BitmapFont {
         glPushMatrix();
         glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
 
+        glTranslatef(x, y, 0);
         glScalef(scale, scale, scale);
 
         glColor3f((float)color.x, (float)color.y, (float)color.z);
@@ -34,13 +35,13 @@ public class BitmapFont {
 
             glBegin(GL_QUADS);
             glTexCoord2f(index/256f, 0);
-            glVertex2f(x + i * 18, y);
+            glVertex2f(i * 18, 0);
             glTexCoord2f(index/256f + 16f/256f, 0);
-            glVertex2f(x + 32 + i * 18, y);
+            glVertex2f(32 + i * 18, 0);
             glTexCoord2f(index/256f + 16f/256f, 1);
-            glVertex2f(x + 32 + i * 18, y + 32);
+            glVertex2f(32 + i * 18, 32);
             glTexCoord2f(index/256f, 1);
-            glVertex2f(x + i * 18, y + 32);
+            glVertex2f(i * 18, 32);
             glEnd();
         }
 

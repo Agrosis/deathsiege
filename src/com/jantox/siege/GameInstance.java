@@ -3,12 +3,14 @@ package com.jantox.siege;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.entities.map.Shop;
 import com.jantox.siege.gfx.BitmapFont;
-import com.jantox.siege.level.Level;
+import com.jantox.siege.level.*;
 import com.jantox.siege.net.MultiplayerInstance;
 import com.jantox.siege.sfx.AudioController;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import java.io.File;
@@ -170,6 +172,38 @@ public class GameInstance {
 
         font.drawText(":" + String.valueOf(cash), 20, 20, 1, new Vector3D(1,1,0));
 
+        glColor3f(1,1,1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(11).getTextureID());
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(10, 540 + 5);
+        glTexCoord2f(108f/128, 0);
+        glVertex2f(10 + 108, 540 + 5);
+        glTexCoord2f(108f/128, 48/64f);
+        glVertex2f(10 + 108, 540 + 48 + 5);
+        glTexCoord2f(0, 48/64f);
+        glVertex2f(10, 540 + 48 + 5);
+        glEnd();
+
+        if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() > -1) {
+            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(12).getTextureID());
+            glBegin(GL_QUADS);
+            glTexCoord2f(0, 0);
+            glVertex2f(10, 510 + 5);
+            glTexCoord2f(118f/128, 0);
+            glVertex2f(10 + 118, 510 + 5);
+            glTexCoord2f(118f/128, 18/32f);
+            glVertex2f(10 + 118, 510 + 18 + 5);
+            glTexCoord2f(0, 18/32f);
+            glVertex2f(10, 510 + 18 + 5);
+            glEnd();
+
+            font.drawText(String.valueOf((int)((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime()), 115, 511, 0.75f, new Vector3D(0.75,0.75,0.75));
+        }
+
+        font.drawText(String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 95, 539, 1.5f, new Vector3D(0.85,0.85,0.85));
+
         switch3D();
     }
 
@@ -208,6 +242,59 @@ public class GameInstance {
         glEnd();
         glBegin(GL_LINES);
         glEnd();
+    }
+
+    public void setDisplayMode(int width, int height, boolean fullscreen) {
+        // return if requested DisplayMode is already set
+        if ((Display.getDisplayMode().getWidth() == width) &&
+                (Display.getDisplayMode().getHeight() == height) &&
+                (Display.isFullscreen() == fullscreen)) {
+            return;
+        }
+
+        try {
+            DisplayMode targetDisplayMode = null;
+
+            if (fullscreen) {
+                DisplayMode[] modes = Display.getAvailableDisplayModes();
+                int freq = 0;
+
+                for (int i=0;i<modes.length;i++) {
+                    DisplayMode current = modes[i];
+
+                    if ((current.getWidth() == width) && (current.getHeight() == height)) {
+                        if ((targetDisplayMode == null) || (current.getFrequency() >= freq)) {
+                            if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel())) {
+                                targetDisplayMode = current;
+                                freq = targetDisplayMode.getFrequency();
+                            }
+                        }
+
+                        // if we've found a match for bpp and frequence against the
+                        // original display mode then it's probably best to go for this one
+                        // since it's most likely compatible with the monitor
+                        if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) &&
+                                (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
+                            targetDisplayMode = current;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                targetDisplayMode = new DisplayMode(width,height);
+            }
+
+            if (targetDisplayMode == null) {
+                System.out.println("Failed to find value mode: "+width+"x"+height+" fs="+fullscreen);
+                return;
+            }
+
+            Display.setDisplayMode(targetDisplayMode);
+            Display.setFullscreen(fullscreen);
+
+        } catch (LWJGLException e) {
+            System.out.println("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
+        }
     }
 
 }

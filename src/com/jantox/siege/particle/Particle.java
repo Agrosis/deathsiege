@@ -55,7 +55,7 @@ public class Particle extends Entity {
 
         if(affectGravity) {
             velocity.y += gravity;
-            gravity -= 0.001f;
+            gravity -= 0.04f;
         }
     }
 

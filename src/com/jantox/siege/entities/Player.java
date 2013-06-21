@@ -99,7 +99,7 @@ public class Player extends Living {
             }
             if(Input.rmouse) {
                 curwep.onUse(1);
-                weaponRest = curwep.getRest();
+                //weaponRest = curwep.getRest();
                 using = true;
             }
             if(using) {

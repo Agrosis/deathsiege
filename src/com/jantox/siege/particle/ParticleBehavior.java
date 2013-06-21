@@ -24,6 +24,23 @@ public abstract class ParticleBehavior {
 
     }
 
+    public static class DirtParticle extends ParticleBehavior {
+
+        @Override
+        public void init(Particle p) {
+            p.setScale(new Vector3D(0.025,0.025,0.025));
+            p.setColor(new Vector3D(1f,0, 0));
+            p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/5, 0.000005f, Entity.rand.nextGaussian()/5));
+            p.setGravity(true, 0.1f);
+            p.setBillboarded(true);
+        }
+
+        @Override
+        public void update(Particle p) {
+
+        }
+    }
+
     public static class SmokeParticle extends ParticleBehavior {
 
         @Override

@@ -32,6 +32,7 @@ public class Configuration {
     public void createDefaultConfig() {
         props.setProperty("ip", "50.142.204.232");
         props.setProperty("port", "25565");
+        props.setProperty("fullscreen", "false");
 
         try {
             props.store(new FileOutputStream("config"), null);

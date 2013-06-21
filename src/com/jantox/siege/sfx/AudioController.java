@@ -17,6 +17,9 @@ public class AudioController {
     Audio headshot;
     Audio change;
 
+    Audio shop_switch;
+    Audio shop_bought;
+
     public AudioController() {
         try {
             gunshot = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/gunshot.wav"));
@@ -26,6 +29,8 @@ public class AudioController {
             hit = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/hit.wav"));
             headshot = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/headshot.wav"));
             change = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/switch.wav"));
+            shop_switch = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/shop_switch.ogg"));
+            shop_bought = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/shop_bought.wav"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,19 +38,23 @@ public class AudioController {
 
     public void playSound(int i) {
         if(i == 0) {
-            //gunshot.playAsSoundEffect(2f,5f,false);
+            gunshot.playAsSoundEffect(1.5f,1f,false);
         } else if(i == 1) {
-            //switch_tool.playAsSoundEffect(1f, 1f, false);
+            switch_tool.playAsSoundEffect(1f, 1f, false);
         } else if(i == 2) {
-            //crossbow.playAsSoundEffect(1f,1f,false);
+            crossbow.playAsSoundEffect(1f,1f,false);
         } else if(i == 3) {
-            //getcoin.playAsSoundEffect(1f,1f,false);
+            getcoin.playAsSoundEffect(1f,1f,false);
         } else if(i == 4) {
-            //hit.playAsSoundEffect(1f,1f,false);
+            hit.playAsSoundEffect(1f,1f,false);
         } else if(i == 5) {
-            //headshot.playAsSoundEffect(1f,1f,false);
+            headshot.playAsSoundEffect(1f,1f,false);
         } else if(i == 6) {
-            //change.playAsSoundEffect(1f,1f,false);
+            change.playAsSoundEffect(1f,1f,false);
+        } else if(i == 7) {
+            shop_switch.playAsSoundEffect(1f,1f,false);
+        } else if(i == 8) {
+            shop_bought.playAsSoundEffect(1f,1f,false);
         }
     }
 

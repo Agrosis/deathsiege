@@ -19,38 +19,70 @@ public class Sniper extends Tool {
     private Player powner;
 
     private boolean use = false;
-    private boolean scoped = false;
 
-    private Vector3D sp;
-    private float slen,olen;
-    private float scope;
+    private Vector3D holdpos;
+    private Vector3D scopepos;
+
+    Vector3D sdir;
+    double length;
 
     public Sniper(Player owner) {
         super(owner);
         this.powner = owner;
 
-        sp = new Vector3D(-2, -1,-0.8);
-        slen = olen = (float)sp.length();
-        sp.normalize();
+        holdpos = new Vector3D(-2, -1,-0.8);
+        scopepos = new Vector3D(0,-0.3,0);
+
+        sdir = scopepos.copy();
+        sdir.subtract(holdpos);
+        length = sdir.length();
+        sdir.normalize();
+        sdir.divide(10);
     }
+
+    double addlen;
 
     boolean r = false;
 
+    boolean scoped;
+
     public void update(float delta) {
+        if(scoped) {
+            if(addlen < length) {
+                holdpos.add(sdir);
+                addlen += sdir.length();
+                if(addlen >= length) {
+                    addlen = length;
+
+                    System.out.println("changed it!");
+                    glMatrixMode(GL_PROJECTION);
+                    glLoadIdentity();
+                    gluPerspective(15, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                    glMatrixMode(GL_MODELVIEW);
+                    GameInstance.sniper = true;
+                }
+            }
+        } else {
+            if(addlen > 0) {
+                holdpos.subtract(sdir);
+                addlen -= sdir.length();
+                if(addlen < 0) {
+                    addlen = 0;
+                }
+            }
+        }
+
         if(Input.rmouse && r == false) {
             r = true;
-            if(GameInstance.sniper) {
+            if(scoped) {
+                scoped = false;
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
                 gluPerspective(60, (float) 800 / (float) 600, 1.0f, 2000.0f);
                 glMatrixMode(GL_MODELVIEW);
                 GameInstance.sniper = false;
             } else {
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluPerspective(15, (float) 800 / (float) 600, 1.0f, 2000.0f);
-                glMatrixMode(GL_MODELVIEW);
-                GameInstance.sniper = true;
+                scoped = true;
             }
         }
 
@@ -101,7 +133,7 @@ public class Sniper extends Tool {
         glScalef(1.5f, 1.5f, 1.5f);
 
         //sp.multiply(slen);
-        glTranslatef((float)sp.x, (float)sp.y, (float)sp.z);
+        glTranslatef((float)holdpos.x, (float)holdpos.y, (float)holdpos.z);
         //sp.normalize();
         /*glScalef(1.5f, 1.5f, 1.5f);
 

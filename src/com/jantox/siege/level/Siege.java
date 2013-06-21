@@ -35,6 +35,10 @@ public class Siege extends Gamemode {
         points = new ControlPoint[5];
     }
 
+    public int getWave() {
+        return wave;
+    }
+
     @Override
     public void init() {
         points[0] = new ControlPoint(new Vector3D(0, -1.9999999, 0));
@@ -206,4 +210,7 @@ public class Siege extends Gamemode {
         return null;
     }
 
+    public float getBreakTime() {
+        return breaktime;
+    }
 }

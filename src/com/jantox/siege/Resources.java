@@ -37,7 +37,9 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_spawner.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/shop_menu.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/wave.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/nextwavein.png")), GL11.GL_NEAREST));
+            System.out.println("HELLO" + textures.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,6 +77,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/blastbullet.obj")); // 29
         models.add(objloader.loadOBJModel("models/shop.obj"));
         models.add(objloader.loadOBJModel("models/intervention.obj"));
+        models.add(objloader.loadOBJModel("models/spawner.obj"));
     }
 
     public Texture get(int id) {

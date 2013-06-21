@@ -20,6 +20,8 @@ public class Input {
     public static boolean rmouse, lmouse;
 
     public static boolean down;
+    public static boolean up;
+    public static boolean enter;
 
     public static void update() {
         mx = Mouse.getX();
@@ -28,10 +30,20 @@ public class Input {
         lmouse = Mouse.isButtonDown(0);
         rmouse = Mouse.isButtonDown(1);
 
+        if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+            up = true;
+        } else {
+            up = false;
+        }
         if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
             down = true;
         } else {
             down = false;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+            enter = true;
+        } else {
+            enter = false;
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_W)) {

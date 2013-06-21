@@ -72,6 +72,7 @@ public class Level {
         this.gamemode = new Siege(this);
         gamemode.init();
 
+        this.spawn(new Spawner(new Vector3D(20, -16f, 20)));
         //this.spawn(new Endwek(new Vector3D(50, 0, 50), player, false));
     }
 
@@ -234,5 +235,9 @@ public class Level {
                 entities.remove(i);
             }
         }
+    }
+
+    public Gamemode getGameMode() {
+        return gamemode;
     }
 }

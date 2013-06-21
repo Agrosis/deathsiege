@@ -12,8 +12,10 @@ public class Siege {
         this.game = new GameInstance(800, 600);
 
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
             Display.create();
+
+            game.setDisplayMode(800, 600, Boolean.valueOf(Configuration.getProperty("fullscreen")));
+
             Display.setTitle("Deathsiege");
         } catch (LWJGLException e) {
             e.printStackTrace();

@@ -35,9 +35,18 @@ public class Shop extends Entity {
 
     @Override
     public void update(float delta) {
-        if(Input.down && sbreak <= 0) {
+        if(Input.down && sbreak <= 0 && index < 7) {
             sbreak = 10;
             index++;
+
+            GameInstance.audio.playSound(7);
+        } else if(Input.up && sbreak <= 0 && index > 0) {
+            sbreak = 10;
+            index--;
+
+            GameInstance.audio.playSound(7);
+        } else if(Input.enter && sbreak <= 0) {
+            GameInstance.audio.playSound(8);
         }
 
         if(sbreak > 0) {
@@ -64,23 +73,7 @@ public class Shop extends Entity {
     }
 
     public void renderShop() {
-        glTranslatef(0, index * 56, 0);
 
-        glBegin(GL_LINES);
-        glVertex2f(200 + 12, 50 + 48);
-        glVertex2f(200 + 12 + 377, 50 + 48);
-
-        glVertex2f(200 + 12 + 377, 50 + 48);
-        glVertex2f(200 + 12 + 377, 50 + 48 + 55);
-
-        glVertex2f(200 + 12 + 377, 50 + 48 + 55);
-        glVertex2f(200 + 12, 50 + 48 + 55);
-
-        glVertex2f(200 + 12, 50 + 48 + 55);
-        glVertex2f(200 + 12, 50 + 48);
-        glEnd();
-
-        glTranslatef(0, -index * 56, 0);
 
         glColor3f(1,1,1);
         glEnable(GL_TEXTURE_2D);
@@ -89,22 +82,42 @@ public class Shop extends Entity {
 
         glTexCoord2f(0, 0);
         glVertex2f(200, 50);
-        glTexCoord2f(399f/512f, 0);
+        glTexCoord2f(400f/512f, 0);
         glVertex2f(600, 50);
-        glTexCoord2f(399f/512f, 499f/512f);
+        glTexCoord2f(400f/512f, 500f/512f);
         glVertex2f(600, 550);
-        glTexCoord2f(0, 499f/512f);
+        glTexCoord2f(0, 500f/512f);
         glVertex2f(200, 550);
 
         glEnd();
         glDisable(GL_TEXTURE_2D);
 
+        glPushMatrix();
 
-        font.drawText(":1000", 1000, 235, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":500", 1000, 345, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":200", 1000, 455, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":3000", 1000, 565, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":4000", 1000, 675, 0.5f, new Vector3D(1,1,1));
+        System.out.println(index * 55);
+
+        glTranslatef(0, index * 55, 0);
+        glBegin(GL_LINES);
+        glVertex2f(200 + 12, 50 + 48);
+        glVertex2f(200 + 12 + 377, 50 + 48);
+
+        glVertex2f(200 + 12 + 377, 50 + 48);
+        glVertex2f(200 + 12 + 377, 50 + 48 + 56);
+
+        glVertex2f(200 + 12 + 377, 50 + 48 + 56);
+        glVertex2f(200 + 12, 50 + 48 + 56);
+
+        glVertex2f(200 + 12, 50 + 48 + 56);
+        glVertex2f(200 + 12, 50 + 48);
+        glEnd();
+        glPopMatrix();
+
+
+        font.drawText(":1000", 500, 235/2, 0.5f, new Vector3D(1,1,1));
+        font.drawText(":500", 500, 345/2, 0.5f, new Vector3D(1,1,1));
+        font.drawText(":200", 500, 455/2, 0.5f, new Vector3D(1,1,1));
+        font.drawText(":3000", 500, 565/2, 0.5f, new Vector3D(1,1,1));
+        font.drawText(":4000", 500, 675/2, 0.5f, new Vector3D(1,1,1));
     }
 
     public int getIndex() {
