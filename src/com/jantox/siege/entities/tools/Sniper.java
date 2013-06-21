@@ -47,14 +47,13 @@ public class Sniper extends Tool {
     boolean scoped;
 
     public void update(float delta) {
-        if(scoped) {
+        if(Input.rmouse) {
             if(addlen < length) {
                 holdpos.add(sdir);
                 addlen += sdir.length();
                 if(addlen >= length) {
                     addlen = length;
 
-                    System.out.println("changed it!");
                     glMatrixMode(GL_PROJECTION);
                     glLoadIdentity();
                     gluPerspective(15, (float) 800 / (float) 600, 1.0f, 2000.0f);
@@ -63,31 +62,21 @@ public class Sniper extends Tool {
                 }
             }
         } else {
+            if(GameInstance.sniper) {
+                GameInstance.sniper = false;
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(60, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                glMatrixMode(GL_MODELVIEW);
+            }
             if(addlen > 0) {
                 holdpos.subtract(sdir);
                 addlen -= sdir.length();
                 if(addlen < 0) {
                     addlen = 0;
+
                 }
             }
-        }
-
-        if(Input.rmouse && r == false) {
-            r = true;
-            if(scoped) {
-                scoped = false;
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluPerspective(60, (float) 800 / (float) 600, 1.0f, 2000.0f);
-                glMatrixMode(GL_MODELVIEW);
-                GameInstance.sniper = false;
-            } else {
-                scoped = true;
-            }
-        }
-
-        if(!Input.rmouse) {
-            r = false;
         }
     }
 
