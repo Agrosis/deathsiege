@@ -60,7 +60,7 @@ public class Blaster extends Tool {
             if(rev_speed >= 4) {
                 if(ammo > 0) {
                     ammo --;
-                    Entity.level.spawn(new Bullet(powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector(), new Vector3D(1f, -1.5f, 1.5f)));
+                    //Entity.level.spawn(new Bullet(powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector(), new Vector3D(1f, -1.5f, 1.5f)));
                     //Entity.level.spawn(new Bullet(powner.getCamera().getHoldingPosition(), powner.getCamera().getDirectionVector(), new Vector3D(1f, -1.5f, 1.5f)));
                     Vector3D hp = powner.getCamera().getHoldingPosition().copy();
                     hp.x += rand.nextGaussian();

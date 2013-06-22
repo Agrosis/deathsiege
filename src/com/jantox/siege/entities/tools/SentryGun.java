@@ -40,8 +40,8 @@ public class SentryGun extends Entity {
 
                 Vector3D bp = this.pos.copy();
                 bp.y += 0.5;
-                Bullet b = new Bullet(bp, vel, new Vector3D());
-                level.spawn(b);
+                //Bullet b = new Bullet(bp, vel, new Vector3D());
+                //level.spawn(b);
             }
         }
 

@@ -258,4 +258,8 @@ public class Player extends Living {
         this.pos = camera.getCamera();
         this.mask.update(this.pos);
     }
+
+    public Tool getTool() {
+        return this.curwep;
+    }
 }

@@ -21,13 +21,13 @@ public class ControlPoint extends Entity {
 
     @Override
     public void update(float delta) {
-        if(health <= 0) {
+        /*if(health <= 0) {
             lastspawn++;
             if(lastspawn == 60 * 4) {
                 lastspawn = 0;
                 level.spawn(new Endwek(this.pos.copy(), level.getPlayer(), false));
             }
-        }
+        }*/
     }
 
     public void attack() {

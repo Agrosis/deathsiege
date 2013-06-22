@@ -6,6 +6,7 @@ import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Helicopter;
 import com.jantox.siege.entities.Kage;
 import com.jantox.siege.entities.map.*;
+import com.jantox.siege.entities.map.shop.Shop;
 
 public class Siege extends Gamemode {
 

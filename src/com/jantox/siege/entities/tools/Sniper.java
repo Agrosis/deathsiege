@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
-public class Sniper extends Tool {
+public class Sniper extends Gun {
 
     private Player powner;
 
@@ -27,7 +27,7 @@ public class Sniper extends Tool {
     double length;
 
     public Sniper(Player owner) {
-        super(owner);
+        super(owner, 20, 10);
         this.powner = owner;
 
         holdpos = new Vector3D(-2, -1,-0.8);
@@ -74,7 +74,6 @@ public class Sniper extends Tool {
                 addlen -= sdir.length();
                 if(addlen < 0) {
                     addlen = 0;
-
                 }
             }
         }
@@ -91,7 +90,7 @@ public class Sniper extends Tool {
                 dir.add(add);
             }
             level.addProjectile(new Projectile(Projectile.SNIPER, powner.getCamera().getHoldingPosition(), dir));
-
+            this.use();
             level.getPlayer().getCamera().setPitchRecoil(0.5f);
 
             GameInstance.audio.playSound(0);

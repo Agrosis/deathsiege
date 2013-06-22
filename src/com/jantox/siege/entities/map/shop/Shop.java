@@ -1,4 +1,4 @@
-package com.jantox.siege.entities.map;
+package com.jantox.siege.entities.map.shop;
 
 import com.jantox.siege.GameInstance;
 import com.jantox.siege.Input;
@@ -11,6 +11,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glCallList;
@@ -21,8 +22,13 @@ public class Shop extends Entity {
     private int index;
     private BitmapFont font;
 
+    private ArrayList<ShopItem> items;
+
     public Shop(Vector3D pos) {
         super(pos);
+
+        items = new ArrayList<ShopItem>();
+        items.add(new ShopItem(0, 0));
 
         try {
             font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font_strip10.png")), GL_NEAREST), 16, 16);
@@ -46,6 +52,7 @@ public class Shop extends Entity {
 
             GameInstance.audio.playSound(7);
         } else if(Input.enter && sbreak <= 0) {
+            sbreak = 10;
             GameInstance.audio.playSound(8);
         }
 
@@ -94,8 +101,6 @@ public class Shop extends Entity {
 
         glPushMatrix();
 
-        System.out.println(index * 55);
-
         glTranslatef(0, index * 55, 0);
         glBegin(GL_LINES);
         glVertex2f(200 + 12, 50 + 48);
@@ -113,11 +118,13 @@ public class Shop extends Entity {
         glPopMatrix();
 
 
-        font.drawText(":1000", 500, 235/2, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":500", 500, 345/2, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":200", 500, 455/2, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":3000", 500, 565/2, 0.5f, new Vector3D(1,1,1));
-        font.drawText(":4000", 500, 675/2, 0.5f, new Vector3D(1,1,1));
+        font.drawText(":1000", 500, 235/2, 0.5f, new Vector3D(1,1,1), false);
+        font.drawText(":500", 500, 345/2, 0.5f, new Vector3D(1,1,1), false);
+        font.drawText(":200", 500, 455/2, 0.5f, new Vector3D(1,1,1), false);
+        font.drawText(":3000", 500, 565/2, 0.5f, new Vector3D(1,1,1), false);
+        font.drawText(":4000", 500, 675/2, 0.5f, new Vector3D(1,1,1), false);
+
+        items.get(0).render();
     }
 
     public int getIndex() {

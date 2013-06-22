@@ -17,13 +17,17 @@ public class BitmapFont {
         this.height = height;
     }
 
-    public void drawText(String s, int x, int y, float scale, Vector3D color) {
+    public void drawText(String s, int x, int y, float scale, Vector3D color, boolean rightpad) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glPushMatrix();
         glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
+
+        if(rightpad) {
+            x -= s.length() * scale * 18;
+        }
 
         glTranslatef(x, y, 0);
         glScalef(scale, scale, scale);

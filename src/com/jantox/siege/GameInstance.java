@@ -1,7 +1,8 @@
 package com.jantox.siege;
 
 import com.jantox.siege.entities.*;
-import com.jantox.siege.entities.map.Shop;
+import com.jantox.siege.entities.map.shop.Shop;
+import com.jantox.siege.entities.tools.Gun;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.*;
 import com.jantox.siege.net.MultiplayerInstance;
@@ -170,7 +171,15 @@ public class GameInstance {
             glEnd();
         }
 
-        font.drawText(":" + String.valueOf(cash), 20, 20, 1, new Vector3D(1,1,0));
+        font.drawText(":" + String.valueOf(cash), 20, 20, 1, new Vector3D(1,1,0), false);
+
+        if(level.getPlayer().getTool() instanceof Gun) {
+            Gun gun = (Gun) level.getPlayer().getTool();
+
+            int cur = gun.getCurMag();
+            int ful = gun.getFullMag();
+            font.drawText(cur + ";" + ful, 770, 530, 1.75f, new Vector3D(0.75, 0.75, 0.75), true);
+        }
 
         glColor3f(1,1,1);
         glEnable(GL_TEXTURE_2D);
@@ -199,10 +208,10 @@ public class GameInstance {
             glVertex2f(10, 510 + 18 + 5);
             glEnd();
 
-            font.drawText(String.valueOf((int)((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime()), 115, 511, 0.75f, new Vector3D(0.75,0.75,0.75));
+            font.drawText(String.valueOf((int)((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime()), 115, 511, 0.75f, new Vector3D(0.75,0.75,0.75), false);
         }
 
-        font.drawText(String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 95, 539, 1.5f, new Vector3D(0.85,0.85,0.85));
+        font.drawText(String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 95, 539, 1.5f, new Vector3D(0.85,0.85,0.85), false);
 
         switch3D();
     }

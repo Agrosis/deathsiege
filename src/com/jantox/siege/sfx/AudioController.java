@@ -29,8 +29,9 @@ public class AudioController {
             hit = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/hit.wav"));
             headshot = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/headshot.wav"));
             change = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/switch.wav"));
-            shop_switch = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/shop_switch.ogg"));
             shop_bought = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/shop_bought.wav"));
+            shop_switch = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/shop_switch.ogg"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
-public class Shotgun extends Tool {
+public class Shotgun extends Gun {
 
     private Player powner;
 
@@ -23,7 +23,7 @@ public class Shotgun extends Tool {
     private ArrayList<Shot> blasts;
 
     public Shotgun(Player owner) {
-        super(owner);
+        super(owner, 20, 4);
         this.powner = owner;
         blasts = new ArrayList<Shot>();
     }
@@ -50,6 +50,7 @@ public class Shotgun extends Tool {
             hp.z += rand.nextGaussian();
 
             GameInstance.audio.playSound(0);
+            this.use();
             this.blasts.add(new Shot(hp,  new Vector3D(1f, -1.5f, 1.5f)));
 
             reload = 10;
