@@ -5,6 +5,7 @@ import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Gun;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.*;
+import com.jantox.siege.level.Siege;
 import com.jantox.siege.net.MultiplayerInstance;
 import com.jantox.siege.sfx.AudioController;
 import org.lwjgl.LWJGLException;
@@ -37,8 +38,6 @@ public class GameInstance {
 
     public static AudioController audio;
 
-    private BitmapFont font;
-
     public static int cash = 0;
     public static int ccash = 0;
 
@@ -58,11 +57,7 @@ public class GameInstance {
         Entity.level = level;
         level.init();
 
-        try {
-            font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font_strip10.png")), GL_NEAREST), 16, 16);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         if(multiplayer) {
             mpinstance = new MultiplayerInstance(level);
@@ -157,7 +152,7 @@ public class GameInstance {
 
             glColor3f(1,1,1);
             glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(9).getTextureID());
+            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(6).getTextureID());
 
             glBegin(GL_QUADS);
             glTexCoord2f(0, 0);
@@ -171,47 +166,21 @@ public class GameInstance {
             glEnd();
         }
 
-        font.drawText(":" + String.valueOf(cash), 20, 20, 1, new Vector3D(1,1,0), false);
-
         if(level.getPlayer().getTool() instanceof Gun) {
             Gun gun = (Gun) level.getPlayer().getTool();
 
             int cur = gun.getCurMag();
             int ful = gun.getFullMag();
-            font.drawText(cur + ";" + ful, 770, 530, 1.75f, new Vector3D(0.75, 0.75, 0.75), true);
+            Resources.getFont("terminal").drawText(cur + "/" + ful, 780, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
         }
 
-        glColor3f(1,1,1);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(11).getTextureID());
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(10, 540 + 5);
-        glTexCoord2f(108f/128, 0);
-        glVertex2f(10 + 108, 540 + 5);
-        glTexCoord2f(108f/128, 48/64f);
-        glVertex2f(10 + 108, 540 + 48 + 5);
-        glTexCoord2f(0, 48/64f);
-        glVertex2f(10, 540 + 48 + 5);
-        glEnd();
-
-        if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() > -1) {
-            glBindTexture(GL_TEXTURE_2D, Resources.getTexture(12).getTextureID());
-            glBegin(GL_QUADS);
-            glTexCoord2f(0, 0);
-            glVertex2f(10, 510 + 5);
-            glTexCoord2f(118f/128, 0);
-            glVertex2f(10 + 118, 510 + 5);
-            glTexCoord2f(118f/128, 18/32f);
-            glVertex2f(10 + 118, 510 + 18 + 5);
-            glTexCoord2f(0, 18/32f);
-            glVertex2f(10, 510 + 18 + 5);
-            glEnd();
-
-            font.drawText(String.valueOf((int)((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime()), 115, 511, 0.75f, new Vector3D(0.75,0.75,0.75), false);
+        Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 820, 15, 2, new Vector3D(1,1,0), true,  8);
+        if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() == -1) {
+            Resources.getFont("terminal").drawText("Enemies Left: " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getEnemiesLeft()), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
+        } else {
+            Resources.getFont("terminal").drawText("Next Wave: " + String.valueOf((int)(((Siege) level.getGameMode()).getBreakTime())), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
         }
-
-        font.drawText(String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 95, 539, 1.5f, new Vector3D(0.85,0.85,0.85), false);
+        Resources.getFont("terminal").drawText("Wave " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 15, 15, 2.5f, BitmapFont.LIGHT_GRAY, false, 8);
 
         switch3D();
     }

@@ -6,6 +6,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.gfx.BitmapFont;
+import com.jantox.siege.level.Siege;
 import org.newdawn.slick.opengl.TextureLoader;
 
 import java.io.File;
@@ -19,22 +20,24 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 public class Shop extends Entity {
 
+    public static enum SHOP { WEAPONS, DEFENSE, SPECIALS };
+
     private int index;
-    private BitmapFont font;
 
     private ArrayList<ShopItem> items;
+    private BitmapFont font;
 
-    public Shop(Vector3D pos) {
+    public Shop(Vector3D pos, SHOP shoptype) {
         super(pos);
 
         items = new ArrayList<ShopItem>();
-        items.add(new ShopItem(0, 0));
 
-        try {
-            font = new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/number_font_strip10.png")), GL_NEAREST), 16, 16);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(shoptype == SHOP.SPECIALS) {
+            items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME, 0));
+            items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN, 1));
         }
+
+        font = Resources.getFont("terminal");
     }
 
     int sbreak = 0;
@@ -53,7 +56,7 @@ public class Shop extends Entity {
             GameInstance.audio.playSound(7);
         } else if(Input.enter && sbreak <= 0) {
             sbreak = 10;
-            GameInstance.audio.playSound(8);
+            this.buyItem();
         }
 
         if(sbreak > 0) {
@@ -80,11 +83,12 @@ public class Shop extends Entity {
     }
 
     public void renderShop() {
-
-
         glColor3f(1,1,1);
+
+
+
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(10).getTextureID());
+        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(7).getTextureID());
         glBegin(GL_QUADS);
 
         glTexCoord2f(0, 0);
@@ -98,6 +102,8 @@ public class Shop extends Entity {
 
         glEnd();
         glDisable(GL_TEXTURE_2D);
+
+
 
         glPushMatrix();
 
@@ -117,14 +123,35 @@ public class Shop extends Entity {
         glEnd();
         glPopMatrix();
 
+        for(int i = 0; i < items.size(); i++) {
+            items.get(i).render();
+        }
 
-        font.drawText(":1000", 500, 235/2, 0.5f, new Vector3D(1,1,1), false);
-        font.drawText(":500", 500, 345/2, 0.5f, new Vector3D(1,1,1), false);
-        font.drawText(":200", 500, 455/2, 0.5f, new Vector3D(1,1,1), false);
-        font.drawText(":3000", 500, 565/2, 0.5f, new Vector3D(1,1,1), false);
-        font.drawText(":4000", 500, 675/2, 0.5f, new Vector3D(1,1,1), false);
+        glPushMatrix();
+        font.drawText("$1000", 520, 235/2, 1f, new Vector3D(1,1,1), false, 8);
+        font.drawText("$2500", 520, 345/2, 1f, new Vector3D(1,1,1), false, 8);
+        /*font.drawText("$200", 500, 455/2, 1f, new Vector3D(1,1,1), false, 8);
+        font.drawText("$3000", 500, 565/2, 1f, new Vector3D(1,1,1), false, 8);
+        font.drawText("$4000", 500, 675/2, 1f, new Vector3D(1,1,1), false, 8);*/
+        glPopMatrix();
+    }
 
-        items.get(0).render();
+    public void buyItem() {
+        ShopItem si = this.items.get(index);
+
+        if(GameInstance.ccash >= si.getCost()) {
+            if(si.getItemType() == ShopItem.ITEM.EXTENDED_TIME) { // extended time
+                if(((Siege)level.getGameMode()).canExtendTime()) {
+                    ((Siege)level.getGameMode()).addBreakTime(15);
+                    GameInstance.ccash -= si.getCost();
+                    GameInstance.audio.playSound(8);
+                } else {
+                    GameInstance.audio.playSound(9);
+                }
+            }
+        } else {
+            GameInstance.audio.playSound(9);
+        }
     }
 
     public int getIndex() {

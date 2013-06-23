@@ -1,5 +1,6 @@
 package com.jantox.siege;
 
+import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.models.ObjectLoader;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -9,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Resources {
 
@@ -16,10 +19,12 @@ public class Resources {
 
     private ArrayList<Texture> textures;
     private ArrayList<Integer> models;
+    private Map<String, BitmapFont> fonts;
 
     public Resources() {
         textures = new ArrayList<Texture>();
         models = new ArrayList<Integer>();
+        fonts = new HashMap<String, BitmapFont>();
 
         this.load();
     }
@@ -30,16 +35,10 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_smoke_particle.png")), GL11.GL_LINEAR));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/control_point_green.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/Gradient_Round.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/inner_gradient.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/outer_gradient.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/stone.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_tree.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_spawner.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/shop_menu.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/wave.png")), GL11.GL_NEAREST));
-            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/nextwavein.png")), GL11.GL_NEAREST));
-            System.out.println("HELLO" + textures.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,8 +53,8 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/woodaxe.obj"));
         models.add(objloader.loadOBJModel("models/ramp.obj"));
         models.add(objloader.loadOBJModel("models/gatepart.obj"));
-        models.add(objloader.loadOBJModel("models/stump.obj"));
-        models.add(objloader.loadOBJModel("models/log.obj"));
+        models.add(null);
+        models.add(null);
         models.add(objloader.loadOBJModel("models/ladder.obj"));
         models.add(objloader.loadOBJModel("models/sniper.obj"));
         models.add(objloader.loadOBJModel("models/ammo.obj"));
@@ -78,6 +77,12 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/shop.obj"));
         models.add(objloader.loadOBJModel("models/intervention.obj"));
         models.add(objloader.loadOBJModel("models/spawner.obj"));
+
+        try {
+            fonts.put("terminal", new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/fonts/terminal.png")), GL11.GL_NEAREST), 16, 16));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Texture get(int id) {
@@ -88,12 +93,20 @@ public class Resources {
         return models.get(id);
     }
 
+    public BitmapFont getFnt(String s) {
+        return fonts.get(s);
+    }
+
     public static Texture getTexture(int id) {
         return resources.get(id);
     }
 
     public static Integer getModel(int id) {
         return resources.getMdl(id);
+    }
+
+    public static BitmapFont getFont(String key) {
+        return resources.getFnt(key);
     }
 
 }

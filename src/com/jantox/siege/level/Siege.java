@@ -30,6 +30,8 @@ public class Siege extends Gamemode {
     private Vector3D spawnpoint;
     private boolean spawned = false;
 
+    private boolean extended = false;
+
     public Siege(Level level) {
         super(level);
 
@@ -125,7 +127,7 @@ public class Siege extends Gamemode {
         level.spawn(new Decoration(new Vector3D(-50, 0, 50), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
 
         level.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
-        level.spawn(new Shop(new Vector3D(105, -1, 105)));
+        level.spawn(new Shop(new Vector3D(105, -1, 105), Shop.SHOP.SPECIALS));
         level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
@@ -164,9 +166,9 @@ public class Siege extends Gamemode {
 
             if(breaktime > -1) {
                 breaktime--;
-                System.out.println("Next wave in " + breaktime + "...");
                 if(breaktime == -1) {
                     fortress.open();
+                    extended = false;
                 }
             }
         }
@@ -213,5 +215,18 @@ public class Siege extends Gamemode {
 
     public float getBreakTime() {
         return breaktime;
+    }
+
+    public void addBreakTime(int i) {
+        breaktime += i;
+        extended = true;
+    }
+
+    public boolean canExtendTime() {
+        return breaktime > -1 && extended == false;
+    }
+
+    public int getEnemiesLeft() {
+        return MONSTERS_LEFT;
     }
 }

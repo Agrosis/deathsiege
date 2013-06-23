@@ -2,16 +2,10 @@ package com.jantox.siege.level;
 
 import com.jantox.siege.*;
 import com.jantox.siege.entities.map.*;
-import com.jantox.siege.entities.map.ControlPoint;
-import com.jantox.siege.entities.resources.Tree;
-import com.jantox.siege.entities.tools.Bullet;
 import com.jantox.siege.entities.tools.Projectile;
 import com.jantox.siege.geometry.*;
 import com.jantox.siege.entities.*;
-import com.jantox.siege.particle.Particle;
-import com.jantox.siege.particle.ParticleBehavior;
 import com.jantox.siege.particle.ParticleSystem;
-import org.lwjgl.util.glu.Project;
 
 import java.util.ArrayList;
 
@@ -232,7 +226,7 @@ public class Level {
     public void removeAllMonsters() {
         for(int i = 0; i < entities.size(); i++) {
             if(entities.get(i) instanceof Kage || entities.get(i) instanceof Endwek) {
-                entities.remove(i);
+                entities.get(i).setExpired(true);
             }
         }
     }

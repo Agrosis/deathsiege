@@ -19,6 +19,7 @@ public class AudioController {
 
     Audio shop_switch;
     Audio shop_bought;
+    Audio denied;
 
     public AudioController() {
         try {
@@ -31,7 +32,7 @@ public class AudioController {
             change = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/switch.wav"));
             shop_bought = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/shop_bought.wav"));
             shop_switch = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/shop_switch.ogg"));
-
+            denied = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/denied.ogg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,6 +57,8 @@ public class AudioController {
             shop_switch.playAsSoundEffect(1f,1f,false);
         } else if(i == 8) {
             shop_bought.playAsSoundEffect(1f,1f,false);
+        } else if(i == 9) {
+            denied.playAsSoundEffect(1f,1f,false);
         }
     }
 

@@ -170,6 +170,8 @@ public class Endwek extends Living {
         np.y += 1.3f;
         if(CollisionSystem.raySphere(bullet, new Sphere(np, 0.5f), null)) {
             this.expired = true;
+            Siege.MONSTERS_LEFT --;
+            GameInstance.ccash += 50;
             return true;
         }
 
