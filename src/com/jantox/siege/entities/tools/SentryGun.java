@@ -18,8 +18,8 @@ public class SentryGun extends Entity {
 
     int step = 0;
 
-    public SentryGun(Vector3D pos) {
-        super(pos);
+    public SentryGun(Vector3D pos, Level level) {
+        super(pos, level);
     }
 
     int sm = 0;
@@ -51,7 +51,7 @@ public class SentryGun extends Entity {
             sp.y += 2;
             sp.x += rand.nextGaussian() / 50;
             sp.z += rand.nextGaussian() / 50;
-            Particle p = new Particle(sp, new ParticleBehavior.SmokeParticle());
+            Particle p = new Particle(sp, level, new ParticleBehavior.SmokeParticle());
             p.setScale(new Vector3D(0.3, 0.3, 0.3));
             p.setMaxLife(rand.nextInt(60) + 60);
             Level.psys.addParticle(p);
@@ -60,7 +60,7 @@ public class SentryGun extends Entity {
             sp.y += 2;
             sp.x += rand.nextGaussian() / 50;
             sp.z += rand.nextGaussian() / 50;
-            p = new Particle(sp, new ParticleBehavior.SmokeParticle());
+            p = new Particle(sp, level, new ParticleBehavior.SmokeParticle());
             p.setScale(new Vector3D(0.3, 0.3, 0.3));
             p.setMaxLife(rand.nextInt(60) + 60);
             Level.psys.addParticle(p);

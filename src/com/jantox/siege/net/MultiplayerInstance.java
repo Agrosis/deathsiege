@@ -57,7 +57,7 @@ public class MultiplayerInstance {
                     client.write(pong);
                 } else if(p.getHeader() == Protocol.NEW_CONNECTION) {
                     int uid = p.readInteger();
-                    OnlinePlayer player = new OnlinePlayer(uid);
+                    OnlinePlayer player = new OnlinePlayer(uid, level);
                     this.level.spawn(player);
                     this.players.add(player);
                 } else if(p.getHeader() == Protocol.CONNECTION_LEFT) {

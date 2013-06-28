@@ -14,7 +14,7 @@ public abstract class Resource extends Entity {
     protected float growthRate;
 
     public Resource(Vector3D pos) {
-        super(pos);
+        super(pos, null);
 
         status = AVAILABLE;
         growthRate = 0.25f;

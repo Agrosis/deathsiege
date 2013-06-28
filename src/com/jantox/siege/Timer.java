@@ -5,7 +5,7 @@ import org.lwjgl.Sys;
 public class Timer {
 
     private int fps;
-    private long lastfps;
+    private long lastfps,framefps;
     private long lastFrame;
 
     public Timer() {
@@ -20,6 +20,7 @@ public class Timer {
     public void update() {
         if(this.getTime() - this.lastfps > 1000) {
             System.out.println("FPS: " + fps);
+            framefps = fps;
             fps = 0;
             lastfps += 1000;
         }
@@ -42,4 +43,7 @@ public class Timer {
         return delta;
     }
 
+    public long getFrameFps() {
+        return framefps;
+    }
 }

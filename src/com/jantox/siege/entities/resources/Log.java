@@ -3,6 +3,7 @@ package com.jantox.siege.entities.resources;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -15,8 +16,8 @@ public class Log extends Entity {
 
     float angle = 0f;
 
-    public Log(Vector3D pos) {
-        super(pos);
+    public Log(Vector3D pos, Level level) {
+        super(pos, level);
 
         this.velocity = new Vector3D(Entity.rand.nextGaussian()/50, Math.abs(Entity.rand.nextGaussian())/5f, Entity.rand.nextGaussian()/50);
 
@@ -28,7 +29,7 @@ public class Log extends Entity {
 
     @Override
     public void update(float delta) {
-        Vector3D ppos = Entity.level.getPlayer().getCamera().getCamera().copy();
+        Vector3D ppos = level.getPlayer().getCamera().getCamera().copy();
         ppos.y -= 0.5f;
 
         if(this.onground)

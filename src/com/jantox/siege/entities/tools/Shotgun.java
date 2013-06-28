@@ -22,8 +22,8 @@ public class Shotgun extends Gun {
 
     private ArrayList<Shot> blasts;
 
-    public Shotgun(Player owner) {
-        super(owner, 20, 4);
+    public Shotgun(Player owner, Level level) {
+        super(owner, level, 20, 4);
         this.powner = owner;
         blasts = new ArrayList<Shot>();
     }
@@ -51,7 +51,7 @@ public class Shotgun extends Gun {
 
             GameInstance.audio.playSound(0);
             this.use();
-            this.blasts.add(new Shot(hp,  new Vector3D(1f, -1.5f, 1.5f)));
+            this.blasts.add(new Shot(hp, level, new Vector3D(1f, -1.5f, 1.5f)));
 
             reload = 10;
 

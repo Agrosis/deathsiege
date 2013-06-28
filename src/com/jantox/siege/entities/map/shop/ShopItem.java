@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ShopItem {
 
-    public static enum ITEM { EXTENDED_TIME, SENTRY_GUN };
+    public static enum ITEM { EXTENDED_TIME, SENTRY_GUN, AMMO_REFILL, THE_ORIGINAL, THE_SHOTGUN };
 
     private ITEM type;
     private int index;
@@ -32,9 +32,21 @@ public class ShopItem {
             name = "Extended Time";
             desc = "Adds an extra 30 seconds\nto the break time.";
         } else if(type == ITEM.SENTRY_GUN) {
-            this.cost = 800;
+            this.cost = 1300;
             name = "Sentry Gun";
             desc = "An automated defense mechanism.";
+        } else if(type == ITEM.AMMO_REFILL) {
+            this.cost = 500;
+            name = "Ammo Refill";
+            desc = "Refills your current weapon's ammo.";
+        } else if(type == ITEM.THE_ORIGINAL) {
+            this.cost = 1000;
+            name = "The Original";
+            desc = "A long ranged and medium accuracy\nsniper with quickscoping.";
+        } else if(type == ITEM.THE_SHOTGUN) {
+            this.cost = 800;
+            name = "The Shotgun";
+            desc = "A quick 2-round shotgun with\nlow range and high damage.";
         }
     }
 

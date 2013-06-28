@@ -4,6 +4,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.geometry.Sphere;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -16,8 +17,8 @@ public class Blast extends Entity {
 
     float vely = 2f;
 
-    public Blast(Vector3D pos, Vector3D velx, Vector3D rotation) {
-        super(pos);
+    public Blast(Vector3D pos, Level level, Vector3D velx, Vector3D rotation) {
+        super(pos, level);
         this.vel = velx;
         life = 0;
 
@@ -46,7 +47,7 @@ public class Blast extends Entity {
         glPushMatrix();
         glColor3f(0, 0, 0);
         glTranslatef((float) pos.x, (float) pos.y, (float) pos.z);
-        glRotatef(Entity.level.getPlayer().getCamera().getYaw(), 0, 1, 0);
+        glRotatef(level.getPlayer().getCamera().getYaw(), 0, 1, 0);
 
         double length = vel.length();
         double vy = vel.y;

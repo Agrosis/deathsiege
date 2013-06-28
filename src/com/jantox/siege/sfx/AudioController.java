@@ -20,6 +20,7 @@ public class AudioController {
     Audio shop_switch;
     Audio shop_bought;
     Audio denied;
+    Audio countdown, start;
 
     public AudioController() {
         try {
@@ -33,6 +34,8 @@ public class AudioController {
             shop_bought = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/shop_bought.wav"));
             shop_switch = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/shop_switch.ogg"));
             denied = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/denied.ogg"));
+            countdown = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/countdown.wav"));
+            start = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/countdown_final.wav"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,6 +62,10 @@ public class AudioController {
             shop_bought.playAsSoundEffect(1f,1f,false);
         } else if(i == 9) {
             denied.playAsSoundEffect(1f,1f,false);
+        } else if(i == 10) {
+            countdown.playAsSoundEffect(1f,1f,false);
+        } else if(i == 11) {
+            start.playAsSoundEffect(1f,1f,false);
         }
     }
 

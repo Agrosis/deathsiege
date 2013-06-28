@@ -18,8 +18,8 @@ public class Spawner extends Living {
 
     int ticks;
 
-    public Spawner(Vector3D pos) {
-        super(pos, 150);
+    public Spawner(Vector3D pos, Level level) {
+        super(pos, level, 150);
 
         this.mask = new AABB(new Vector3D(pos.x + 1f, pos.y - 1f, pos.z + 0.5f), 1f, 0.5f, 0.25f);
 
@@ -38,7 +38,7 @@ public class Spawner extends Living {
 
         if(pos.y < -2f) {
             if(ticks % 1 == 0) {
-                Level.psys.addParticle(new Particle(new Vector3D(pos.x + 1,-2,pos.z + 0.5), new ParticleBehavior.DirtParticle()));
+                Level.psys.addParticle(new Particle(new Vector3D(pos.x + 1,-2,pos.z + 0.5), level, new ParticleBehavior.DirtParticle()));
             }
             pos.y += 0.02f;
             if(pos.y > 0.0f)
@@ -51,7 +51,7 @@ public class Spawner extends Living {
 
         if(expired) {
             for(int i = 0; i < 10; i++) {
-                level.spawn(new Gem(this.pos.copy()));
+                level.spawn(new Gem(this.pos.copy(), level));
             }
         }
 

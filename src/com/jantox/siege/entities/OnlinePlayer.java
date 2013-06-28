@@ -2,6 +2,7 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.level.Level;
 import com.jantox.siege.net.Interpolation;
 import org.lwjgl.opengl.GL11;
 
@@ -19,8 +20,8 @@ public class OnlinePlayer extends Entity {
     private float pitch, opitch, npitch;
     private float yaw, oyaw, nyaw;
 
-    public OnlinePlayer(int userid) {
-        super(new Vector3D());
+    public OnlinePlayer(int userid, Level level) {
+        super(new Vector3D(), level);
         this.uid = userid;
         pitch = 0;
         yaw = 0;

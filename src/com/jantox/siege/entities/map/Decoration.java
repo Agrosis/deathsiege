@@ -11,7 +11,7 @@ public class Decoration extends Entity {
     private int modelid;
 
     public Decoration(Vector3D pos, Vector3D scale, Vector3D rotation, int modelid) {
-        super(pos);
+        super(pos, null);
         this.scale = scale;
         this.rotation = rotation;
         this.modelid = modelid;

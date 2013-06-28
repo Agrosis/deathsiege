@@ -6,6 +6,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Player;
+import com.jantox.siege.level.Level;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,8 @@ public class Intervention extends Tool {
     private float slen,olen;
     private float scope;
 
-    public Intervention(Player owner) {
-        super(owner);
+    public Intervention(Player owner, Level level) {
+        super(owner, level);
         this.powner = owner;
 
         sp = new Vector3D(100, -100,-100);

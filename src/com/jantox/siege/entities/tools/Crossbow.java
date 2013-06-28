@@ -5,6 +5,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Player;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -20,8 +21,8 @@ public class Crossbow extends Tool {
 
     private int ammo = 0;
 
-    public Crossbow(Player owner) {
-        super(owner);
+    public Crossbow(Player owner, Level level) {
+        super(owner, level);
         this.powner = owner;
     }
 
@@ -35,7 +36,7 @@ public class Crossbow extends Tool {
         if(mouse == 0) {
             Vector3D dir = powner.getCamera().getDirectionVector();
             GameInstance.audio.playSound(2);
-            Entity.level.spawn(new Bolt(powner.getCamera().getHoldingPosition(), dir, new Vector3D(0.5f, -0.75f, -0.2f)));
+            level.spawn(new Bolt(powner.getCamera().getHoldingPosition(), level, dir, new Vector3D(0.5f, -0.75f, -0.2f)));
         }
     }
 

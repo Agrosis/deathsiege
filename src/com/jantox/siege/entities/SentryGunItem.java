@@ -4,6 +4,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.tools.SentryGun;
 import com.jantox.siege.entities.tools.Tool;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -11,8 +12,8 @@ public class SentryGunItem extends Tool {
 
     Player powner;
 
-    public SentryGunItem(Player owner) {
-        super(owner);
+    public SentryGunItem(Player owner, Level level) {
+        super(owner, level);
         this.powner = owner;
     }
 
@@ -22,7 +23,7 @@ public class SentryGunItem extends Tool {
         hold.x += powner.getCamera().getDirectionVector().x * 1.5;
         hold.y = -2;
         hold.z += powner.getCamera().getDirectionVector().z * 1.5;
-        level.spawn(new SentryGun(hold));
+        level.spawn(new SentryGun(hold, level));
     }
 
     @Override

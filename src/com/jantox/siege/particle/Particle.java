@@ -3,6 +3,7 @@ package com.jantox.siege.particle;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -22,8 +23,8 @@ public class Particle extends Entity {
 
     private ParticleBehavior behavior;
 
-    public Particle(Vector3D pos, ParticleBehavior behavior) {
-        super(pos);
+    public Particle(Vector3D pos, Level l, ParticleBehavior behavior) {
+        super(pos, l);
         this.behavior = behavior;
 
         this.velocity = new Vector3D();
@@ -68,7 +69,7 @@ public class Particle extends Entity {
         if(!billboard)
             glRotatef(angle, 0, 1, 0);
         else {
-            double ang = this.pos.angleXZ(Entity.level.getPlayer().getCamera().getCamera());
+            double ang = this.pos.angleXZ(level.getPlayer().getCamera().getCamera());
             glRotatef((float)-ang+90, 0, 1, 0);
             //ang = this.pos.angleXY(Entity.level.getPlayer().getCamera().getCamera());
             //glRotatef((float)ang, 1, 0, 0);

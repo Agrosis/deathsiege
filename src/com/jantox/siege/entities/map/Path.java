@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 public class Path extends Entity {
 
     public Path(Vector3D pos) {
-        super(pos);
+        super(pos, null);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Path extends Entity {
         glPushMatrix();
         glTranslatef((float)pos.x + 1.5f, (float)pos.y-1.999f, (float)pos.z + 1.5f);
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(4).getTextureID());
-        glScalef(5, 5, 5);
+        glScalef(9, 9, 9);
         glColor3f(1f, 1f, 1f);
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);

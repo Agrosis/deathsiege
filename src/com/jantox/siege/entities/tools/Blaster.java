@@ -26,8 +26,8 @@ public class Blaster extends Tool {
 
     private int ammo = 100;
 
-    public Blaster(Player owner) {
-        super(owner);
+    public Blaster(Player owner, Level level) {
+        super(owner, level);
         this.powner = owner;
         blasts = new ArrayList<Shot>();
     }
@@ -66,7 +66,7 @@ public class Blaster extends Tool {
                     hp.x += rand.nextGaussian();
                     hp.y += rand.nextGaussian();
                     hp.z += rand.nextGaussian();
-                    this.blasts.add(new Shot(hp,  new Vector3D(1f, -1.5f, 1.5f)));
+                    this.blasts.add(new Shot(hp, level, new Vector3D(1f, -1.5f, 1.5f)));
                 }
             }
     }

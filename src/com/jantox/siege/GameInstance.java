@@ -34,6 +34,8 @@ public class GameInstance {
     private MultiplayerInstance mpinstance;
     private Timer timer;
 
+    public static boolean debug = false;
+
     public static boolean multiplayer = false;
 
     public static AudioController audio;
@@ -53,11 +55,8 @@ public class GameInstance {
     public void init() {
         this.initGL();
 
-        level = new Level(new Player(new Camera(new Vector3D(0, 10, 0), width, height)));
-        Entity.level = level;
-        level.init();
-
-
+        level = new Level();
+        level.init(new Player(new Camera(new Vector3D(0, 10, 0), width, height), level));
 
         if(multiplayer) {
             mpinstance = new MultiplayerInstance(level);
@@ -126,7 +125,6 @@ public class GameInstance {
 
     public void render(int delta) {
         level.render(delta);
-
         switch2D();
 
         glDisable(GL_TEXTURE_2D);
@@ -181,6 +179,21 @@ public class GameInstance {
             Resources.getFont("terminal").drawText("Next Wave: " + String.valueOf((int)(((Siege) level.getGameMode()).getBreakTime())), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
         }
         Resources.getFont("terminal").drawText("Wave " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 15, 15, 2.5f, BitmapFont.LIGHT_GRAY, false, 8);
+
+        if(GameInstance.debug) {
+            glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
+            glBegin(GL_QUADS);
+            glVertex2f(4, 495);
+            glVertex2f(195, 495);
+            glVertex2f(195, 595);
+            glVertex2f(4, 595);
+            glEnd();
+
+            Vector3D pos = level.getPlayer().getCamera().getCamera();
+            float pitch = level.getPlayer().getCamera().getPitch();
+            float yaw = level.getPlayer().getCamera().getYaw();
+            Resources.getFont("terminal").drawText("FPS: " + timer.getFrameFps() + "\nX: " + pos.x + "\nY: " + pos.y + "\nZ: " + pos.z + "\nYaw: " + yaw + "\nPitch: " + pitch, 10, 500, 1, BitmapFont.RED, false, 8);
+        }
 
         switch3D();
     }

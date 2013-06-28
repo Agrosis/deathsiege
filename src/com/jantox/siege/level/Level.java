@@ -2,6 +2,7 @@ package com.jantox.siege.level;
 
 import com.jantox.siege.*;
 import com.jantox.siege.entities.map.*;
+import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Projectile;
 import com.jantox.siege.geometry.*;
 import com.jantox.siege.entities.*;
@@ -32,10 +33,7 @@ public class Level {
 
     private Gamemode gamemode;
 
-    public Level(Player player) {
-        this.player = player;
-        this.camera = player.getCamera();
-
+    public Level() {
         projectiles = new ArrayList<Projectile>();
 
         multiplayers = new ArrayList<MultiplayerLiving>();
@@ -62,15 +60,19 @@ public class Level {
         skybox = new Skybox("", 1400);
     }
 
-    public void init() {
+    public void init(Player p) {
+        this.player = p;
+        this.camera = player.getCamera();
+
         this.gamemode = new Siege(this);
         gamemode.init();
 
-        this.spawn(new Spawner(new Vector3D(20, -16f, 20)));
+        this.spawn(new Spawner(new Vector3D(20, -16f, 20), this));
         //this.spawn(new Endwek(new Vector3D(50, 0, 50), player, false));
     }
 
     public void update(float delta) {
+        boolean shop = false;
         for(int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
 
@@ -89,6 +91,17 @@ public class Level {
                 }
                 ((MultiplayerLiving)e).updateMultiplayer();
             }
+
+            if(e instanceof Shop) {
+                if(player.getPosition().distanceSquared(e.getPosition()) <= 5*5) {
+                    GameInstance.shop = (Shop) e;
+                    shop = true;
+                }
+            }
+        }
+
+        if(shop == false) {
+            GameInstance.shop = null;
         }
 
         for(int i = 0;i < projectiles.size(); i++) {
@@ -127,16 +140,16 @@ public class Level {
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glPushMatrix();
-        glColor3f(0.5f,0.5f,0.5f);
+        glColor3f(124f/255f,252f/255f,0f/255f);
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(0).getTextureID());
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex3f(-700, -2, -700);
-        glTexCoord2f(400, 0);
+        glTexCoord2f(75, 0);
         glVertex3f(700, -2, -700);
-        glTexCoord2f(400, 400);
+        glTexCoord2f(75,75);
         glVertex3f(700, -2, 700);
-        glTexCoord2f(0, 400);
+        glTexCoord2f(0, 75);
         glVertex3f(-700, -2, 700);
         glEnd();
 

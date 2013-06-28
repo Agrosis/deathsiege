@@ -3,6 +3,7 @@ package com.jantox.siege.entities.tools;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -20,8 +21,8 @@ public class Shot extends Entity {
 
     public int life = 0;
 
-    public Shot(Vector3D pos, Vector3D rot) {
-        super(pos);
+    public Shot(Vector3D pos, Level level, Vector3D rot) {
+        super(pos, level);
         this.rot = rot;
         life = 3;
     }
@@ -47,8 +48,8 @@ public class Shot extends Entity {
         glColor3f(1, 1, 0);
         glTranslatef((float) posi.x, (float) posi.y, (float) posi.z);
         glScalef(0.5f, 0.5f, 0.5f);
-        glRotatef(Entity.level.getPlayer().getCamera().getYaw(), 0, 1, 0);
-        glRotatef(-Entity.level.getPlayer().getCamera().getPitch(), 1, 0, 0);
+        glRotatef(level.getPlayer().getCamera().getYaw(), 0, 1, 0);
+        glRotatef(-level.getPlayer().getCamera().getPitch(), 1, 0, 0);
 
         glTranslatef((float)roti.x, (float)roti.y, (float)roti.z - 4);
 

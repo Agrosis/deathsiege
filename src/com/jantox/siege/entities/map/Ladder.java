@@ -12,7 +12,7 @@ public class Ladder extends Entity {
 
 
     public Ladder(Vector3D pos) {
-        super(pos);
+        super(pos, null);
         this.mask = new AABB(this.pos, 1f, 10, 2f);
     }
 

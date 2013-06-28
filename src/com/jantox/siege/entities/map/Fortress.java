@@ -4,6 +4,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Endwek;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -13,8 +14,8 @@ public class Fortress extends Entity {
     float gate[];
     boolean status[];
 
-    public Fortress() {
-        super(new Vector3D());
+    public Fortress(Level level) {
+        super(new Vector3D(), level);
 
         gate = new float[4];
         for(int i = 0; i < 4; i++) {

@@ -1,6 +1,7 @@
 package com.jantox.siege;
 
 import com.jantox.siege.gfx.BitmapFont;
+import com.jantox.siege.models.DSMLoader;
 import com.jantox.siege.models.ObjectLoader;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -52,7 +53,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/tree2.obj"));
         models.add(objloader.loadOBJModel("models/woodaxe.obj"));
         models.add(objloader.loadOBJModel("models/ramp.obj"));
-        models.add(objloader.loadOBJModel("models/gatepart.obj"));
+        models.add(null);
         models.add(null);
         models.add(null);
         models.add(objloader.loadOBJModel("models/ladder.obj"));
@@ -77,6 +78,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/shop.obj"));
         models.add(objloader.loadOBJModel("models/intervention.obj"));
         models.add(objloader.loadOBJModel("models/spawner.obj"));
+        //models.add(new DSMLoader().loadDSMModel("models/monkey.dsm")); //33
 
         try {
             fonts.put("terminal", new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/fonts/terminal.png")), GL11.GL_NEAREST), 16, 16));

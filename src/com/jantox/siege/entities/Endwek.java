@@ -8,6 +8,7 @@ import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.geometry.CollisionSystem;
 import com.jantox.siege.geometry.Ray;
 import com.jantox.siege.geometry.Sphere;
+import com.jantox.siege.level.Level;
 import com.jantox.siege.level.Siege;
 import org.lwjgl.opengl.GL11;
 
@@ -21,8 +22,8 @@ public class Endwek extends Living {
     private Entity target, oldtarget;
     private boolean giant;
 
-    public Endwek(Vector3D pos, Entity target, boolean giant) {
-        super(pos, 100);
+    public Endwek(Vector3D pos, Level level, Entity target, boolean giant) {
+        super(pos, level, 100);
 
         gravity = 0.2f;
 

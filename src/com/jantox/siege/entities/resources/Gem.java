@@ -4,6 +4,7 @@ import com.jantox.siege.GameInstance;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 import com.jantox.siege.sfx.AudioController;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -17,8 +18,8 @@ public class Gem extends Entity {
 
     float angle = 0f;
 
-    public Gem(Vector3D pos) {
-        super(pos);
+    public Gem(Vector3D pos, Level level) {
+        super(pos, level);
 
         color = new Vector3D(1, 1, 0);
 
@@ -39,7 +40,7 @@ public class Gem extends Entity {
 
     @Override
     public void update(float delta) {
-        Vector3D ppos = Entity.level.getPlayer().getCamera().getCamera().copy();
+        Vector3D ppos = level.getPlayer().getCamera().getCamera().copy();
         ppos.y -= 0.5f;
 
         if(this.pos.distanceSquared(ppos) <= 5 * 5) {

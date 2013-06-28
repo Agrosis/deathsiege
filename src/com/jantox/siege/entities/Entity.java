@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class Entity {
 
-    public static Level level;
+    protected Level level;
 
     public Vector3D pos;
     public Vector3D velocity;
@@ -23,8 +23,9 @@ public abstract class Entity {
 
     public long entityid;
 
-    public Entity(Vector3D pos) {
+    public Entity(Vector3D pos, Level level) {
         this.pos = pos;
+        this.level = level;
         this.velocity = new Vector3D();
     }
 

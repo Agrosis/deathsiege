@@ -10,6 +10,7 @@ import com.jantox.siege.geometry.AABB;
 import com.jantox.siege.geometry.CollisionSystem;
 import com.jantox.siege.geometry.Quad;
 import com.jantox.siege.geometry.Sphere;
+import com.jantox.siege.level.Level;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -36,15 +37,15 @@ public class Player extends Living {
 
     public static double move = 0;
 
-    public Player(Camera camera) {
-        super(camera.getCamera(), 100);
+    public Player(Camera camera, Level level) {
+        super(camera.getCamera(), level, 100);
         this.camera = camera;
 
         inventory = new ArrayList<Tool>();
-        inventory.add(new Shotgun(this));
-        inventory.add(new Sniper(this));
-        inventory.add(new Blaster(this));
-        inventory.add(new Crossbow(this));
+        inventory.add(new Shotgun(this, level));
+        inventory.add(new Sniper(this, level));
+        inventory.add(new Blaster(this, level));
+        inventory.add(new Crossbow(this, level));
         inventory.add(new Woodaxe(this));
 
         curwep = inventory.get(selected);
@@ -64,23 +65,6 @@ public class Player extends Living {
         if(Input.w || Input.a || Input.s || Input.d) {
             move += 10f;
             m = true;
-        }
-
-        if(Input.r && m) {
-            camera.setRunning(true);
-            stamina -= 0.5f;
-        }
-        if(!Input.r) {
-            camera.setRunning(false);
-            stamina += 0.2;
-            if(stamina > 300)
-                stamina = 300;
-        }
-
-        if(stamina <= 0) {
-            camera.setRunning(false);
-            Input.r = false;
-            stamina = 0;
         }
 
         if(cursel != Input.curnum-1) {
@@ -193,8 +177,8 @@ public class Player extends Living {
 
                     if(gravity != 0) {
                         gravity -= 0.025f;
-                        if(gravity < -0.5f) {
-                            gravity = -0.5f;
+                        if(gravity < -0.65f) {
+                            gravity = -0.65f;
                         }
                     } else {
                         gravity = -0.05f;

@@ -1,6 +1,7 @@
 package com.jantox.siege;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class Camera {
 
@@ -15,6 +16,7 @@ public class Camera {
     private float delta;
 
     private boolean running;
+    int perspective = 60;
 
     private float pitchRecoil = 0;
     private int pdir = 2;
@@ -54,6 +56,33 @@ public class Camera {
                 pdir = 2;
             }
         }
+
+        if(Input.shift) {
+            running = true;
+        } else {
+            running = false;
+        }
+
+        if(running) {
+            if(perspective < 65) {
+                perspective++;
+                glViewport(0, 0, width, height);
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(perspective, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                glMatrixMode(GL_MODELVIEW);
+            }
+        } else {
+            if(perspective > 60) {
+                perspective--;
+                glViewport(0, 0, width, height);
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                gluPerspective(perspective, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                glMatrixMode(GL_MODELVIEW);
+            }
+        }
+
     }
 
     public void applyRotation() {
@@ -66,9 +95,9 @@ public class Camera {
     }
 
     public void move() {
-        if(Input.w)
+        if(Input.w)  {
             moveFloor(0);
-        else if(Input.s)
+        } else if(Input.s)
             moveFloor(180);
 
         if(Input.a)
@@ -79,8 +108,8 @@ public class Camera {
 
     public void moveFloor(int direction) {
         double ang = Math.toRadians(yaw + direction);
-        camera.x -= Math.sin(ang) * MOVE_SPEED * 0.8;
-        camera.z -= Math.cos(ang) * MOVE_SPEED * 0.8;
+        camera.x -= Math.sin(ang) * MOVE_SPEED * 0.8 * (direction == 0 && running ? 1.5f : 1);
+        camera.z -= Math.cos(ang) * MOVE_SPEED * 0.8 * (direction == 0 && running ? 1.5f : 1);
     }
 
     public void lockCamera() {
@@ -93,10 +122,6 @@ public class Camera {
             yaw -= 360.0;
         if(yaw < 0.0)
             yaw += 360.0;
-    }
-
-    public void setRunning(boolean b) {
-        running = b;
     }
 
     public Vector3D getCamera() {

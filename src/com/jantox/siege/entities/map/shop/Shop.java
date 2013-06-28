@@ -6,6 +6,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.gfx.BitmapFont;
+import com.jantox.siege.level.Level;
 import com.jantox.siege.level.Siege;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -27,14 +28,18 @@ public class Shop extends Entity {
     private ArrayList<ShopItem> items;
     private BitmapFont font;
 
-    public Shop(Vector3D pos, SHOP shoptype) {
-        super(pos);
+    public Shop(Vector3D pos, Level level, SHOP shoptype) {
+        super(pos, level);
 
         items = new ArrayList<ShopItem>();
 
         if(shoptype == SHOP.SPECIALS) {
             items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME, 0));
             items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN, 1));
+        } else if(shoptype == SHOP.WEAPONS) {
+            items.add(new ShopItem(ShopItem.ITEM.AMMO_REFILL, 0));
+            items.add(new ShopItem(ShopItem.ITEM.THE_ORIGINAL, 1));
+            items.add(new ShopItem(ShopItem.ITEM.THE_SHOTGUN, 2));
         }
 
         font = Resources.getFont("terminal");
@@ -61,12 +66,6 @@ public class Shop extends Entity {
 
         if(sbreak > 0) {
             sbreak--;
-        }
-
-        if(this.getPosition().distanceSquared(level.getPlayer().getPosition()) <= 5 * 5) {
-            GameInstance.shop = this;
-        } else {
-            GameInstance.shop = null;
         }
     }
 

@@ -9,8 +9,8 @@ public abstract class Living extends Entity {
 
     protected int health, maxhealth;
 
-    public Living(Vector3D pos, int health) {
-        super(pos);
+    public Living(Vector3D pos, Level level, int health) {
+        super(pos, level);
         this.health = this.maxhealth = health;
     }
 
@@ -36,11 +36,11 @@ public abstract class Living extends Entity {
         if(health < 0)
             maxhealth = 0;
 
-        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
-        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
-        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
-        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
-        Level.psys.addParticle(new Particle(this.pos.copy(), new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), level, new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), level, new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), level, new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), level, new ParticleBehavior.DamageParticle()));
+        Level.psys.addParticle(new Particle(this.pos.copy(), level, new ParticleBehavior.DamageParticle()));
     }
 
 }

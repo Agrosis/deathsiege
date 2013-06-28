@@ -4,6 +4,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Endwek;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -11,8 +12,8 @@ public class ControlPoint extends Entity {
 
     int health;
 
-    public ControlPoint(Vector3D pos) {
-        super(pos);
+    public ControlPoint(Vector3D pos, Level level) {
+        super(pos, level);
 
         this.health = 10;
     }

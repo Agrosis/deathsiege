@@ -17,7 +17,7 @@ public class Woodaxe extends Tool {
     private boolean use = false;
 
     public Woodaxe(Player owner) {
-        super(owner);
+        super(owner, null);
         this.powner = owner;
     }
 
@@ -28,7 +28,7 @@ public class Woodaxe extends Tool {
     @Override
     public void onUse(int mouse) {
         use = true;
-        ArrayList<Entity> entities = Entity.level.getEntities();
+        /*ArrayList<Entity> entities = Entity.level.getEntities();
         for(int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             if(e instanceof Resource) {
@@ -45,7 +45,7 @@ public class Woodaxe extends Tool {
                     }
                 }
             }
-        }
+        }*/
     }
 
     @Override

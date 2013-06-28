@@ -123,6 +123,8 @@ public class Input {
                         curnum = 4;
                 } else if (Keyboard.getEventKey() == Keyboard.KEY_R) {
                     r = !r;
+                } else if (Keyboard.getEventKey() == Keyboard.KEY_F1) {
+                    GameInstance.debug = !GameInstance.debug;
                 }
             }
         }

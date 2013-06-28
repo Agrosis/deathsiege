@@ -19,8 +19,8 @@ public class Bolt extends Entity {
 
     float vely = 2f;
 
-    public Bolt(Vector3D pos, Vector3D velx, Vector3D rotation) {
-        super(pos);
+    public Bolt(Vector3D pos, Level level, Vector3D velx, Vector3D rotation) {
+        super(pos, level);
         this.vel = velx;
         life = 50;
 
@@ -58,7 +58,7 @@ public class Bolt extends Entity {
         glPushMatrix();
         glColor3f(0, 0, 0);
         glTranslatef((float) pos.x, (float) pos.y, (float) pos.z);
-        glRotatef(Entity.level.getPlayer().getCamera().getYaw(), 0, 1, 0);
+        glRotatef(level.getPlayer().getCamera().getYaw(), 0, 1, 0);
 
         double length = vel.length();
         double vy = vel.y;

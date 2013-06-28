@@ -2,6 +2,8 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
+import com.jantox.siege.level.Level;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class Helicopter extends Entity {
@@ -10,8 +12,8 @@ public class Helicopter extends Entity {
 
     Vector3D target;
 
-    public Helicopter(Vector3D pos) {
-        super(pos);
+    public Helicopter(Vector3D pos, Level level) {
+        super(pos, level);
 
         target = level.getPlayer().getPosition();
     }

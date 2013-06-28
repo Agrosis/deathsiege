@@ -5,6 +5,7 @@ import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
+import com.jantox.siege.level.Level;
 import com.jantox.siege.level.Siege;
 import org.lwjgl.opengl.GL11;
 
@@ -19,8 +20,8 @@ public class Kage extends Living {
 
     private Entity target;
 
-    public Kage(Vector3D pos, float version, Entity target) {
-        super(pos, (int)(25 * version));
+    public Kage(Vector3D pos, Level level, float version, Entity target) {
+        super(pos, level, (int)(25 * version));
         this.version = version;
 
         this.target = target;
@@ -84,7 +85,7 @@ public class Kage extends Living {
             if(!expired) {
                 Siege.MONSTERS_LEFT--;
                 for(int i = 0; i < 10; i++) {
-                    level.spawn(new Gem(this.pos.copy()));
+                    level.spawn(new Gem(this.pos.copy(), level));
                 }
             }
             this.expired = true;

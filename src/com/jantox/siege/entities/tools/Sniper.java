@@ -6,6 +6,7 @@ import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Player;
+import com.jantox.siege.level.Level;
 
 import java.util.ArrayList;
 
@@ -26,8 +27,8 @@ public class Sniper extends Gun {
     Vector3D sdir;
     double length;
 
-    public Sniper(Player owner) {
-        super(owner, 20, 10);
+    public Sniper(Player owner, Level level) {
+        super(owner, level, 20, 10);
         this.powner = owner;
 
         holdpos = new Vector3D(-2, -1,-0.8);
