@@ -40,6 +40,7 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_tree.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/shop_menu.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/brickwall.png")), GL11.GL_NEAREST));
         } catch (IOException e) {
             e.printStackTrace();
         }

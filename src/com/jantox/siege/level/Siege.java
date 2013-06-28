@@ -2,10 +2,7 @@ package com.jantox.siege.level;
 
 import com.jantox.siege.GameInstance;
 import com.jantox.siege.Vector3D;
-import com.jantox.siege.entities.Endwek;
-import com.jantox.siege.entities.Entity;
-import com.jantox.siege.entities.Helicopter;
-import com.jantox.siege.entities.Kage;
+import com.jantox.siege.entities.*;
 import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.sfx.AudioController;
@@ -15,14 +12,14 @@ public class Siege extends Gamemode {
     private Fortress fortress;
     private ControlPoint points[];
 
-    private int wave = 0;
-
+    public static int wave = 0;
     public static int MONSTERS_LEFT = 0;
 
     private long lastsec;
     private long seconds;
     private long breaktime = -1;
 
+    private boolean bosswave = false;
     private Vector3D spawnpoint;
     private boolean spawned = false;
 
@@ -41,15 +38,42 @@ public class Siege extends Gamemode {
     @Override
     public void init() {
         points[0] = new ControlPoint(new Vector3D(0, -1.9999999, 0), level);
-        points[1] = new ControlPoint(new Vector3D(50, -1.9999999, -50), level);
-        points[2] = new ControlPoint(new Vector3D(-50, -1.9999999, -50), level);
-        points[3] = new ControlPoint(new Vector3D(-50, -1.9999999, 50), level);
-        points[4] = new ControlPoint(new Vector3D(50, -1.9999999, 50), level);
-        level.spawn(points[0]);
-        level.spawn(points[1]);
-        level.spawn(points[2]);
-        level.spawn(points[3]);
-        level.spawn(points[4]);
+        points[1] = new ControlPoint(new Vector3D(70, -1.9999999, -70), level);
+        points[2] = new ControlPoint(new Vector3D(-70, -1.9999999, -70), level);
+        points[3] = new ControlPoint(new Vector3D(-70, -1.9999999, 70), level);
+        points[4] = new ControlPoint(new Vector3D(70, -1.9999999, 70), level);
+
+        level.spawn(new Spawner(new Vector3D(70, -16, -70), level));
+        level.spawn(new Spawner(new Vector3D(-70, -16, -70), level));
+        level.spawn(new Spawner(new Vector3D(70, -16, 70), level));
+        level.spawn(new Spawner(new Vector3D(-70, -16, 70), level));
+
+        /*level.spawn(new Path(new Vector3D(50, 0, -50)));
+        level.spawn(new Path(new Vector3D(-50, 0, -50)));
+        level.spawn(new Path(new Vector3D(50, 0, 50)));
+        level.spawn(new Path(new Vector3D(-50, 0, 50)));
+        */
+
+        level.spawn(new Path(new Vector3D(70, 0, 70), new Vector3D(20, 20, 20)));
+        level.spawn(new Path(new Vector3D(-70, 0, 70), new Vector3D(20, 20, 20)));
+        level.spawn(new Path(new Vector3D(-70, 0, -70), new Vector3D(20, 20, 20)));
+        level.spawn(new Path(new Vector3D(70, 0, -70), new Vector3D(20, 20, 20)));
+
+        for(int i = -60; i < 60; i+=10) {
+            level.spawn(new Path(new Vector3D(65, 0, i), new Vector3D(10, 10, 10)));
+            level.spawn(new Path(new Vector3D(-75, 0, i), new Vector3D(10, 10, 10)));
+        }
+
+        for(int i = -60; i < 60; i+=10) {
+            level.spawn(new Path(new Vector3D(i, 0, 65), new Vector3D(10, 10, 10)));
+            level.spawn(new Path(new Vector3D(i, 0, -75), new Vector3D(10, 10, 10)));
+        }
+
+        //level.spawn(points[0]);
+        //level.spawn(points[1]);
+       // level.spawn(points[2]);
+        //level.spawn(points[3]);
+        //level.spawn(points[4]);
 
         level.spawn(new Helicopter(new Vector3D(50, 0, 50), level));
 
@@ -105,15 +129,12 @@ public class Siege extends Gamemode {
         }*/
 
         level.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
-        level.spawn(new Decoration(new Vector3D(-50, 0, -50), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
-        level.spawn(new Decoration(new Vector3D(50, 0, -50), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
-        level.spawn(new Decoration(new Vector3D(50, 0, 50), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
-        level.spawn(new Decoration(new Vector3D(-50, 0, 50), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
 
-        level.spawn(new Decoration(new Vector3D(-80, 0, 80), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
-        level.spawn(new Shop(new Vector3D(105, -1, 105), level, Shop.SHOP.SPECIALS));
-        level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
-        level.spawn(new Shop(new Vector3D(-85, -1, 85), level, Shop.SHOP.WEAPONS));
+        level.spawn(new Decoration(new Vector3D(-100, 0, 100), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
+        level.spawn(new Shop(new Vector3D(-105, -1, 105), level, Shop.SHOP.WEAPONS));
+
+        //level.spawn(new Shop(new Vector3D(105, -1, 105), level, Shop.SHOP.SPECIALS));
+        //level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
 
@@ -121,15 +142,18 @@ public class Siege extends Gamemode {
     }
 
     public void nextWave() {
-        System.out.println("Wave " + (++wave) + " is complete!");
-
-        breaktime = 30;
+        wave++;
 
         fortress.close();
-
-        MONSTERS_LEFT = wave * 2 + 5;
-
         level.removeAllMonsters();
+        breaktime = 30;
+
+        if(wave % 5 == 0 && wave != 0) {
+            MONSTERS_LEFT = (int) Math.ceil(wave / 10d) * 10;
+            bosswave = true;
+        } else {
+            MONSTERS_LEFT = wave * 2 + 5;
+        }
     }
 
     @Override

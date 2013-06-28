@@ -62,8 +62,10 @@ public class Player extends Living {
 
         boolean m = false;
 
+        move += 10f;
+
         if(Input.w || Input.a || Input.s || Input.d) {
-            move += 10f;
+
             m = true;
         }
 

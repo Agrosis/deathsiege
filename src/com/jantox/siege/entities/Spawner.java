@@ -13,16 +13,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Spawner extends Living {
 
-    int tid;
-    private Texture[] texture;
-
     int ticks;
 
     public Spawner(Vector3D pos, Level level) {
         super(pos, level, 150);
 
         this.mask = new AABB(new Vector3D(pos.x + 1f, pos.y - 1f, pos.z + 0.5f), 1f, 0.5f, 0.25f);
-
         ticks = 0;
     }
 
