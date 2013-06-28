@@ -79,6 +79,8 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/shop.obj"));
         models.add(objloader.loadOBJModel("models/intervention.obj"));
         models.add(objloader.loadOBJModel("models/spawner.obj"));
+        models.add(objloader.loadOBJModel("models/spawner2.obj"));
+        models.add(objloader.loadOBJModel("models/spawner3.obj"));
         //models.add(new DSMLoader().loadDSMModel("models/monkey.dsm")); //33
 
         try {

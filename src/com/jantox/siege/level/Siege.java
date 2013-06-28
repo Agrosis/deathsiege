@@ -133,8 +133,8 @@ public class Siege extends Gamemode {
         level.spawn(new Decoration(new Vector3D(-100, 0, 100), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
         level.spawn(new Shop(new Vector3D(-105, -1, 105), level, Shop.SHOP.WEAPONS));
 
-        //level.spawn(new Shop(new Vector3D(105, -1, 105), level, Shop.SHOP.SPECIALS));
-        //level.spawn(new Decoration(new Vector3D(90, 0, 90), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
+        level.spawn(new Shop(new Vector3D(125, -1, 125), level, Shop.SHOP.SPECIALS));
+        level.spawn(new Decoration(new Vector3D(110, 0, 110), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
 

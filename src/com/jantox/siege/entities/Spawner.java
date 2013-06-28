@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Spawner extends Living {
 
     int ticks;
+    int v = 0;
 
     public Spawner(Vector3D pos, Level level) {
         super(pos, level, 150);
@@ -27,6 +28,13 @@ public class Spawner extends Living {
         super.update(delta);
 
         ticks++;
+        if(ticks == 60) {
+            ticks = 0;
+            v++;
+            if(v == 3) {
+                v = 0;
+            }
+        }
 
         //if(ticks % 1 == 0) {
             //Level.psys.addParticle(new Particle(new Vector3D(pos.x + 1,pos.y,pos.z + 0.5), new ParticleBehavior.DirtParticle()));
@@ -68,7 +76,7 @@ public class Spawner extends Living {
         glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
         glScalef(2f, 2f, 2f);
 
-        glCallList(Resources.getModel(32));
+        glCallList(Resources.getModel(32+v));
 
         glPopMatrix();
     }

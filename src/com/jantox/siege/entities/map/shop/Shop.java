@@ -29,6 +29,7 @@ public class Shop extends Entity {
     private BitmapFont font;
 
     private int base = -600;
+    private String name;
 
     public Shop(Vector3D pos, Level level, SHOP shoptype) {
         super(pos, level);
@@ -36,9 +37,11 @@ public class Shop extends Entity {
         items = new ArrayList<ShopItem>();
 
         if(shoptype == SHOP.SPECIALS) {
+            name = "Armor, Specials and Upgrades";
             items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME, 0));
             items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN, 1));
         } else if(shoptype == SHOP.WEAPONS) {
+            name = "Weapons and Destructibles";
             items.add(new ShopItem(ShopItem.ITEM.AMMO_REFILL, 0));
             items.add(new ShopItem(ShopItem.ITEM.THE_ORIGINAL, 1));
             items.add(new ShopItem(ShopItem.ITEM.THE_SHOTGUN, 2));
@@ -133,6 +136,8 @@ public class Shop extends Entity {
             for(int i = 0; i < items.size(); i++) {
                 items.get(i).render();
             }
+
+            font.drawText(name, 400 - (int)((name.length() / 2f) * 8), 50 + 20,1, new Vector3D(1,1,1), false, 8);
 
             glPushMatrix();
             font.drawText("$1000", 520, 235/2, 1f, new Vector3D(1,1,1), false, 8);
