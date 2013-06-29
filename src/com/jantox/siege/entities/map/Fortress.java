@@ -28,7 +28,19 @@ public class Fortress extends Entity {
 
     @Override
     public void update(float delta) {
-
+        for(int i = 0; i < 4; i++) {
+            if(status[i]) {
+                if(gate[i] > -70)
+                    gate[i] -= 0.14;
+                if(gate[i] < -70)
+                    gate[i] = -70;
+            } else {
+                if(gate[i] < 0)
+                    gate[i] += 0.14;
+                if(gate[i] > 0)
+                    gate[i] = 0;
+            }
+        }
     }
 
     public void open() {
@@ -47,20 +59,6 @@ public class Fortress extends Entity {
 
     @Override
     public void render() {
-        for(int i = 0; i < 4; i++) {
-            if(status[i]) {
-                if(gate[i] > -70)
-                    gate[i] -= 0.14;
-                if(gate[i] < -70)
-                    gate[i] = -70;
-            } else {
-                if(gate[i] < 0)
-                    gate[i] += 0.14;
-                if(gate[i] > 0)
-                    gate[i] = 0;
-            }
-        }
-
         glPushMatrix();
         glDisable(GL_TEXTURE_2D);
 

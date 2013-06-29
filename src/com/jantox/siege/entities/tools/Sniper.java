@@ -94,6 +94,8 @@ public class Sniper extends Gun {
             this.use();
             level.getPlayer().getCamera().setPitchRecoil(0.5f);
 
+
+
             GameInstance.audio.playSound(0);
         }
     }

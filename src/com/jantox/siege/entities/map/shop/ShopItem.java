@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ShopItem {
 
-    public static enum ITEM { EXTENDED_TIME, SENTRY_GUN, AMMO_REFILL, THE_ORIGINAL, THE_SHOTGUN };
+    public static enum ITEM { EXTENDED_TIME, SENTRY_GUN, AMMO_REFILL, THE_ORIGINAL, THE_SHOTGUN, FIREWORKS };
 
     private ITEM type;
     private int index;
@@ -47,6 +47,10 @@ public class ShopItem {
             this.cost = 800;
             name = "The Shotgun";
             desc = "A quick 2-round shotgun with\nlow range and high damage.";
+        } else if(type == ITEM.FIREWORKS) {
+            this.cost = 200;
+            name = "Fireworks";
+            desc = "Fireworks will scatter across the\nmap for one minute! From Agro. :)";
         }
     }
 

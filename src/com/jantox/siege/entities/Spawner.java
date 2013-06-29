@@ -2,6 +2,7 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
 import com.jantox.siege.entities.resources.Gem;
+import com.jantox.siege.entities.tools.Fury;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.geometry.AABB;
@@ -34,6 +35,8 @@ public class Spawner extends Living {
             if(v == 3) {
                 v = 0;
             }
+
+            //level.spawn(new Fury(this.pos.copy(), level, new Vector3D(0.25f, 0.25f, 0)));
         }
 
         //if(ticks % 1 == 0) {

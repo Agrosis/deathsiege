@@ -5,6 +5,7 @@ import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.shop.Shop;
+import com.jantox.siege.entities.tools.Fury;
 import com.jantox.siege.sfx.AudioController;
 
 public class Siege extends Gamemode {
@@ -134,7 +135,7 @@ public class Siege extends Gamemode {
         level.spawn(new Shop(new Vector3D(-105, -1, 105), level, Shop.SHOP.WEAPONS));
 
         level.spawn(new Shop(new Vector3D(125, -1, 125), level, Shop.SHOP.SPECIALS));
-        level.spawn(new Decoration(new Vector3D(110, 0, 110), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
+        level.spawn(new Decoration(new Vector3D(110, 0.001, 110), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
 
@@ -163,6 +164,7 @@ public class Siege extends Gamemode {
             spawned = true;
 
             seconds++;
+            colors = true;
 
             if(breaktime > -1) {
                 breaktime--;
@@ -200,7 +202,14 @@ public class Siege extends Gamemode {
                 nextWave();
             }
         }
+
+        if(seconds % 1 == 0 && colors) {
+            colors = false;
+            level.spawn(new Fury(new Vector3D(Entity.rand.nextInt(200)-100, 2, Entity.rand.nextInt(200)-100), level, new Vector3D(Entity.rand.nextGaussian(), 1.7f, Entity.rand.nextGaussian())));
+        }
     }
+
+    boolean colors = true;
 
     public Vector3D getRandomSpawnPoint() {
         int r = Entity.rand.nextInt(4);

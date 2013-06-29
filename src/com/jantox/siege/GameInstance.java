@@ -27,6 +27,7 @@ public class GameInstance {
 
     public static boolean sniper;
     public static Shop shop = null;
+    public static boolean paused = false;
 
     private int width, height;
 
@@ -91,7 +92,9 @@ public class GameInstance {
         while(!Display.isCloseRequested()) {
             int delta = timer.getDelta();
 
-            update(delta);
+            Input.update();
+            if(!paused)
+                update(delta);
             render(delta);
 
             timer.update();
@@ -104,7 +107,6 @@ public class GameInstance {
     }
 
     public void update(int delta) {
-        Input.update();
         level.update(delta);
         audio.update();
 
@@ -164,35 +166,53 @@ public class GameInstance {
             glEnd();
         }
 
-        if(level.getPlayer().getTool() instanceof Gun) {
-            Gun gun = (Gun) level.getPlayer().getTool();
+        if(!paused) {
+            if(level.getPlayer().getTool() instanceof Gun) {
+                Gun gun = (Gun) level.getPlayer().getTool();
 
-            int cur = gun.getCurMag();
-            int ful = gun.getFullMag();
-            Resources.getFont("terminal").drawText(cur + "/" + ful, 780, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
+                int cur = gun.getCurMag();
+                int ful = gun.getFullMag();
+                Resources.getFont("terminal").drawText(cur + "/" + ful, 780, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
+            }
+
+            Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 820, 15, 2, new Vector3D(1,1,0), true,  8);
+            if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() == -1) {
+                Resources.getFont("terminal").drawText("Enemies Left: " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getEnemiesLeft()), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
+            } else {
+                Resources.getFont("terminal").drawText("Next Wave: " + String.valueOf((int)(((Siege) level.getGameMode()).getBreakTime())), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
+            }
+            Resources.getFont("terminal").drawText("Wave " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 15, 15, 2.5f, BitmapFont.LIGHT_GRAY, false, 8);
+
+            if(GameInstance.debug) {
+                glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
+                glBegin(GL_QUADS);
+                glVertex2f(4, 495);
+                glVertex2f(195, 495);
+                glVertex2f(195, 595);
+                glVertex2f(4, 595);
+                glEnd();
+
+                Vector3D pos = level.getPlayer().getCamera().getCamera();
+                float pitch = level.getPlayer().getCamera().getPitch();
+                float yaw = level.getPlayer().getCamera().getYaw();
+                Resources.getFont("terminal").drawText("FPS: " + timer.getFrameFps() + "\nX: " + pos.x + "\nY: " + pos.y + "\nZ: " + pos.z + "\nYaw: " + yaw + "\nPitch: " + pitch, 10, 500, 1, BitmapFont.RED, false, 8);
+            }
         }
 
-        Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 820, 15, 2, new Vector3D(1,1,0), true,  8);
-        if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() == -1) {
-            Resources.getFont("terminal").drawText("Enemies Left: " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getEnemiesLeft()), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
-        } else {
-            Resources.getFont("terminal").drawText("Next Wave: " + String.valueOf((int)(((Siege) level.getGameMode()).getBreakTime())), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
-        }
-        Resources.getFont("terminal").drawText("Wave " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getWave()+1), 15, 15, 2.5f, BitmapFont.LIGHT_GRAY, false, 8);
+        if(paused) {
+            String p = "Game Paused";
+            String ctp = "(Click to continue)";
+            Resources.getFont("terminal").drawText(p, 400 - (int)(p.length() / 2f) * 40, 250, 5, BitmapFont.WHITE, false, 8);
+            Resources.getFont("terminal").drawText(ctp, 400 - (int)(ctp.length() / 2f) * 16, 320, 2, BitmapFont.WHITE, false, 8);
 
-        if(GameInstance.debug) {
-            glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
+            glColor4f(0.1f, 0.1f, 0.1f, 0.25f);
             glBegin(GL_QUADS);
-            glVertex2f(4, 495);
-            glVertex2f(195, 495);
-            glVertex2f(195, 595);
-            glVertex2f(4, 595);
+            glVertex2f(0, 0);
+            glVertex2f(800, 0);
+            glVertex2f(800, 600);
+            glVertex2f(0, 600);
             glEnd();
 
-            Vector3D pos = level.getPlayer().getCamera().getCamera();
-            float pitch = level.getPlayer().getCamera().getPitch();
-            float yaw = level.getPlayer().getCamera().getYaw();
-            Resources.getFont("terminal").drawText("FPS: " + timer.getFrameFps() + "\nX: " + pos.x + "\nY: " + pos.y + "\nZ: " + pos.z + "\nYaw: " + yaw + "\nPitch: " + pitch, 10, 500, 1, BitmapFont.RED, false, 8);
         }
 
         switch3D();

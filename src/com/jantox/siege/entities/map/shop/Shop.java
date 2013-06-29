@@ -40,6 +40,7 @@ public class Shop extends Entity {
             name = "Armor, Specials and Upgrades";
             items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME, 0));
             items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN, 1));
+            items.add(new ShopItem(ShopItem.ITEM.FIREWORKS, 2));
         } else if(shoptype == SHOP.WEAPONS) {
             name = "Weapons and Destructibles";
             items.add(new ShopItem(ShopItem.ITEM.AMMO_REFILL, 0));

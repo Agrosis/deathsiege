@@ -14,6 +14,7 @@ public class BitmapFont {
     public static final Vector3D YELLOW = new Vector3D(1, 1, 0);
     public static final Vector3D LIGHT_GRAY = new Vector3D(0.75, 0.75, 0.75);
     public static final Vector3D DARK_GRAY = new Vector3D(0.25, 0.25, 0.25);
+    public static final Vector3D WHITE = new Vector3D(1,1,1);
 
     private Texture texture;
     private int width, height;

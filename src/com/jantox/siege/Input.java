@@ -15,7 +15,6 @@ public class Input {
     public static boolean w = false, a = false, s = false, d = false;
     public static boolean space = false, shift = false;
 
-
     public static boolean in = true;
     public static boolean rmouse, lmouse;
 
@@ -29,6 +28,14 @@ public class Input {
 
         lmouse = Mouse.isButtonDown(0);
         rmouse = Mouse.isButtonDown(1);
+
+        if(lmouse) {
+            if(in == false) {
+                in = true;
+                Mouse.setGrabbed(true);
+                GameInstance.paused = false;
+            }
+        }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             up = true;
@@ -111,8 +118,9 @@ public class Input {
         while(Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
                 if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-                    Mouse.setGrabbed(!Mouse.isGrabbed());
-                    in = !in;
+                    Mouse.setGrabbed(false);
+                    in = false;
+                    GameInstance.paused = true;
                 } else if (Keyboard.getEventKey() == Keyboard.KEY_Q) {
                     curnum--;
                     if(curnum < 1)

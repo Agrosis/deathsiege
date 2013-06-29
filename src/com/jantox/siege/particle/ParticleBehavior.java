@@ -170,4 +170,27 @@ public abstract class ParticleBehavior {
 
     }
 
+    public static class Fury extends ParticleBehavior {
+
+        private Vector3D color;
+
+        public Fury(Vector3D c) {
+            this.color = c;
+        }
+
+        @Override
+        public void init(Particle p) {
+            p.setColor(color);
+            p.setBillboarded(true);
+            p.setScale(new Vector3D(0.3, 0.3, 0.3f));
+            p.setMaxLife(50);
+            p.setVelocity(new Vector3D(0,-Math.abs(Entity.rand.nextGaussian())/100f, 0));
+        }
+
+        @Override
+        public void update(Particle p) {
+
+        }
+
+    }
 }
