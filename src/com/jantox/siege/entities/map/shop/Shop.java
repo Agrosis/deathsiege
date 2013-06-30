@@ -88,7 +88,7 @@ public class Shop extends Entity {
         //glEnable(GL_TEXTURE_2D);
         glPushMatrix();
 
-        glTranslatef((float)pos.x, (float)pos.y, (float)pos.z);
+        glTranslatef((float)pos.x, (float)pos.y-0.25f, (float)pos.z);
         glScalef(0.75f, 0.75f, 0.75f);
         glCallList(Resources.getModel(30));
 
@@ -100,16 +100,17 @@ public class Shop extends Entity {
 
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, Resources.getTexture(7).getTextureID());
+
         glBegin(GL_QUADS);
 
         glTexCoord2f(0, 0);
-        glVertex2f(200 + base, 50);
+        glVertex2f(533 - 200 + base, 50);
         glTexCoord2f(400f/512f, 0);
-        glVertex2f(600 + base, 50);
+        glVertex2f(533 + 200 + base, 50);
         glTexCoord2f(400f/512f, 500f/512f);
-        glVertex2f(600 + base, 550);
+        glVertex2f(533 + 200 + base, 550);
         glTexCoord2f(0, 500f/512f);
-        glVertex2f(200 + base, 550);
+        glVertex2f(533 - 200 + base, 550);
 
         glEnd();
         glDisable(GL_TEXTURE_2D);
@@ -120,17 +121,17 @@ public class Shop extends Entity {
 
             glTranslatef(0, index * 55, 0);
             glBegin(GL_LINES);
-            glVertex2f(200 + 12, 50 + 48);
-            glVertex2f(200 + 12 + 377, 50 + 48);
+            glVertex2f(333 + 12, 50 + 48);
+            glVertex2f(333 + 12 + 377, 50 + 48);
 
-            glVertex2f(200 + 12 + 377, 50 + 48);
-            glVertex2f(200 + 12 + 377, 50 + 48 + 56);
+            glVertex2f(333 + 12 + 377, 50 + 48);
+            glVertex2f(333 + 12 + 377, 50 + 48 + 56);
 
-            glVertex2f(200 + 12 + 377, 50 + 48 + 56);
-            glVertex2f(200 + 12, 50 + 48 + 56);
+            glVertex2f(333 + 12 + 377, 50 + 48 + 56);
+            glVertex2f(333 + 12, 50 + 48 + 56);
 
-            glVertex2f(200 + 12, 50 + 48 + 56);
-            glVertex2f(200 + 12, 50 + 48);
+            glVertex2f(333 + 12, 50 + 48 + 56);
+            glVertex2f(333 + 12, 50 + 48);
             glEnd();
             glPopMatrix();
 
@@ -138,11 +139,11 @@ public class Shop extends Entity {
                 items.get(i).render();
             }
 
-            font.drawText(name, 400 - (int)((name.length() / 2f) * 8), 50 + 20,1, new Vector3D(1,1,1), false, 8);
+            font.drawText(name, 533 - (int)((name.length() / 2f) * 8), 50 + 20,1, new Vector3D(1,1,1), false, 8);
 
             glPushMatrix();
-            font.drawText("$1000", 520, 235/2, 1f, new Vector3D(1,1,1), false, 8);
-            font.drawText("$2500", 520, 345/2, 1f, new Vector3D(1,1,1), false, 8);
+            //font.drawText("$1000", 520, 235/2, 1f, new Vector3D(1,1,1), false, 8);
+           // font.drawText("$2500", 520, 345/2, 1f, new Vector3D(1,1,1), false, 8);
             /*font.drawText("$200", 500, 455/2, 1f, new Vector3D(1,1,1), false, 8);
             font.drawText("$3000", 500, 565/2, 1f, new Vector3D(1,1,1), false, 8);
             font.drawText("$4000", 500, 675/2, 1f, new Vector3D(1,1,1), false, 8);*/

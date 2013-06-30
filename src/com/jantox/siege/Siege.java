@@ -9,12 +9,12 @@ public class Siege {
     private GameInstance game;
 
     public Siege() {
-        this.game = new GameInstance(800, 600);
+        this.game = new GameInstance(1066, 600);
 
         try {
             Display.create();
 
-            game.setDisplayMode(800, 600, Boolean.valueOf(Configuration.getProperty("fullscreen")));
+            game.setDisplayMode(1066, 600, Boolean.valueOf(Configuration.getProperty("fullscreen")));
 
             Display.setTitle("Deathsiege");
         } catch (LWJGLException e) {

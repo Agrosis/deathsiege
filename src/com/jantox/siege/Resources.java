@@ -81,7 +81,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/spawner.obj"));
         models.add(objloader.loadOBJModel("models/spawner2.obj"));
         models.add(objloader.loadOBJModel("models/spawner3.obj"));
-        //models.add(new DSMLoader().loadDSMModel("models/monkey.dsm")); //33
+        models.add(objloader.loadOBJModel("models/blaster.obj")); //35
 
         try {
             fonts.put("terminal", new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/fonts/terminal.png")), GL11.GL_NEAREST), 16, 16));

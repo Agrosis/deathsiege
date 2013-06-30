@@ -15,7 +15,7 @@ public class ControlPoint extends Entity {
     public ControlPoint(Vector3D pos, Level level) {
         super(pos, level);
 
-        this.health = 10;
+        this.health = 90;
     }
 
     int lastspawn = 0;
@@ -32,7 +32,7 @@ public class ControlPoint extends Entity {
     }
 
     public void attack() {
-        health--;
+        health-=5;
         if(health < 0)
             health = 0;
     }
@@ -66,5 +66,9 @@ public class ControlPoint extends Entity {
 
         //glCallList(Resources.getModel(2));
         glPopMatrix();
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

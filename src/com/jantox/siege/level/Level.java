@@ -242,6 +242,10 @@ public class Level {
         }
     }
 
+    public ControlPoint getControlPoint(int i) {
+        return ((Siege)gamemode).getControlPoint(i);
+    }
+
     public Gamemode getGameMode() {
         return gamemode;
     }

@@ -205,7 +205,7 @@ public class Siege extends Gamemode {
 
         if(seconds % 1 == 0 && colors) {
             colors = false;
-            level.spawn(new Fury(new Vector3D(Entity.rand.nextInt(200)-100, 2, Entity.rand.nextInt(200)-100), level, new Vector3D(Entity.rand.nextGaussian(), 1.7f, Entity.rand.nextGaussian())));
+            //level.spawn(new Fury(new Vector3D(Entity.rand.nextInt(200)-100, 2, Entity.rand.nextInt(200)-100), level, new Vector3D(Entity.rand.nextGaussian(), 1.7f, Entity.rand.nextGaussian())));
         }
     }
 
@@ -241,5 +241,9 @@ public class Siege extends Gamemode {
 
     public int getEnemiesLeft() {
         return MONSTERS_LEFT;
+    }
+
+    public ControlPoint getControlPoint(int i) {
+        return points[i];
     }
 }

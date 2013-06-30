@@ -3,6 +3,7 @@ package com.jantox.siege;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Gun;
+import com.jantox.siege.gamejolt.GameJolt;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.*;
 import com.jantox.siege.level.Siege;
@@ -44,6 +45,8 @@ public class GameInstance {
     public static int cash = 0;
     public static int ccash = 0;
 
+    private GameJolt gamejolt;
+
     public GameInstance(int w, int h) {
         this.width = w;
         this.height = h;
@@ -51,6 +54,9 @@ public class GameInstance {
         audio = new AudioController();
 
         Configuration.init();
+
+        gamejolt = new GameJolt();
+        curms = System.currentTimeMillis();
     }
 
     public void init() {
@@ -69,7 +75,7 @@ public class GameInstance {
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(60, (float) width / (float) height, 1.0f, 2000.0f);
+        gluPerspective(68, (float) width / (float) height, 1.0f, 2000.0f);
         glMatrixMode(GL_MODELVIEW);
 
         glClearDepth(1);
@@ -99,6 +105,11 @@ public class GameInstance {
 
             timer.update();
 
+            if(System.currentTimeMillis() - curms >= 30000) {
+                curms = System.currentTimeMillis();
+                gamejolt.ping();
+            }
+
             Display.update();
             Display.sync(60);
         }
@@ -125,11 +136,15 @@ public class GameInstance {
         }
     }
 
+    long curms;
+
     public void render(int delta) {
         level.render(delta);
         switch2D();
 
         glDisable(GL_TEXTURE_2D);
+        glScalef(800f/1066f, 1, 1);
+
         drawCrossheir();
 
         if(GameInstance.shop != null) {
@@ -172,10 +187,10 @@ public class GameInstance {
 
                 int cur = gun.getCurMag();
                 int ful = gun.getFullMag();
-                Resources.getFont("terminal").drawText(cur + "/" + ful, 780, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
+                Resources.getFont("terminal").drawText(cur + "/" + ful, 1066-20, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
             }
 
-            Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 820, 15, 2, new Vector3D(1,1,0), true,  8);
+            Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 1066+20, 15, 2, new Vector3D(1,1,0), true,  8);
             if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() == -1) {
                 Resources.getFont("terminal").drawText("Enemies Left: " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getEnemiesLeft()), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
             } else {
@@ -212,7 +227,29 @@ public class GameInstance {
             glVertex2f(800, 600);
             glVertex2f(0, 600);
             glEnd();
+        }
 
+        glColor3f(1, 0, 0);
+        for(int i = 0; i < 5; i++) {
+            glBegin(GL_QUADS);
+            glVertex2f(10 + i * 23, 590);
+            glVertex2f(23 + i * 23, 590);
+            glVertex2f(23 + i * 23, 500);
+            glVertex2f(10 + i * 23, 500);
+            glEnd();
+        }
+
+        glColor3f(0, 1, 0);
+        for(int i = 0; i < 5; i++) {
+
+            int health = level.getControlPoint(i).getHealth();
+
+            glBegin(GL_QUADS);
+            glVertex2f(10 + i * 23, 590);
+            glVertex2f(23 + i * 23, 590);
+            glVertex2f(23 + i * 23, 590-health);
+            glVertex2f(10 + i * 23, 590-health);
+            glEnd();
         }
 
         switch3D();
@@ -240,16 +277,16 @@ public class GameInstance {
     public void drawCrossheir() {
         glColor3f(0.15f, 0.15f, 0.15f);
         glBegin(GL_LINES);
-        glVertex2f(399, 294);
-        glVertex2f(399, 304);
-        glVertex2f(400, 294);
-        glVertex2f(400, 304);
+        glVertex2f(532, 294);
+        glVertex2f(532, 304);
+        glVertex2f(533, 294);
+        glVertex2f(533, 304);
         glEnd();
         glBegin(GL_LINES);
-        glVertex2f(390, 299);
-        glVertex2f(409, 299);
-        glVertex2f(390, 300);
-        glVertex2f(409, 300);
+        glVertex2f(523, 299);
+        glVertex2f(541, 299);
+        glVertex2f(523, 300);
+        glVertex2f(541, 300);
         glEnd();
         glBegin(GL_LINES);
         glEnd();

@@ -58,8 +58,8 @@ public class ShopItem {
         glPushMatrix();
         glTranslatef(0, index * 55, 0);
 
-        Resources.getFont("terminal").drawText(name, 200 + 13 + 4, 50 + 49 + 4, 1, BitmapFont.DARK_GRAY, false,  8);
-        Resources.getFont("terminal").drawText(desc, 200 + 13 + 4, 50 + 49 + 18, 1, BitmapFont.YELLOW, false,  8);
+        Resources.getFont("terminal").drawText(name, 533-200 + 13 + 4, 50 + 49 + 4, 1, BitmapFont.DARK_GRAY, false,  8);
+        Resources.getFont("terminal").drawText(desc, 533-200 + 13 + 4, 50 + 49 + 18, 1, BitmapFont.YELLOW, false,  8);
 
         glPopMatrix();
     }
@@ -71,4 +71,5 @@ public class ShopItem {
     public int getCost() {
         return cost;
     }
+
 }

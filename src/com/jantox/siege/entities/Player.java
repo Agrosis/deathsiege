@@ -50,7 +50,7 @@ public class Player extends Living {
 
         curwep = inventory.get(selected);
 
-        this.mask = new Sphere(pos, 1f);
+        this.mask = new Sphere(pos, 1.7f);
         gravity = -0.05f;
     }
 
@@ -144,7 +144,7 @@ public class Player extends Living {
         if(rampcheck == false) {
             ArrayList<Quad> floors = level.getFloors();
             for(Quad f : floors) {
-                if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 0.75f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
+                if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 1f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
                     floor = f;
                     break;
                 }

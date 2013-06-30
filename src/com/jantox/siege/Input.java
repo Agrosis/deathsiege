@@ -99,7 +99,7 @@ public class Input {
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            shift = true;
+           // shift = true;
         } else {
             shift = false;
         }

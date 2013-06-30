@@ -106,7 +106,7 @@ public class Blaster extends Tool {
         glColor3f(0.25f,0.25f,0.25f);
         glRotatef(-rev_angle, 0, 1, 0);
 
-        glCallList(Resources.getModel(4));
+        glCallList(Resources.getModel(35));
         glPopMatrix();
     }
 
