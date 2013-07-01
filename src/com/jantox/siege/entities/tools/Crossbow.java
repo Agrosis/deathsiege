@@ -60,7 +60,7 @@ public class Crossbow extends Tool {
         glRotatef(powner.getCamera().getPitch(), 0, 0, 1);
 
         glScalef(0.35f, 0.35f, 0.35f);
-        glTranslatef(-2f, -1.8f, -1.1f);
+        glTranslatef(-2f, -2.1f, -1.1f);
         glColor3f(0.25f,0.25f,0.25f);
 
         glCallList(Resources.getModel(16));

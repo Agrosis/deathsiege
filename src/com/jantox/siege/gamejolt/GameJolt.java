@@ -29,6 +29,11 @@ public class GameJolt {
         String digest = "";
 
         try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        try {
             after = md5.digest(orig.getBytes("UTF-8"));
 
             StringBuilder sb = new StringBuilder(2 * after.length);
@@ -99,6 +104,14 @@ public class GameJolt {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addTrophy(int trophyid) {
+
+    }
+
+    public boolean hasTrophy(int trophyid) {
+        return false;
     }
 
 }

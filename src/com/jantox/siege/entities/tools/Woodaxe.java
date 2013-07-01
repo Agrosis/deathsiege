@@ -67,11 +67,11 @@ public class Woodaxe extends Tool {
 
         glTranslatef((float) hold.x, (float) hold.y, (float) hold.z);
         //glScalef(0.5f, 0.5f, 0.5f);
-        glRotatef(powner.getCamera().getYaw(), 0, 1, 0);
-        glRotatef(-powner.getCamera().getPitch(), 1, 0, 0);
+        glRotatef(powner.getCamera().getYaw() - 90, 0, 1, 0);
+        glRotatef(powner.getCamera().getPitch(), 0, 0, 1);
 
 
-        glTranslatef(0.5f, -0.75f, 0f);
+        glTranslatef(-0.5f, -1f, -0.5f);
         glScalef(0.5f, 0.5f, 0.5f);
 
         glRotatef(30, 0, 1, 0);

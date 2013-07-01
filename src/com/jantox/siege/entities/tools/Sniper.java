@@ -57,7 +57,7 @@ public class Sniper extends Gun {
 
                     glMatrixMode(GL_PROJECTION);
                     glLoadIdentity();
-                    gluPerspective(15, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                    gluPerspective(20, (float) 1066 / (float) 600, 1.0f, 2000.0f);
                     glMatrixMode(GL_MODELVIEW);
                     GameInstance.sniper = true;
                 }
@@ -67,7 +67,7 @@ public class Sniper extends Gun {
                 GameInstance.sniper = false;
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
-                gluPerspective(60, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                gluPerspective(68, (float) 1066 / (float) 600, 1.0f, 2000.0f);
                 glMatrixMode(GL_MODELVIEW);
             }
             if(addlen > 0) {

@@ -155,14 +155,14 @@ public class GameInstance {
             glColor3f(0,0,0);
             glBegin(GL_QUADS);
             glVertex2f(0, 0);
-            glVertex2f(100, 0);
-            glVertex2f(100, 600);
+            glVertex2f(233, 0);
+            glVertex2f(233, 600);
             glVertex2f(0, 600);
 
-            glVertex2f(700, 0);
-            glVertex2f(800, 0);
-            glVertex2f(800, 600);
-            glVertex2f(700, 600);
+            glVertex2f(833, 0);
+            glVertex2f(1066, 0);
+            glVertex2f(1066, 600);
+            glVertex2f(833, 600);
             glEnd();
 
             glColor3f(1,1,1);
@@ -171,13 +171,13 @@ public class GameInstance {
 
             glBegin(GL_QUADS);
             glTexCoord2f(0, 0);
-            glVertex2f(100, 0);
+            glVertex2f(533-300, 0);
             glTexCoord2f(1, 0);
-            glVertex2f(700, 0);
+            glVertex2f(533+300, 0);
             glTexCoord2f(1,1);
-            glVertex2f(700, 600);
+            glVertex2f(533+300, 600);
             glTexCoord2f(0, 1);
-            glVertex2f(100, 600);
+            glVertex2f(533-300, 600);
             glEnd();
         }
 
@@ -217,14 +217,14 @@ public class GameInstance {
         if(paused) {
             String p = "Game Paused";
             String ctp = "(Click to continue)";
-            Resources.getFont("terminal").drawText(p, 400 - (int)(p.length() / 2f) * 40, 250, 5, BitmapFont.WHITE, false, 8);
-            Resources.getFont("terminal").drawText(ctp, 400 - (int)(ctp.length() / 2f) * 16, 320, 2, BitmapFont.WHITE, false, 8);
+            Resources.getFont("terminal").drawText(p, 533 - (int)(p.length() / 2f) * 40, 250, 5, BitmapFont.WHITE, false, 8);
+            Resources.getFont("terminal").drawText(ctp, 533 - (int)(ctp.length() / 2f) * 16, 320, 2, BitmapFont.WHITE, false, 8);
 
             glColor4f(0.1f, 0.1f, 0.1f, 0.25f);
             glBegin(GL_QUADS);
             glVertex2f(0, 0);
-            glVertex2f(800, 0);
-            glVertex2f(800, 600);
+            glVertex2f(1066, 0);
+            glVertex2f(1066, 600);
             glVertex2f(0, 600);
             glEnd();
         }

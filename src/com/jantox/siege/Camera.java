@@ -64,21 +64,21 @@ public class Camera {
         }
 
         if(running) {
-            if(perspective < 65) {
+            if(perspective < 75) {
                 perspective++;
                 glViewport(0, 0, width, height);
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
-                gluPerspective(perspective, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
                 glMatrixMode(GL_MODELVIEW);
             }
         } else {
-            if(perspective > 60) {
+            if(perspective > 68) {
                 perspective--;
                 glViewport(0, 0, width, height);
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
-                gluPerspective(perspective, (float) 800 / (float) 600, 1.0f, 2000.0f);
+                gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
                 glMatrixMode(GL_MODELVIEW);
             }
         }
