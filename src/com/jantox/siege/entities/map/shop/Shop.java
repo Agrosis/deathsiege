@@ -1,18 +1,13 @@
 package com.jantox.siege.entities.map.shop;
 
-import com.jantox.siege.GameInstance;
-import com.jantox.siege.Input;
-import com.jantox.siege.Resources;
-import com.jantox.siege.Vector3D;
+import com.jantox.siege.*;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.tools.Sword;
+import com.jantox.siege.entities.tools.Crossbow;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.level.Level;
 import com.jantox.siege.level.Siege;
-import org.newdawn.slick.opengl.TextureLoader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -21,7 +16,7 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 public class Shop extends Entity {
 
-    public static enum SHOP { WEAPONS, DEFENSE, SPECIALS };
+    public static enum SHOP { WEAPONS, DEFENSE, SPECIALS, GUNSHOP };
 
     private int index;
 
@@ -31,21 +26,26 @@ public class Shop extends Entity {
     private int base = -600;
     private String name;
 
+    private int startindex = 0;
+
     public Shop(Vector3D pos, Level level, SHOP shoptype) {
         super(pos, level);
 
         items = new ArrayList<ShopItem>();
+        startindex = 0;
 
         if(shoptype == SHOP.SPECIALS) {
             name = "Armor, Specials and Upgrades";
-            items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME, 0));
-            items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN, 1));
-            items.add(new ShopItem(ShopItem.ITEM.FIREWORKS, 2));
+            items.add(new ShopItem(ShopItem.ITEM.EXTENDED_TIME));
+            items.add(new ShopItem(ShopItem.ITEM.AMMO_REFILL));
+            items.add(new ShopItem(ShopItem.ITEM.SENTRY_GUN));
+            items.add(new ShopItem(ShopItem.ITEM.FIREWORKS));
         } else if(shoptype == SHOP.WEAPONS) {
-            name = "Weapons and Destructibles";
-            items.add(new ShopItem(ShopItem.ITEM.AMMO_REFILL, 0));
-            items.add(new ShopItem(ShopItem.ITEM.THE_ORIGINAL, 1));
-            items.add(new ShopItem(ShopItem.ITEM.THE_SHOTGUN, 2));
+            name = "Weapons";
+            items.add(new ShopItem(ShopItem.ITEM.CROSSBOW));
+            items.add(new ShopItem(ShopItem.ITEM.BATTLEAXE));
+            items.add(new ShopItem(ShopItem.ITEM.THE_ORIGINAL));
+            items.add(new ShopItem(ShopItem.ITEM.THE_SHOTGUN));
         }
 
         font = Resources.getFont("terminal");
@@ -56,14 +56,26 @@ public class Shop extends Entity {
     @Override
     public void update(float delta) {
         if(GameInstance.shop == this) {
-            if(Input.down && sbreak <= 0 && index < 7) {
+            if(Input.down && sbreak <= 0) {
                 sbreak = 10;
-                index++;
+
+                if(index == 7) {
+                    startindex++;
+                } else {
+                    if(index < items.size()-1)
+                        index++;
+                }
 
                 GameInstance.audio.playSound(7);
-            } else if(Input.up && sbreak <= 0 && index > 0) {
+            } else if(Input.up && sbreak <= 0) {
                 sbreak = 10;
-                index--;
+
+                if(index > 0)
+                    index--;
+                else if(index == 0) {
+                    if(startindex > 0)
+                        startindex--;
+                }
 
                 GameInstance.audio.playSound(7);
             } else if(Input.enter && sbreak <= 0) {
@@ -135,8 +147,13 @@ public class Shop extends Entity {
             glEnd();
             glPopMatrix();
 
-            for(int i = 0; i < items.size(); i++) {
-                items.get(i).render();
+            for(int i = startindex; i < startindex+8; i++) {
+                if(i >= items.size())
+                    break;
+                boolean lock = true;
+                if(((Siege)level.getGameMode()).getWave() + 1 >= items.get(i).getWaveLock())
+                    lock = false;
+                items.get(i).render(lock, i-startindex);
             }
 
             font.drawText(name, 533 - (int)((name.length() / 2f) * 8), 50 + 20,1, new Vector3D(1,1,1), false, 8);
@@ -154,15 +171,24 @@ public class Shop extends Entity {
     public void buyItem() {
         ShopItem si = this.items.get(index);
 
-        if(GameInstance.ccash >= si.getCost()) {
+        if(GameInstance.ccash >= si.getCost() && ((Siege)level.getGameMode()).getWave() >= si.getWaveLock()) {
+            if(Statistics.ITEMS_BOUGHT == 5) {
+                GameInstance.gamejolt.addTrophy(2466);
+            }
+
+            GameInstance.ccash -= si.getCost();
+            Statistics.ITEMS_BOUGHT++;
             if(si.getItemType() == ShopItem.ITEM.EXTENDED_TIME) { // extended time
                 if(((Siege)level.getGameMode()).canExtendTime()) {
                     ((Siege)level.getGameMode()).addBreakTime(15);
-                    GameInstance.ccash -= si.getCost();
                     GameInstance.audio.playSound(8);
                 } else {
                     GameInstance.audio.playSound(9);
                 }
+            } else if(si.getItemType() == ShopItem.ITEM.BATTLEAXE) {
+                level.getPlayer().addItem(new Sword(level.getPlayer()));
+            } else if(si.getItemType() == ShopItem.ITEM.CROSSBOW) {
+                level.getPlayer().addItem(new Crossbow(level.getPlayer(), level));
             }
         } else {
             GameInstance.audio.playSound(9);

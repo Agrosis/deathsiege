@@ -11,14 +11,17 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
-public class Woodaxe extends Tool {
+public class Sword extends Tool {
 
     private Player powner;
     private boolean use = false;
 
-    public Woodaxe(Player owner) {
+    int status;
+
+    public Sword(Player owner) {
         super(owner, null);
         this.powner = owner;
+        status = 0;
     }
 
     public void update(float delta) {
@@ -28,24 +31,6 @@ public class Woodaxe extends Tool {
     @Override
     public void onUse(int mouse) {
         use = true;
-        /*ArrayList<Entity> entities = Entity.level.getEntities();
-        for(int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
-            if(e instanceof Resource) {
-                Resource t = (Resource) e;
-                if(t.getPosition().distanceSquared(Entity.level.getPlayer().getCamera().getCamera()) <= 5 * 5) {
-                    t.useResource(50);
-
-                    if(t.getStatus() == Resource.NOT_AVAILABLE && t.getProgress() == 0) {
-                        for(int j = 0; j < rand.nextInt(3) + 1; j++) {
-                            Vector3D tpos = t.pos.copy();
-                            tpos.y += 2;
-                            Entity.level.spawn(new Log(tpos));
-                        }
-                    }
-                }
-            }
-        }*/
     }
 
     @Override
@@ -70,14 +55,12 @@ public class Woodaxe extends Tool {
         glRotatef(powner.getCamera().getYaw() - 90, 0, 1, 0);
         glRotatef(powner.getCamera().getPitch(), 0, 0, 1);
 
-
-        glTranslatef(-0.5f, -1f, -0.5f);
-        glScalef(0.5f, 0.5f, 0.5f);
+        //glScalef(0.5f, 0.5f, 0.5f);
 
         glRotatef(30, 0, 1, 0);
 
-        //glTranslatef(3.5f, 0f, 0f);
-        glCallList(Resources.getModel(6));
+        glTranslatef(-0.25f, -1.15f, -0.75f);
+        glCallList(Resources.getModel(8));
         glPopMatrix();
         glEnable(GL_TEXTURE_2D);
     }

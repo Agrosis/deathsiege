@@ -21,6 +21,7 @@ public class AudioController {
     Audio shop_bought;
     Audio denied;
     Audio countdown, start;
+    Audio minigun;
 
     public AudioController() {
         try {
@@ -36,6 +37,7 @@ public class AudioController {
             denied = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sfx/denied.ogg"));
             countdown = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/countdown.wav"));
             start = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/countdown_final.wav"));
+            minigun = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("sfx/minigun_shot.wav"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,6 +68,14 @@ public class AudioController {
             countdown.playAsSoundEffect(1f,1f,false);
         } else if(i == 11) {
             start.playAsSoundEffect(1f,1f,false);
+        } else if(i == 12) {
+            minigun.playAsSoundEffect(1f,1f,false);
+        }
+    }
+
+    public void stopSound(int i) {
+        if(i == 12) {
+            minigun.stop();
         }
     }
 

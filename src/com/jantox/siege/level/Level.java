@@ -6,6 +6,8 @@ import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Projectile;
 import com.jantox.siege.geometry.*;
 import com.jantox.siege.entities.*;
+import com.jantox.siege.models.CollisionLoader;
+import com.jantox.siege.models.MapCollision;
 import com.jantox.siege.particle.ParticleSystem;
 
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ public class Level {
     private ArrayList<Entity> entities;
     private ArrayList<MultiplayerLiving> multiplayers;
 
-    private ArrayList<Quad> floors;
-    public ArrayList<Quad> walls;
-    public ArrayList<Quad> ramps;
+    public static ArrayList<Quad> floors;
+    public static ArrayList<Quad> walls;
+    public static ArrayList<Quad> ramps;
 
     private Skybox skybox;
     private Player player;
@@ -57,6 +59,31 @@ public class Level {
 
         psys = new ParticleSystem(new Vector3D(5, 0, 5));
 
+
+        /*Vector3D a = new Vector3D(0, 0, 0);
+        Vector3D b = new Vector3D(4, 0, 0);
+        Vector3D c = new Vector3D(4, 4, 0);
+        Vector3D d = new Vector3D(0, 4, 0);
+
+        Matrix4 tr = Matrix4.createRotationMatrix(90, 1);
+
+        a = tr.multiplyVectorBy(a);
+        b = tr.multiplyVectorBy(b);
+        c = tr.multiplyVectorBy(c);
+        d = tr.multiplyVectorBy(d);
+
+        tr = Matrix4.createTranslationMatrix(new Vector3D(20, 0, 20));
+
+        a = tr.multiplyVectorBy(a);
+        b = tr.multiplyVectorBy(b);
+        c = tr.multiplyVectorBy(c);
+        d = tr.multiplyVectorBy(d);
+
+        a.debug();b.debug();c.debug();d.debug();
+
+
+        walls.add(new Quad(a,b,c,d));*/
+
         skybox = new Skybox("", 1400);
     }
 
@@ -67,6 +94,12 @@ public class Level {
         this.gamemode = new Siege(this);
         gamemode.init();
         //this.spawn(new Endwek(new Vector3D(50, 0, 50), player, false));
+
+        CollisionLoader cl = new CollisionLoader();
+        Matrix4 scale = Matrix4.createScaleMatrix(new Vector3D(0.11,0.11,0.11));
+        Matrix4 rotate = Matrix4.createRotationMatrix(90, 0);
+        Matrix4 translate = Matrix4.createTranslationMatrix(new Vector3D(0,-2,0));
+        MapCollision mc = cl.loadOBJModel("models/building2HDD.obj", translate, rotate, scale);
     }
 
     public void update(float delta) {
@@ -153,11 +186,23 @@ public class Level {
 
         glPopMatrix();
 
-        psys.render();
+        glPushMatrix();
+
+        glColor3f(0,0,0);
+        //glTranslatef(20, 0, 20);
+        //glRotatef(90, 0, 1, 0);
+        for(Quad q : walls) {
+            q.render();
+            //q.debug();
+        }
+        glPopMatrix();
+
 
         for(int i = 0; i < entities.size(); i++) {
             entities.get(i).render();
         }
+
+        psys.render();
 
         this.player.render();
 
@@ -242,8 +287,8 @@ public class Level {
         }
     }
 
-    public ControlPoint getControlPoint(int i) {
-        return ((Siege)gamemode).getControlPoint(i);
+    public Guardian getGuardian(int i) {
+        return ((Siege)gamemode).getGuardian(i);
     }
 
     public Gamemode getGameMode() {

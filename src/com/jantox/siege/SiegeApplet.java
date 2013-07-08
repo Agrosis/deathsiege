@@ -44,7 +44,7 @@ public class SiegeApplet extends Applet {
                     Display.setParent(displayParent);
                     Display.create();
 
-                    game = new GameInstance(800, 600);
+                    game = new GameInstance(1066, 600);
                     game.init();
                 } catch (LWJGLException e) {
                     e.printStackTrace();

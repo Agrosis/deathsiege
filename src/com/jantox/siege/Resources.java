@@ -41,6 +41,9 @@ public class Resources {
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/sniper.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/shop_menu.png")), GL11.GL_NEAREST));
             textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/brickwall.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/texture_locked.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/inventory.png")), GL11.GL_NEAREST));
+            textures.add(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/inventory_selector.png")), GL11.GL_NEAREST));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,9 +57,9 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/tree2.obj"));
         models.add(objloader.loadOBJModel("models/woodaxe.obj"));
         models.add(objloader.loadOBJModel("models/ramp.obj"));
-        models.add(null);
-        models.add(null);
-        models.add(null);
+        models.add(objloader.loadOBJModel("models/sword.obj"));
+        models.add(objloader.loadOBJModel("models/catapult2.obj"));
+        models.add(objloader.loadOBJModel("models/catapult_arm.obj"));
         models.add(objloader.loadOBJModel("models/ladder.obj"));
         models.add(objloader.loadOBJModel("models/sniper.obj"));
         models.add(objloader.loadOBJModel("models/ammo.obj"));
@@ -81,7 +84,10 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/spawner.obj"));
         models.add(objloader.loadOBJModel("models/spawner2.obj"));
         models.add(objloader.loadOBJModel("models/spawner3.obj"));
-        models.add(objloader.loadOBJModel("models/blaster.obj")); //35
+        models.add(objloader.loadOBJModel("models/minigun_handle.obj")); //35
+        models.add(objloader.loadOBJModel("models/rock.obj")); //36
+        models.add(objloader.loadOBJModel("models/minigun.obj")); //37
+        models.add(objloader.loadOBJModel("models/collisiontest.obj"));
 
         try {
             fonts.put("terminal", new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/fonts/terminal.png")), GL11.GL_NEAREST), 16, 16));

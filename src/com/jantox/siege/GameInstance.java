@@ -5,6 +5,7 @@ import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Gun;
 import com.jantox.siege.gamejolt.GameJolt;
 import com.jantox.siege.gfx.BitmapFont;
+import com.jantox.siege.gfx.Notification;
 import com.jantox.siege.level.*;
 import com.jantox.siege.level.Siege;
 import com.jantox.siege.net.MultiplayerInstance;
@@ -19,6 +20,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NICEST;
@@ -39,15 +41,22 @@ public class GameInstance {
     public static boolean debug = false;
 
     public static boolean multiplayer = false;
+    public static ArrayList<Notification> notifications;
 
     public static AudioController audio;
 
     public static int cash = 0;
     public static int ccash = 0;
 
-    private GameJolt gamejolt;
+    public static GameJolt gamejolt;
+
+    private MainMenu mainmenu;
+
+    public static float snsc = 0;
 
     public GameInstance(int w, int h) {
+        mainmenu = new MainMenu();
+
         this.width = w;
         this.height = h;
 
@@ -57,6 +66,8 @@ public class GameInstance {
 
         gamejolt = new GameJolt();
         curms = System.currentTimeMillis();
+
+        notifications = new ArrayList<Notification>();
     }
 
     public void init() {
@@ -68,6 +79,8 @@ public class GameInstance {
         if(multiplayer) {
             mpinstance = new MultiplayerInstance(level);
         }
+
+        notifications.add(new Notification("Achievement Get!", "You have earned the achievement...", 600));
     }
 
     public void initGL() {
@@ -110,6 +123,16 @@ public class GameInstance {
                 gamejolt.ping();
             }
 
+            if(Statistics.MONSTERS_KILLED == 10) {
+                gamejolt.addTrophy(2465);
+            }
+
+            if(ccash >= 5000) {
+                if(!gamejolt.hasTrophy(2468)) {
+                    gamejolt.addTrophy(2468);
+                }
+            }
+
             Display.update();
             Display.sync(60);
         }
@@ -121,6 +144,8 @@ public class GameInstance {
         level.update(delta);
         audio.update();
 
+        mainmenu.update();
+
         if(cash < ccash) {
             cash += 3;
             if(cash >= ccash)
@@ -129,6 +154,13 @@ public class GameInstance {
             cash -= 3;
             if(cash <= ccash)
                 cash = ccash;
+        }
+
+        for(int i = 0; i < notifications.size(); i++) {
+            if(notifications.get(i).isExpired())
+                notifications.remove(i);
+            else
+                notifications.get(i).update();
         }
 
         if(multiplayer) {
@@ -140,12 +172,18 @@ public class GameInstance {
 
     public void render(int delta) {
         level.render(delta);
+        mainmenu.render();
+
         switch2D();
 
         glDisable(GL_TEXTURE_2D);
         glScalef(800f/1066f, 1, 1);
 
         drawCrossheir();
+
+        for(int i = 0; i < notifications.size(); i++) {
+            notifications.get(i).render();
+        }
 
         if(GameInstance.shop != null) {
             GameInstance.shop.renderShop();
@@ -155,30 +193,48 @@ public class GameInstance {
             glColor3f(0,0,0);
             glBegin(GL_QUADS);
             glVertex2f(0, 0);
-            glVertex2f(233, 0);
-            glVertex2f(233, 600);
+            glVertex2f(533-300 * snsc, 0);
+            glVertex2f(533-300 * snsc, 600);
             glVertex2f(0, 600);
 
-            glVertex2f(833, 0);
+            glVertex2f(533+300 * snsc, 0);
             glVertex2f(1066, 0);
             glVertex2f(1066, 600);
-            glVertex2f(833, 600);
+            glVertex2f(533+300 * snsc, 600);
+
+            glVertex2f(1066, 300 - 300 * snsc);
+            glVertex2f(0, 300 - 300 * snsc);
+            glVertex2f(0, 0);
+            glVertex2f(1066, 0);
+
+            glVertex2f(1066, 300 + 300 * snsc);
+            glVertex2f(0, 300 + 300 * snsc);
+            glVertex2f(0, 600);
+            glVertex2f(1066, 600);
+
             glEnd();
 
             glColor3f(1,1,1);
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, Resources.getTexture(6).getTextureID());
 
+            snsc += 0.08f;
+            if(snsc > 1) {
+                snsc = 1;
+            }
+
             glBegin(GL_QUADS);
             glTexCoord2f(0, 0);
-            glVertex2f(533-300, 0);
+            glVertex2f(533-300 * snsc, 300 - 300 * snsc);
             glTexCoord2f(1, 0);
-            glVertex2f(533+300, 0);
+            glVertex2f(533+300* snsc, 300 - 300 * snsc);
             glTexCoord2f(1,1);
-            glVertex2f(533+300, 600);
+            glVertex2f(533+300* snsc, 300 + 300 * snsc);
             glTexCoord2f(0, 1);
-            glVertex2f(533-300, 600);
+            glVertex2f(533-300* snsc, 300 + 300 * snsc);
             glEnd();
+        } else {
+            snsc = 0;
         }
 
         if(!paused) {
@@ -190,7 +246,7 @@ public class GameInstance {
                 Resources.getFont("terminal").drawText(cur + "/" + ful, 1066-20, 540, 3f, new Vector3D(0.75, 0.75, 0.75), true, 8);
             }
 
-            Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 1066+20, 15, 2, new Vector3D(1,1,0), true,  8);
+            //Resources.getFont("terminal").drawText("Money: $" + String.valueOf(cash), 1066+20, 15, 2, new Vector3D(1,1,0), true,  8);
             if(((com.jantox.siege.level.Siege)level.getGameMode()).getBreakTime() == -1) {
                 Resources.getFont("terminal").drawText("Enemies Left: " + String.valueOf(((com.jantox.siege.level.Siege)level.getGameMode()).getEnemiesLeft()), 22, 55, 1f, BitmapFont.LIGHT_GRAY, false, 8);
             } else {
@@ -230,7 +286,7 @@ public class GameInstance {
         }
 
         glColor3f(1, 0, 0);
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 4; i++) {
             glBegin(GL_QUADS);
             glVertex2f(10 + i * 23, 590);
             glVertex2f(23 + i * 23, 590);
@@ -240,9 +296,9 @@ public class GameInstance {
         }
 
         glColor3f(0, 1, 0);
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 4; i++) {
 
-            int health = level.getControlPoint(i).getHealth();
+            int health = level.getGuardian(i).getHealth();
 
             glBegin(GL_QUADS);
             glVertex2f(10 + i * 23, 590);
@@ -251,6 +307,8 @@ public class GameInstance {
             glVertex2f(10 + i * 23, 590-health);
             glEnd();
         }
+
+        level.getPlayer().renderInventory();
 
         switch3D();
     }

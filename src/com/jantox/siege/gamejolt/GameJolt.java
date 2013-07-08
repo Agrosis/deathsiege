@@ -15,6 +15,8 @@ public class GameJolt {
 
     MessageDigest md5;
 
+    private TrophyHandler trophies;
+
     public GameJolt() {
         this.open();
         try {
@@ -22,6 +24,8 @@ public class GameJolt {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
+        trophies = new TrophyHandler();
     }
 
     public String generateSignature(String orig) {
@@ -55,12 +59,8 @@ public class GameJolt {
 
         req += "&signature=" + signature;
 
-        try {
-            URLConnection url = new URL(req).openConnection();
-            displayResult(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Thread t = new Thread(new MessageSender(req));
+        t.start();
     }
 
     public void ping() {
@@ -69,27 +69,8 @@ public class GameJolt {
 
         req += "&signature=" + signature;
 
-        try {
-            URLConnection url = new URL(req).openConnection();
-            displayResult(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void displayResult(URLConnection url) {
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(
-                    url.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                System.out.println(inputLine);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Thread t = new Thread(new MessageSender(req));
+        t.start();
     }
 
     public void close() {
@@ -98,20 +79,17 @@ public class GameJolt {
 
         req += "&signature=" + signature;
 
-        try {
-            URLConnection url = new URL(req).openConnection();
-            displayResult(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Thread t = new Thread(new MessageSender(req));
+        t.start();
     }
 
     public void addTrophy(int trophyid) {
-
+        if(!hasTrophy(trophyid))
+            trophies.addTrophy(trophyid);
     }
 
     public boolean hasTrophy(int trophyid) {
-        return false;
+        return trophies.has(trophyid);
     }
 
 }

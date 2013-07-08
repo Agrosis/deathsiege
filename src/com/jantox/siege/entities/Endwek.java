@@ -2,9 +2,9 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.GameInstance;
 import com.jantox.siege.Resources;
+import com.jantox.siege.Statistics;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.ai.AISet;
-import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.geometry.CollisionSystem;
 import com.jantox.siege.geometry.Ray;
 import com.jantox.siege.geometry.Sphere;
@@ -44,12 +44,13 @@ public class Endwek extends Living {
         if(health <= 0) {
             if(!expired) {
                 Siege.MONSTERS_LEFT--;
+                Statistics.MONSTERS_KILLED++;
             }
             this.expired = true;
         }
 
         if(this.pos.distanceSquared(level.getPlayer().getPosition().copy()) <= 18 * 18) {
-            if(target instanceof ControlPoint) {
+            if(target instanceof Guardian) {
                 oldtarget = target;
                 target = level.getPlayer();
             }
@@ -83,8 +84,8 @@ public class Endwek extends Living {
         }
 
         if(pos.distanceSquared(target.getPosition()) <= 5 * 5) {
-            if(target instanceof ControlPoint) {
-                ((ControlPoint)target).attack();
+            if(target instanceof Guardian) {
+                ((Guardian)target).attack();
                 this.setExpired(true);
             }
             if(pos.distanceSquared(target.getPosition()) <= 2 * 2) {

@@ -1,9 +1,6 @@
 package com.jantox.siege.entities;
 
-import com.jantox.siege.Camera;
-import com.jantox.siege.GameInstance;
-import com.jantox.siege.Input;
-import com.jantox.siege.Vector3D;
+import com.jantox.siege.*;
 import com.jantox.siege.entities.map.Ladder;
 import com.jantox.siege.entities.tools.*;
 import com.jantox.siege.geometry.AABB;
@@ -12,6 +9,7 @@ import com.jantox.siege.geometry.Quad;
 import com.jantox.siege.geometry.Sphere;
 import com.jantox.siege.level.Level;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
@@ -42,11 +40,10 @@ public class Player extends Living {
         this.camera = camera;
 
         inventory = new ArrayList<Tool>();
-        inventory.add(new Shotgun(this, level));
-        inventory.add(new Sniper(this, level));
-        inventory.add(new Blaster(this, level));
+        inventory.add(new Battleaxe(this));
         inventory.add(new Crossbow(this, level));
-        inventory.add(new Woodaxe(this));
+        inventory.add(new Minigun(this, level));
+        inventory.add(new Sniper(this, level));
 
         curwep = inventory.get(selected);
 
@@ -54,6 +51,9 @@ public class Player extends Living {
         gravity = -0.05f;
     }
 
+    public void addItem(Tool t) {
+        inventory.add(t);
+    }
 
     @Override
     public void update(float delta) {
@@ -65,7 +65,6 @@ public class Player extends Living {
         move += 10f;
 
         if(Input.w || Input.a || Input.s || Input.d) {
-
             m = true;
         }
 
@@ -132,95 +131,97 @@ public class Player extends Living {
     }
 
     public void updatePosition() {
-        boolean rampcheck = false;
-        for(Quad ra : level.ramps) {
-            if((CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                rampcheck = true;
-            }
-        }
-
-        Quad floor = null;
-
-        if(rampcheck == false) {
-            ArrayList<Quad> floors = level.getFloors();
-            for(Quad f : floors) {
-                if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 1f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
-                    floor = f;
-                    break;
+        if(!camera.isThirdPerson()) {
+            boolean rampcheck = false;
+            for(Quad ra : level.ramps) {
+                if((CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                    rampcheck = true;
                 }
             }
-        }
 
-        ArrayList<Entity> entities = level.getEntities();
-        Ladder r = null;
-        for(Entity e: entities) {
-            if(e instanceof Ladder) {
-                if(CollisionSystem.sphereAABB((Sphere)this.mask, (AABB)e.getCollisionMask())) {
-                    r = (Ladder) e;
-                    break;
-                }
-            }
-        }
+            Quad floor = null;
 
-        if(r == null) {
-            if(floor != null) {
-                if(gravity != 0) {
-                    gravity = 0;
-                }
-                camera.camera.y = floor.a.y + 0.75;
-
-                if(Input.space && gravity == 0) {
-                    gravity = 0.41f;
-                    camera.camera.y += gravity;
-                }
-            } else {
-                if(!rampcheck) {
-                    camera.camera.y += gravity;
-
-                    if(gravity != 0) {
-                        gravity -= 0.025f;
-                        if(gravity < -0.65f) {
-                            gravity = -0.65f;
-                        }
-                    } else {
-                        gravity = -0.05f;
-                        camera.camera.y += gravity;
+            if(rampcheck == false) {
+                ArrayList<Quad> floors = level.getFloors();
+                for(Quad f : floors) {
+                    if(CollisionSystem.sphereQuad(new Sphere(camera.camera.copy(), 1f), f.a, f.b, f.c, f.d, new Vector3D(0, 1, 0)) != null) {
+                        floor = f;
+                        break;
                     }
                 }
             }
-        } else {
-            if(Input.space) {
-                camera.camera.y += 0.2;
-            } else if(Input.shift) {
-                camera.camera.y -= 0.2;
+
+            ArrayList<Entity> entities = level.getEntities();
+            Ladder r = null;
+            for(Entity e: entities) {
+                if(e instanceof Ladder) {
+                    if(CollisionSystem.sphereAABB((Sphere)this.mask, (AABB)e.getCollisionMask())) {
+                        r = (Ladder) e;
+                        break;
+                    }
+                }
             }
-        }
 
-        this.updateMask();
+            if(r == null) {
+                if(floor != null) {
+                    if(gravity != 0) {
+                        gravity = 0;
+                    }
+                    camera.camera.y = floor.a.y + 0.75;
 
-        for(Quad ra : level.ramps) {
-            Vector3D a = null;
-            if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                camera.camera = a.copy();
+                    if(Input.space && gravity == 0) {
+                        gravity = 0.41f;
+                        camera.camera.y += gravity;
+                    }
+                } else {
+                    if(!rampcheck) {
+                        camera.camera.y += gravity;
+
+                        if(gravity != 0) {
+                            gravity -= 0.025f;
+                            if(gravity < -0.65f) {
+                                gravity = -0.65f;
+                            }
+                        } else {
+                            gravity = -0.05f;
+                            camera.camera.y += gravity;
+                        }
+                    }
+                }
+            } else {
+                if(Input.space) {
+                    camera.camera.y += 0.2;
+                } else if(Input.shift) {
+                    camera.camera.y -= 0.2;
+                }
             }
-        }
 
-        this.updateMask();
+            this.updateMask();
 
-        // walls code
-        ArrayList<Quad> ramps = level.getWalls();
-        Vector3D vel = new Vector3D();
-        for(Quad ra : ramps) {
-            Vector3D a;
-            if((a = CollisionSystem.sphereQuad(new Sphere(this.pos, 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
-                //camera.camera = a.copy();
-                Vector3D xv = a.copy();
-                xv.subtract(camera.camera);
-
-                vel.add(xv);
+            for(Quad ra : level.ramps) {
+                Vector3D a = null;
+                if((a = CollisionSystem.sphereRamp(new Sphere(camera.camera.copy(), 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                    camera.camera = a.copy();
+                }
             }
+
+            this.updateMask();
+
+            // walls code
+            ArrayList<Quad> ramps = level.getWalls();
+            Vector3D vel = new Vector3D();
+            for(Quad ra : ramps) {
+                Vector3D a;
+                if((a = CollisionSystem.sphereQuad(new Sphere(this.pos, 2f), ra.a, ra.b, ra.c, ra.d, ra.getNormal())) != null) {
+                    //camera.camera = a.copy();
+                    Vector3D xv = a.copy();
+                    xv.subtract(camera.camera);
+
+                    vel.add(xv);
+                }
+            }
+            camera.camera.add(vel);
         }
-        camera.camera.add(vel);
     }
 
     boolean is = false;
@@ -232,7 +233,8 @@ public class Player extends Living {
             GL11.glTranslatef(0, changestat + (float)Math.sin(Math.toRadians(move))/25, 0);
         //else
         //GL11.glTranslatef(0, changestat + (float)Math.sin(Math.toRadians(move))/25, 0);
-        curwep.render();
+        if(!camera.isThirdPerson())
+            curwep.render();
         GL11.glPopMatrix();
     }
 
@@ -247,5 +249,68 @@ public class Player extends Living {
 
     public Tool getTool() {
         return this.curwep;
+    }
+
+    int ix = 0, iy = 0;
+
+    public void renderInventory() {
+        if(Input.up) {
+            iy --;
+            if(iy < 0)
+                iy = 0;
+        }
+        if(Input.down) {
+            iy ++;
+            if(iy > 1)
+                iy = 1;
+        }
+        if(Input.left) {
+            ix --;
+            if(ix < 0)
+                ix = 0;
+        }
+        if(Input.right) {
+            ix++;
+            if(ix > 1)
+                ix = 1;
+        }
+
+
+        glEnable(GL_TEXTURE_2D);
+        glColor3f(1,1,1);
+        GL11.glTranslatef(986-15, 15, 0);
+
+        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(10).getTextureID());
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(0, 0);
+        glTexCoord2f(80/128f, 0);
+        glVertex2f(80, 0);
+        glTexCoord2f(80/128f, 80/128f);
+        glVertex2f(80, 80);
+        glTexCoord2f(0, 80/128f);
+        glVertex2f(0, 80);
+        glEnd();
+
+        glBindTexture(GL_TEXTURE_2D, Resources.getTexture(11).getTextureID());
+
+        if(ix == 1) {
+            glTranslatef(40, 0, 0);
+        }
+        if(iy == 1) {
+            glTranslatef(0, 40, 0);
+        }
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(0, 0);
+        glTexCoord2f(40/64f, 0);
+        glVertex2f(40, 0);
+        glTexCoord2f(40/64f, 40/64f);
+        glVertex2f(40, 40);
+        glTexCoord2f(0, 40/64f);
+        glVertex2f(0, 40);
+        glEnd();
     }
 }

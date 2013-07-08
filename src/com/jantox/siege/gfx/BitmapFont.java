@@ -25,6 +25,10 @@ public class BitmapFont {
         this.height = height;
     }
 
+    public void drawText3D(String s, Vector3D a, Vector3D b, Vector3D c, Vector3D d, float scale, Vector3D color, float separation) {
+
+    }
+
     public void drawText(String s, int x, int y, float scale, Vector3D color, boolean rightpad, float separation) {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -75,4 +79,53 @@ public class BitmapFont {
         glPopMatrix();
     }
 
+    public void drawText(String s, int x, int y, float scale, Vector3D color, boolean rightpad, float separation, float fade) {
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, texture.getTextureID());
+
+        if(separation == -1) {
+            separation = width*scale;
+        }
+
+        if(rightpad) {
+            x -= (s.length() * width) + (s.length() * separation);
+        }
+
+        glTranslatef(x, y, 0);
+        glScalef(scale, scale, scale);
+
+        float unit = (float) width / (float) texture.getImageWidth();
+
+        glColor4f((float) color.x, (float) color.y, (float) color.z, fade);
+
+        int dx = -1;
+        for(int i = 0; i < s.length(); i++) {
+            int index = s.charAt(i) - ' ';
+            dx++;
+            if(s.charAt(i) == '\n') {
+                dx = -1;
+                glTranslatef(0, height-1, 0);
+            } else {
+                float xtc = (float) index * unit;
+
+                glBegin(GL_QUADS);
+                glTexCoord2f(xtc, 0);
+                glVertex2f(dx * separation, 0);
+                glTexCoord2f(xtc + unit, 0);
+                glVertex2f(width+dx * separation, 0);
+                glTexCoord2f(xtc + unit, 1);
+                glVertex2f(width+dx * separation, height);
+                glTexCoord2f(xtc, 1);
+                glVertex2f(dx * separation, height);
+                glEnd();
+            }
+        }
+
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+    }
 }

@@ -1,7 +1,10 @@
 package com.jantox.siege.models;
 
+import com.jantox.siege.Matrix4;
 import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.geometry.Quad;
+import com.jantox.siege.level.Level;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;

@@ -1,8 +1,8 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Resources;
+import com.jantox.siege.Statistics;
 import com.jantox.siege.Vector3D;
-import com.jantox.siege.entities.map.ControlPoint;
 import com.jantox.siege.entities.resources.Gem;
 import com.jantox.siege.geometry.Sphere;
 import com.jantox.siege.level.Level;
@@ -39,7 +39,7 @@ public class Kage extends Living {
         mask.update(pos);
 
         if(pos.distanceSquared(target.getPosition()) <= 5 * 5) {
-            ((ControlPoint)target).attack();
+            ((Guardian)target).attack();
             this.setExpired(true);
         }
 
@@ -84,6 +84,7 @@ public class Kage extends Living {
         if(this.health < 0) {
             if(!expired) {
                 Siege.MONSTERS_LEFT--;
+                Statistics.MONSTERS_KILLED++;
                 for(int i = 0; i < 10; i++) {
                     level.spawn(new Gem(this.pos.copy(), level));
                 }

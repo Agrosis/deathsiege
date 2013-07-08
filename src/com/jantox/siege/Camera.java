@@ -1,5 +1,8 @@
 package com.jantox.siege;
 
+import com.jantox.siege.entities.Catapult;
+import com.jantox.siege.entities.Entity;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
@@ -13,10 +16,14 @@ public class Camera {
     public Vector3D camera;
     private float pitch, yaw; // stored in degrees
 
+    private Entity focus = null;
+    private boolean third = false;
+    private float thirdangle = 0;
+
     private float delta;
 
     private boolean running;
-    int perspective = 60;
+    int perspective = 68;
 
     private float pitchRecoil = 0;
     private int pdir = 2;
@@ -30,59 +37,83 @@ public class Camera {
         yaw = 0;
     }
 
+    public void setFocus(Entity e) {
+        third = true;
+        this.focus = e;
+    }
+
     public void update(float delta) {
-        this.delta = delta;
-        if(Input.in) {
+        if(third) {
             yaw += MOUSE_SPEED * ((width / 2) - Input.getMouseX());
-            pitch += MOUSE_SPEED * ((height / 2) - Input.getMouseY());
-            this.lockCamera();
-
-            this.move();
-
             Input.setMouse(width / 2, height / 2);
-        }
 
-        if(pdir == 0) {
-            pitch -= pitchRecoil;
-            pitchRecoil -= 0.1f;
-            if(pitchRecoil <= 0) {
-                pdir = 1;
-                pitchRecoil = 0;
-            }
-        } else if(pdir == 1) {
-            pitch += pitchRecoil;
-            pitchRecoil += 0.07f;
-            if(pitchRecoil > 0.5f) {
-                pdir = 2;
-            }
-        }
+            Vector3D epos = focus.getPosition().copy();
+            Vector3D move = new Vector3D(Math.cos(Math.toRadians(-yaw+90)) * 15, 8, Math.sin(Math.toRadians(-yaw+90)) * 15);
+            epos.add(move);
 
-        if(Input.shift) {
-            running = true;
+            this.camera = epos.copy();
+            //camera.debug();
+            //camera.y = 30;
+
+            ((Catapult)focus).setAngle(yaw-180);
+            pitch = 10;
         } else {
-            running = false;
-        }
+            this.delta = delta;
+            if(Input.in) {
+                yaw += MOUSE_SPEED * ((width / 2) - Input.getMouseX());
+                pitch += MOUSE_SPEED * ((height / 2) - Input.getMouseY());
+                this.lockCamera();
 
-        if(running) {
-            if(perspective < 75) {
-                perspective++;
-                glViewport(0, 0, width, height);
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
-                glMatrixMode(GL_MODELVIEW);
+                this.move();
+
+                Input.setMouse(width / 2, height / 2);
             }
-        } else {
-            if(perspective > 68) {
-                perspective--;
-                glViewport(0, 0, width, height);
-                glMatrixMode(GL_PROJECTION);
-                glLoadIdentity();
-                gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
-                glMatrixMode(GL_MODELVIEW);
+
+            if(pdir == 0) {
+                pitch -= pitchRecoil;
+                pitchRecoil -= 0.1f;
+                if(pitchRecoil <= 0) {
+                    pdir = 1;
+                    pitchRecoil = 0;
+                }
+            } else if(pdir == 1) {
+                pitch += pitchRecoil;
+                pitchRecoil += 0.07f;
+                if(pitchRecoil > 0.5f) {
+                    pdir = 2;
+                }
+            }
+
+            if(Input.shift) {
+                running = true;
+            } else {
+                running = false;
+            }
+
+            if(running) {
+                if(perspective < 75) {
+                    perspective++;
+                    glViewport(0, 0, width, height);
+                    glMatrixMode(GL_PROJECTION);
+                    glLoadIdentity();
+                    gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
+                    glMatrixMode(GL_MODELVIEW);
+                }
+            } else {
+                if(perspective > 68) {
+                    perspective--;
+                    glViewport(0, 0, width, height);
+                    glMatrixMode(GL_PROJECTION);
+                    glLoadIdentity();
+                    gluPerspective(perspective, (float) 1066 / (float) 600, 1.0f, 2000.0f);
+                    glMatrixMode(GL_MODELVIEW);
+                }
             }
         }
+    }
 
+    public boolean isThirdPerson() {
+        return third;
     }
 
     public void applyRotation() {

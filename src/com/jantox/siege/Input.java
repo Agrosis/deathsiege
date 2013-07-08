@@ -20,6 +20,7 @@ public class Input {
 
     public static boolean down;
     public static boolean up;
+    public static boolean left, right;
     public static boolean enter;
 
     public static void update() {
@@ -46,6 +47,16 @@ public class Input {
             down = true;
         } else {
             down = false;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            left = true;
+        } else {
+            left = false;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+            right = true;
+        } else {
+            right = false;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
             enter = true;

@@ -5,13 +5,12 @@ import com.jantox.siege.Vector3D;
 import com.jantox.siege.entities.*;
 import com.jantox.siege.entities.map.*;
 import com.jantox.siege.entities.map.shop.Shop;
-import com.jantox.siege.entities.tools.Fury;
-import com.jantox.siege.sfx.AudioController;
+import com.jantox.siege.gfx.Notification;
 
 public class Siege extends Gamemode {
 
     private Fortress fortress;
-    private ControlPoint points[];
+    private Guardian points[];
 
     public static int wave = 0;
     public static int MONSTERS_LEFT = 0;
@@ -29,7 +28,7 @@ public class Siege extends Gamemode {
     public Siege(Level level) {
         super(level);
 
-        points = new ControlPoint[5];
+        points = new Guardian[4];
     }
 
     public int getWave() {
@@ -38,16 +37,15 @@ public class Siege extends Gamemode {
 
     @Override
     public void init() {
-        points[0] = new ControlPoint(new Vector3D(0, -1.9999999, 0), level);
-        points[1] = new ControlPoint(new Vector3D(70, -1.9999999, -70), level);
-        points[2] = new ControlPoint(new Vector3D(-70, -1.9999999, -70), level);
-        points[3] = new ControlPoint(new Vector3D(-70, -1.9999999, 70), level);
-        points[4] = new ControlPoint(new Vector3D(70, -1.9999999, 70), level);
+        points[0] = new Guardian(new Vector3D(70, -16, -70), level);
+        points[1] = new Guardian(new Vector3D(-70, -16, -70), level);
+        points[2] = new Guardian(new Vector3D(-70, -16, 70), level);
+        points[3] = new Guardian(new Vector3D(70, -16, 70), level);
 
-        level.spawn(new Spawner(new Vector3D(70, -16, -70), level));
-        level.spawn(new Spawner(new Vector3D(-70, -16, -70), level));
-        level.spawn(new Spawner(new Vector3D(70, -16, 70), level));
-        level.spawn(new Spawner(new Vector3D(-70, -16, 70), level));
+        level.spawn(points[0]);
+        level.spawn(points[1]);
+        level.spawn(points[2]);
+        level.spawn(points[3]);
 
         /*level.spawn(new Path(new Vector3D(50, 0, -50)));
         level.spawn(new Path(new Vector3D(-50, 0, -50)));
@@ -76,65 +74,28 @@ public class Siege extends Gamemode {
         //level.spawn(points[3]);
         //level.spawn(points[4]);
 
-        level.spawn(new Helicopter(new Vector3D(50, 0, 50), level));
+        Catapult cp = new Catapult(new Vector3D(20, -1, 20), level);
+        level.spawn(cp);
+
+        //level.getPlayer().getCamera().setFocus(cp);
 
         level.spawn(new Ladder(new Vector3D(-7.1, 0, -5)));
         level.spawn(new Ladder(new Vector3D(-7.1, -5, -5)));
         level.spawn(new Ladder(new Vector3D(-7.1, 5, -5)));
         level.spawn(new Ladder(new Vector3D(-7.1, 10, -5)));
 
+        level.spawn(new Endwek(new Vector3D(20, 0, 20), level, points[0], false));
+
         level.spawn((level.fortress = this.fortress = new Fortress(level)));
         spawnpoint = this.getRandomSpawnPoint();
         MONSTERS_LEFT = 5;
-
-        /*for(int i = 9; i < 160; i+=9) {
-            level.spawn(new Path(new Vector3D(i + 9, 0, 0)));
-        }
-
-        for(int i = -9; i > -160; i-=9) {
-            level.spawn(new Path(new Vector3D(i - 9, 0, 0)));
-        }
-
-        for(int i = 9; i < 160; i+=9) {
-            level.spawn(new Path(new Vector3D(0, 0, i + 5)));
-        }
-
-        for(int i = -9; i > -160; i-=9) {
-            level.spawn(new Path(new Vector3D(0, 0, i - 5)));
-        }
-
-        /*for(int i = -100; i < 100; i+= 5) {
-            if(i == 0) {
-                i += 5;
-            }
-            level.spawn(new Path(new Vector3D(i, 0, 100)));
-            level.spawn(new Path(new Vector3D(100, 0, i)));
-            level.spawn(new Path(new Vector3D(i, 0, -100)));
-            level.spawn(new Path(new Vector3D(-100, 0, i)));
-        }*/
-
-        /*for(int i = 32; i > -32; i-=5) {
-            level.spawn(new Path(new Vector3D(40, 0, i)));
-        }
-
-        for(int i = 32; i > -32; i-=5) {
-            level.spawn(new Path(new Vector3D(-40, 0, i)));
-        }
-
-        for(int i = 32; i > -32; i-=5) {
-            level.spawn(new Path(new Vector3D(i, 0, 40)));
-        }
-
-        for(int i = 32; i > -32; i-=5) {
-            level.spawn(new Path(new Vector3D(i, 0, -40)));
-        }*/
 
         level.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
 
         level.spawn(new Decoration(new Vector3D(-100, 0, 100), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 22));
         level.spawn(new Shop(new Vector3D(-105, -1, 105), level, Shop.SHOP.WEAPONS));
 
-        level.spawn(new Shop(new Vector3D(125, -1, 125), level, Shop.SHOP.SPECIALS));
+        level.spawn(new Shop(new Vector3D(0, -1, -10), level, Shop.SHOP.SPECIALS)); // 125, 125
         level.spawn(new Decoration(new Vector3D(110, 0.001, 110), new Vector3D(0.08, 0.08, 0.08), new Vector3D(-90, 0, 0), 23));
 
         lastsec = System.currentTimeMillis();
@@ -144,6 +105,15 @@ public class Siege extends Gamemode {
 
     public void nextWave() {
         wave++;
+
+        if(wave == 1) {
+            GameInstance.gamejolt.addTrophy(2464);
+        } else if(wave == 2) {
+            GameInstance.notifications.add(new Notification("Weapons Shop Available!", "You can now buy weapons!", 600));
+        } else if(wave == 4) {
+            GameInstance.notifications.add(new Notification("Specials Shop Available!", "You can now buy special items!", 600));
+        }
+
 
         fortress.close();
         level.removeAllMonsters();
@@ -190,9 +160,9 @@ public class Siege extends Gamemode {
                     spawned = false;
                     for(int i = 0; i < 1; i++) {
                         if(Entity.rand.nextInt(2) % 2 != 0) {
-                            level.spawn(new Kage(spawnpoint.getCloseTo(8), level, Entity.rand.nextInt(2), points[Entity.rand.nextInt(5)]));
+                            level.spawn(new Kage(spawnpoint.getCloseTo(8), level, Entity.rand.nextInt(2), points[Entity.rand.nextInt(4)]));
                         } else {
-                            level.spawn(new Endwek(spawnpoint.getCloseTo(8), level, points[Entity.rand.nextInt(5)], false));
+                            level.spawn(new Endwek(spawnpoint.getCloseTo(8), level, points[Entity.rand.nextInt(4)], false));
                         }
                     }
                 }
@@ -243,7 +213,7 @@ public class Siege extends Gamemode {
         return MONSTERS_LEFT;
     }
 
-    public ControlPoint getControlPoint(int i) {
+    public Guardian getGuardian(int i) {
         return points[i];
     }
 }

@@ -13,8 +13,9 @@ public abstract class ParticleBehavior {
         @Override
         public void init(Particle p) {
             p.setScale(new Vector3D(0.025,0.025,0.025));
-            p.setColor(new Vector3D(0.5f, 0, 0));
-            p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/10, 0.5/10f, Entity.rand.nextGaussian()/10));
+            p.setColor(new Vector3D(159/255f, 0, 1));
+            p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/100, 0.5/100f, Entity.rand.nextGaussian()/100));
+            p.setMaxLife(500);
         }
 
         @Override
@@ -28,8 +29,8 @@ public abstract class ParticleBehavior {
 
         @Override
         public void init(Particle p) {
-            p.setScale(new Vector3D(0.025,0.025,0.025));
-            p.setColor(new Vector3D(1f,0, 0));
+            p.setScale(new Vector3D(0.05,0.05,0.05));
+            p.setColor(new Vector3D(120/255f,72f/255, 0));
             p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/5, 0.000005f, Entity.rand.nextGaussian()/5));
             p.setGravity(true, 0.1f);
             p.setBillboarded(true);
@@ -51,6 +52,26 @@ public abstract class ParticleBehavior {
             p.setTexture(1);
             p.setMaxLife(Entity.rand.nextInt(250));
             p.setScale(new Vector3D(0.35f, 0.35f, 0.35f));
+            p.setBillboarded(true);
+        }
+
+        @Override
+        public void update(Particle p) {
+            p.fade(-0.01f);
+        }
+
+    }
+
+    public static class DirtSmokeParticle extends ParticleBehavior {
+
+        @Override
+        public void init(Particle p) {
+            p.pos.add(new Vector3D(Entity.rand.nextGaussian()*0.15, 0, Entity.rand.nextGaussian()*0.15));
+            p.setColor(new Vector3D(244/255f, 237/255f, 159/255f));
+            p.setVelocity(new Vector3D(Entity.rand.nextGaussian()/350, 0.04f, Entity.rand.nextGaussian()/350));
+            p.setTexture(1);
+            p.setMaxLife(Entity.rand.nextInt(250));
+            p.setScale(new Vector3D(20f, 20f, 20f));
             p.setBillboarded(true);
         }
 

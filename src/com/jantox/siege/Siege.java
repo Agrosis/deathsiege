@@ -27,6 +27,15 @@ public class Siege {
 
     public static void main(String[] args) {
         new Siege();
+
+        Matrix4 mat = Matrix4.createRotationMatrix(90, 1);
+        //Matrix4 tra = Matrix4.createTranslationMatrix(new Vector3D(2,2,2));
+
+        Vector3D vec = new Vector3D(1,-2,-1);
+
+        Vector3D res = mat.multiplyVectorBy(vec);
+        //res = tra.multiplyVectorBy(res);
+        res.debug();
     }
 
 }

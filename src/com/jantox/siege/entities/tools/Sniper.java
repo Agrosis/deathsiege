@@ -52,6 +52,7 @@ public class Sniper extends Gun {
             if(addlen < length) {
                 holdpos.add(sdir);
                 addlen += sdir.length();
+
                 if(addlen >= length) {
                     addlen = length;
 
@@ -71,6 +72,7 @@ public class Sniper extends Gun {
                 glMatrixMode(GL_MODELVIEW);
             }
             if(addlen > 0) {
+
                 holdpos.subtract(sdir);
                 addlen -= sdir.length();
                 if(addlen < 0) {

@@ -3,18 +3,19 @@
     <output-path>$PROJECT_DIR$/out/artifacts/revelon_jar</output-path>
     <root id="archive" name="revelon.jar">
       <element id="module-output" name="revelon" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick-util.jar" path-in-jar="/" />
       <element id="library" level="project" name="Deathsiege" />
-      <element id="library" level="project" name="game" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jorbis-0.0.15.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl-debug.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/jinput.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/AppleJavaExtensions.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl_test.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/AppleJavaExtensions.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/asm-debug-all.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lzma.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl_util.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl_util_applet.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick-util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-2.9.0/jar/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jogg-0.0.7.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

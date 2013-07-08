@@ -95,6 +95,7 @@ public class CollisionSystem {
             if(pointTriangle(ti, a, b, d)) {
                 return true;
             }
+            if(c != null)
             if(pointTriangle(ti, b, d, c)) {
                 return true;
             }

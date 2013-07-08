@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Vector3D {
 
-    public double x, y, z;
+    public double x, y, z, w;
     public static Random rand = new Random(2423);
 
     public Vector3D() {
-        this.x = this.y = this.z = 0;
+        this.x = this.y = this.z = this.w = 0;
     }
 
     public Vector3D(double x, double y, double z) {
@@ -17,8 +17,15 @@ public class Vector3D {
         this.z = z;
     }
 
+    public Vector3D(double x, double y, double z, double w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
     public double dotProduct(Vector3D b) {
-        return this.x * b.x + this.y * b.y + this.z * b.z;
+        return this.x * b.x + this.y * b.y + this.z * b.z + this.w * b.w;
     }
 
     public double angleXZ(Vector3D b) {
@@ -26,13 +33,6 @@ public class Vector3D {
         double dz = this.z - b.z;
 
         return Math.toDegrees(Math.atan2(dz, dx));
-    }
-
-    public double angleXY(Vector3D b) {
-        double dx = this.x - b.x;
-        double dy = this.y - b.y;
-
-        return Math.toDegrees(Math.atan2(dy, dx));
     }
 
     public Vector3D crossProduct(Vector3D b) {
