@@ -1,5 +1,6 @@
 package com.jantox.siege.entities;
 
+import com.jantox.siege.GameInstance;
 import com.jantox.siege.Input;
 import com.jantox.siege.Resources;
 import com.jantox.siege.Vector3D;
@@ -18,6 +19,8 @@ public class Catapult extends Entity {
 
     int dir = 0;
     int breaktime = 0;
+
+    boolean in = false;
 
     public Catapult(Vector3D pos, Level level) {
         super(pos, level);
@@ -50,6 +53,39 @@ public class Catapult extends Entity {
             breaktime--;
         }
 
+        if(!Input.e) {
+            e = false;
+        }
+
+        if(level.getPlayer().getCamera().getPlayerPos().distanceSquared(this.pos) <= 10 * 10) {
+            if(GameInstance.intent == -1)
+                GameInstance.intent = 0;
+
+            if(in == false) {
+                if(GameInstance.intent == 0)
+                    if(Input.e && !e) {
+                        e = true;
+                        in = true;
+                        level.getPlayer().getCamera().setFocus(this);
+                        GameInstance.intent = 1;
+                    }
+            } else {
+                if(GameInstance.intent == 1)
+                    if(Input.e && !e) {
+                        e = true;
+                        in = false;
+                        level.getPlayer().getCamera().setFocus(null);
+                        //level.getPlayer().getCamera().setCamera(new Vector3D(0,0,0));
+                        GameInstance.intent = -1;
+                    }
+            }
+        } else {
+            if(GameInstance.intent == 0) {
+                GameInstance.intent = -1;
+                GameInstance.intents.get(0).off();
+            }
+        }
+
         if(Input.lmouse) {
             if(dir == 1 && arm_angle <= -10) {
                 arm_angle = -10;
@@ -59,6 +95,8 @@ public class Catapult extends Entity {
             }
         }
     }
+
+    private boolean e = false;
 
     @Override
     public void render() {

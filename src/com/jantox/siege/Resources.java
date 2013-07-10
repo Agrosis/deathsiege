@@ -87,7 +87,7 @@ public class Resources {
         models.add(objloader.loadOBJModel("models/minigun_handle.obj")); //35
         models.add(objloader.loadOBJModel("models/rock.obj")); //36
         models.add(objloader.loadOBJModel("models/minigun.obj")); //37
-        models.add(objloader.loadOBJModel("models/collisiontest.obj"));
+        models.add(objloader.loadOBJModel("models/fists.obj"));
 
         try {
             fonts.put("terminal", new BitmapFont(TextureLoader.getTexture("PNG", new FileInputStream(new File("textures/fonts/terminal.png")), GL11.GL_NEAREST), 16, 16));

@@ -23,6 +23,8 @@ public class Input {
     public static boolean left, right;
     public static boolean enter;
 
+    public static boolean e;
+
     public static void update() {
         mx = Mouse.getX();
         my = Mouse.getY();
@@ -84,6 +86,11 @@ public class Input {
         } else {
             d = false;
         }
+        if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            e = true;
+        } else {
+            e = false;
+        }
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             space = true;
         } else {
@@ -97,16 +104,6 @@ public class Input {
             curnum = 3;
         } else if(Keyboard.isKeyDown(Keyboard.KEY_4)) {
             curnum = 4;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_5)) {
-            curnum = 5;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_6)) {
-            curnum = 6;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_7)) {
-            curnum = 7;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_8)) {
-            curnum = 8;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_9)) {
-            curnum = 9;
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {

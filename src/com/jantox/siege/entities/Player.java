@@ -40,8 +40,9 @@ public class Player extends Living {
         this.camera = camera;
 
         inventory = new ArrayList<Tool>();
+        inventory.add(new Fists(this, level));
         inventory.add(new Battleaxe(this));
-        inventory.add(new Crossbow(this, level));
+        //inventory.add(new Crossbow(this, level));
         inventory.add(new Minigun(this, level));
         inventory.add(new Sniper(this, level));
 
@@ -74,6 +75,18 @@ public class Player extends Living {
                 changestat = 0;
                 GameInstance.audio.playSound(6);
             }
+        }
+
+        if(cursel == 0) {
+            ix = iy = 0;
+        } else if(cursel == 1) {
+            ix = 1;
+            iy = 0;
+        } else if(cursel == 2) {
+            ix = 0;
+            iy = 1;
+        } else if(cursel == 3) {
+            ix = iy = 1;
         }
 
         if(weaponRest == 0) {
@@ -258,23 +271,62 @@ public class Player extends Living {
             iy --;
             if(iy < 0)
                 iy = 0;
+
+            if(ix == 0 && iy == 0) {
+                Input.curnum = 1;
+            } else if(ix == 1 && iy == 0) {
+                Input.curnum = 2;
+            } else if(ix == 1 && iy == 1) {
+                Input.curnum = 4;
+            } else if(ix == 0 && iy == 1) {
+                Input.curnum = 3;
+            }
         }
         if(Input.down) {
             iy ++;
             if(iy > 1)
                 iy = 1;
+
+            if(ix == 0 && iy == 0) {
+                Input.curnum = 1;
+            } else if(ix == 1 && iy == 0) {
+                Input.curnum = 2;
+            } else if(ix == 1 && iy == 1) {
+                Input.curnum = 4;
+            } else if(ix == 0 && iy == 1) {
+                Input.curnum = 3;
+            }
         }
         if(Input.left) {
             ix --;
             if(ix < 0)
                 ix = 0;
+
+            if(ix == 0 && iy == 0) {
+                Input.curnum = 1;
+            } else if(ix == 1 && iy == 0) {
+                Input.curnum = 2;
+            } else if(ix == 1 && iy == 1) {
+                Input.curnum = 4;
+            } else if(ix == 0 && iy == 1) {
+                Input.curnum = 3;
+            }
         }
         if(Input.right) {
             ix++;
             if(ix > 1)
                 ix = 1;
-        }
 
+            if(ix == 0 && iy == 0) {
+                Input.curnum = 1;
+            } else if(ix == 1 && iy == 0) {
+                Input.curnum = 2;
+            } else if(ix == 1 && iy == 1) {
+                Input.curnum = 4;
+            } else if(ix == 0 && iy == 1) {
+                Input.curnum = 3;
+            }
+        }
 
         glEnable(GL_TEXTURE_2D);
         glColor3f(1,1,1);

@@ -99,7 +99,17 @@ public class Level {
         Matrix4 scale = Matrix4.createScaleMatrix(new Vector3D(0.11,0.11,0.11));
         Matrix4 rotate = Matrix4.createRotationMatrix(90, 0);
         Matrix4 translate = Matrix4.createTranslationMatrix(new Vector3D(0,-2,0));
-        MapCollision mc = cl.loadOBJModel("models/building2HDD.obj", translate, rotate, scale);
+        cl.loadOBJModel("models/building2HDD.obj", translate, rotate, scale);
+
+        scale = Matrix4.createScaleMatrix(new Vector3D(0.08,0.08,0.08));
+        rotate = Matrix4.createRotationMatrix(90, 0);
+        translate = Matrix4.createTranslationMatrix(new Vector3D(110,-2,110));
+        cl.loadOBJModel("models/building4.obj", translate, rotate, scale);
+
+        scale = Matrix4.createScaleMatrix(new Vector3D(0.08,0.08,0.08));
+        rotate = Matrix4.createRotationMatrix(90, 0);
+        translate = Matrix4.createTranslationMatrix(new Vector3D(-100,-2,100));
+        cl.loadOBJModel("models/building3.obj", translate, rotate, scale);
     }
 
     public void update(float delta) {
@@ -186,16 +196,16 @@ public class Level {
 
         glPopMatrix();
 
-        glPushMatrix();
+        /*glPushMatrix();
 
         glColor3f(0,0,0);
         //glTranslatef(20, 0, 20);
         //glRotatef(90, 0, 1, 0);
-        for(Quad q : walls) {
+       /* for(Quad q : walls) {
             q.render();
             //q.debug();
         }
-        glPopMatrix();
+        glPopMatrix();*/
 
 
         for(int i = 0; i < entities.size(); i++) {

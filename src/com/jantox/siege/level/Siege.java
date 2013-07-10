@@ -14,6 +14,7 @@ public class Siege extends Gamemode {
 
     public static int wave = 0;
     public static int MONSTERS_LEFT = 0;
+    public static int GATES_OPEN = 1;
 
     private long lastsec;
     private long seconds;
@@ -25,10 +26,14 @@ public class Siege extends Gamemode {
 
     private boolean extended = false;
 
+    private int opened;
+
     public Siege(Level level) {
         super(level);
 
         points = new Guardian[4];
+
+        opened = Entity.rand.nextInt(4);
     }
 
     public int getWave() {
@@ -87,7 +92,7 @@ public class Siege extends Gamemode {
         level.spawn(new Endwek(new Vector3D(20, 0, 20), level, points[0], false));
 
         level.spawn((level.fortress = this.fortress = new Fortress(level)));
-        spawnpoint = this.getRandomSpawnPoint();
+        spawnpoint = this.getSpawnPoint(opened);
         MONSTERS_LEFT = 5;
 
         level.spawn(new Decoration(new Vector3D(0, 0, 0), new Vector3D(0.11, 0.11, 0.11), new Vector3D(-90, 0, 0), 2));
@@ -100,11 +105,13 @@ public class Siege extends Gamemode {
 
         lastsec = System.currentTimeMillis();
 
-        fortress.open();
+        fortress.open(opened);
     }
 
     public void nextWave() {
         wave++;
+
+        GameInstance.notifications.add(new Notification("Wave " + wave + " complete!", "", 500));
 
         if(wave == 1) {
             GameInstance.gamejolt.addTrophy(2464);
@@ -114,8 +121,7 @@ public class Siege extends Gamemode {
             GameInstance.notifications.add(new Notification("Specials Shop Available!", "You can now buy special items!", 600));
         }
 
-
-        fortress.close();
+        fortress.close(opened);
         level.removeAllMonsters();
         breaktime = 30;
 
@@ -142,7 +148,8 @@ public class Siege extends Gamemode {
                     GameInstance.audio.playSound(10);
                 }
                 if(breaktime == -1) {
-                    fortress.open();
+                    opened = Entity.rand.nextInt(4);
+                    fortress.open(opened);
                     extended = false;
                     GameInstance.audio.playSound(11);
                 }
@@ -150,12 +157,14 @@ public class Siege extends Gamemode {
         }
 
         if(breaktime == -1) {
-            if(seconds >= 30) {
+            if(seconds >= 40) {
+                fortress.close(opened);
                 seconds = 0;
-                this.spawnpoint = this.getRandomSpawnPoint();
+                opened = Entity.rand.nextInt(4);
+                this.spawnpoint = this.getSpawnPoint(opened);
             }
 
-            if(fortress.isOpen() && MONSTERS_LEFT > 0) {
+            if(fortress.isOpen(opened) && MONSTERS_LEFT > 0) {
                 if(seconds % 3 == 0 && spawned) {
                     spawned = false;
                     for(int i = 0; i < 1; i++) {
@@ -181,9 +190,7 @@ public class Siege extends Gamemode {
 
     boolean colors = true;
 
-    public Vector3D getRandomSpawnPoint() {
-        int r = Entity.rand.nextInt(4);
-
+    public Vector3D getSpawnPoint(int r) {
         if(r == 1) {
             return new Vector3D(220, 0, 0);
         } else if(r == 3) {

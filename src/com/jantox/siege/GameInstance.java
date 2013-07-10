@@ -5,6 +5,7 @@ import com.jantox.siege.entities.map.shop.Shop;
 import com.jantox.siege.entities.tools.Gun;
 import com.jantox.siege.gamejolt.GameJolt;
 import com.jantox.siege.gfx.BitmapFont;
+import com.jantox.siege.gfx.Intent;
 import com.jantox.siege.gfx.Notification;
 import com.jantox.siege.level.*;
 import com.jantox.siege.level.Siege;
@@ -34,6 +35,8 @@ public class GameInstance {
 
     private int width, height;
 
+    public static int intent = -1;
+
     private Level level;
     private MultiplayerInstance mpinstance;
     private Timer timer;
@@ -41,7 +44,9 @@ public class GameInstance {
     public static boolean debug = false;
 
     public static boolean multiplayer = false;
+
     public static ArrayList<Notification> notifications;
+    public static ArrayList<Intent> intents;
 
     public static AudioController audio;
 
@@ -68,6 +73,7 @@ public class GameInstance {
         curms = System.currentTimeMillis();
 
         notifications = new ArrayList<Notification>();
+
     }
 
     public void init() {
@@ -80,7 +86,10 @@ public class GameInstance {
             mpinstance = new MultiplayerInstance(level);
         }
 
-        notifications.add(new Notification("Achievement Get!", "You have earned the achievement...", 600));
+        intents = new ArrayList<Intent>();
+
+        intents.add(new Intent(0, "Press E to control catapult"));
+        intents.add(new Intent(1, "Press E to leave catapult"));
     }
 
     public void initGL() {
@@ -146,6 +155,10 @@ public class GameInstance {
 
         mainmenu.update();
 
+        if(intent != -1) {
+            intents.get(intent).update();
+        }
+
         if(cash < ccash) {
             cash += 3;
             if(cash >= ccash)
@@ -156,11 +169,11 @@ public class GameInstance {
                 cash = ccash;
         }
 
-        for(int i = 0; i < notifications.size(); i++) {
-            if(notifications.get(i).isExpired())
-                notifications.remove(i);
+        if(notifications.size() > 0) {
+            if(notifications.get(0).isExpired())
+                notifications.remove(0);
             else
-                notifications.get(i).update();
+                notifications.get(0).update();
         }
 
         if(multiplayer) {
@@ -181,8 +194,12 @@ public class GameInstance {
 
         drawCrossheir();
 
-        for(int i = 0; i < notifications.size(); i++) {
-            notifications.get(i).render();
+        if(notifications.size() > 0) {
+            notifications.get(0).render();
+        }
+
+        if(intent != -1) {
+            intents.get(intent).render();
         }
 
         if(GameInstance.shop != null) {

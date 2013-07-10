@@ -19,6 +19,7 @@ public class Camera {
     private Entity focus = null;
     private boolean third = false;
     private float thirdangle = 0;
+    private Vector3D beforepos = null;
 
     private float delta;
 
@@ -38,8 +39,15 @@ public class Camera {
     }
 
     public void setFocus(Entity e) {
-        third = true;
-        this.focus = e;
+        if(e != null) {
+            third = true;
+            this.focus = e;
+            beforepos = camera.copy();
+        } else {
+            third = false;
+            this.focus = null;
+            this.camera = beforepos.copy();
+        }
     }
 
     public void update(float delta) {
@@ -192,5 +200,12 @@ public class Camera {
     public void setPitchRecoil(float pitchRecoil) {
         pdir = 0;
         this.pitchRecoil = pitchRecoil;
+    }
+
+    public Vector3D getPlayerPos() {
+        if(third) {
+            return beforepos.copy();
+        }
+        return camera.copy();
     }
 }

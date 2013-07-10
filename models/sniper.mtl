@@ -1,10 +1,10 @@
 # Blender MTL File: 'None'
 # Material Count: 2
 
-newmtl Material
-Ns 96.078431
+newmtl Material.001
+Ns 92.156863
 Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
+Kd 0.512000 0.512000 0.512000
 Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
@@ -13,8 +13,10 @@ illum 2
 newmtl None
 Ns 0.000000
 Ka 0.000000 0.000000 0.000000
-Kd 0.366025 0.366025 0.366025
+Kd 1 1 1
 Ks 0.094626 0.094626 0.094626
 Ni 1.000000
 d 1.000000
 illum 2
+
+map_Kd sniper_tex.png
